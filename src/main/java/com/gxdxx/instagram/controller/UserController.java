@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.controller;
 
+import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
@@ -18,7 +19,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/signup")
     public UserSignUpResponse registerUser(
             @Valid UserSignUpRequest request, BindingResult bindingResult
     ) {
