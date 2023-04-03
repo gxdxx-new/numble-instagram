@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.Objects;
 
@@ -12,6 +14,8 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class User {
 
     @Id
@@ -22,6 +26,8 @@ public class User {
     private String nickname;
 
     private String profileImageUrl;
+
+    private boolean deleted = Boolean.FALSE;
 
     private User(String nickname, String profileImageUrl) {
         this.nickname = nickname;
