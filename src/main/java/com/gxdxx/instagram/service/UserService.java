@@ -29,7 +29,7 @@ public class UserService {
                 .insert(26, request.nickname())
                 .toString();
 
-        User saveUser = User.of(request.nickname(), profileImageUrl);
+        User saveUser = User.of(request.nickname(), passwordEncoder.encode(request.password()), profileImageUrl);
         return UserSignUpResponse.of(userRepository.save(saveUser));
     }
 

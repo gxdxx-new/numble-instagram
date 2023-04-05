@@ -21,7 +21,8 @@ public class UserController {
 
     @PostMapping("/signup")
     public UserSignUpResponse registerUser(
-            @Valid UserSignUpRequest request, BindingResult bindingResult
+            @Valid UserSignUpRequest request,
+                    BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
