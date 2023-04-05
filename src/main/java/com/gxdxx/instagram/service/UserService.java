@@ -33,9 +33,11 @@ public class UserService {
         return UserSignUpResponse.of(userRepository.save(saveUser));
     }
 
-    public SuccessResponse deleteUser(Long id) {
-        // TODO: 본인이 맞는지 확인
+    public SuccessResponse deleteUser(Long id, String nickname) {
         User deleteUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        if (!deleteUser.getNickname().equals(nickname)) {
+            throw new AuthorizationException();
+        }
         userRepository.delete(deleteUser);
         return SuccessResponse.of("회원탈퇴를 성공했습니다.");
     }

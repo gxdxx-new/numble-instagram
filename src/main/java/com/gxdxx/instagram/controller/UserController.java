@@ -6,11 +6,14 @@ import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -22,7 +25,7 @@ public class UserController {
     @PostMapping("/signup")
     public UserSignUpResponse registerUser(
             @Valid UserSignUpRequest request,
-                    BindingResult bindingResult
+            BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
@@ -31,9 +34,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public SuccessResponse deleteUser(@PathVariable("id") Long id) {
-        // TODO: JWT 토큰의 ID값으로 유저가 맞는지 확인
-        return userService.deleteUser(id);
+    public SuccessResponse deleteUser(@PathVariable("id") Long id, Principal principal) {
+        return userService.deleteUser(id, principal.getName());
     }
 
 }
