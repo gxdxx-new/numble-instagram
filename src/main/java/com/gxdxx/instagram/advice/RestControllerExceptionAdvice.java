@@ -1,9 +1,7 @@
 package com.gxdxx.instagram.advice;
 
 import com.gxdxx.instagram.dto.response.ErrorResponse;
-import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
-import com.gxdxx.instagram.exception.UserNotFoundException;
+import com.gxdxx.instagram.exception.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,6 +16,11 @@ public class RestControllerExceptionAdvice {
     @ExceptionHandler(UserNotFoundException.class)
     public ErrorResponse userNotFoundException(UserNotFoundException ex) {
         return new ErrorResponse("존재하지 않는 회원입니다.");
+    }
+
+    @ExceptionHandler(PasswordNotMatchException.class)
+    public ErrorResponse passwordNotMatchException(PasswordNotMatchException ex) {
+        return new ErrorResponse("비밀번호를 확인해주세요.");
     }
 
     @ExceptionHandler(AuthorizationException.class)

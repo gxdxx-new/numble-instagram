@@ -38,4 +38,16 @@ public class UserController {
         return userService.deleteUser(id, principal.getName());
     }
 
+    @PostMapping("/login")
+    public SuccessResponse login(
+            @RequestBody @Valid UserLoginRequest request,
+            BindingResult bindingResult,
+            HttpServletResponse response
+    ) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
+        return userService.login(request, response);
+    }
+
 }
