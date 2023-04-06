@@ -31,7 +31,7 @@ public class Follow {
         this.following = following;
     }
 
-    public static Follow of(User follower, User following) {
+    public static Follow createFollow(User follower, User following) {
         return new Follow(follower, following);
     }
 
