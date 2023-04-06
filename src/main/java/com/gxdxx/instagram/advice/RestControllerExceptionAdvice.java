@@ -23,6 +23,11 @@ public class RestControllerExceptionAdvice {
         return new ErrorResponse("비밀번호를 확인해주세요.");
     }
 
+    @ExceptionHandler(FollowAlreadyExistsException.class)
+    public ErrorResponse followAlreadyExistsException(FollowAlreadyExistsException ex) {
+        return new ErrorResponse("이미 팔로우되어 있습니다.");
+    }
+
     @ExceptionHandler(AuthorizationException.class)
     public ErrorResponse authorizationException(AuthorizationException ex) {
         return new ErrorResponse("권한이 없습니다.");
