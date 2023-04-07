@@ -28,6 +28,11 @@ public class RestControllerExceptionAdvice {
         return new ErrorResponse("이미 팔로우되어 있습니다.");
     }
 
+    @ExceptionHandler(FollowNotFountException.class)
+    public ErrorResponse followNotFountException(FollowNotFountException ex) {
+        return new ErrorResponse("존재하지 않는 팔로우입니다.");
+    }
+
     @ExceptionHandler(AuthorizationException.class)
     public ErrorResponse authorizationException(AuthorizationException ex) {
         return new ErrorResponse("권한이 없습니다.");

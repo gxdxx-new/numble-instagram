@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @Table(name = "users")
 @Entity

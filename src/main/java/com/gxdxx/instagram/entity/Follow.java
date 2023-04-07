@@ -5,12 +5,16 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.Objects;
 
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE follow SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 @Entity
 public class Follow {
 
@@ -25,6 +29,8 @@ public class Follow {
     @ManyToOne
     @JoinColumn(name = "following_id")
     private User following;
+
+    private boolean deleted = Boolean.FALSE;
 
     private Follow(User follower, User following) {
         this.follower = follower;
@@ -47,5 +53,8 @@ public class Follow {
         return Objects.hash(id);
     }
 
+    public void changeDeleted(boolean status) {
+        this.deleted = status;
+    }
 
 }
