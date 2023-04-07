@@ -7,10 +7,7 @@ import com.gxdxx.instagram.service.FollowService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -33,6 +30,11 @@ public class FollowController {
         }
 
         return followService.createFollow(request, principal.getName());
+    }
+
+    @DeleteMapping("/{id}")
+    public SuccessResponse deleteFollow(@PathVariable("id") Long id, Principal principal) {
+        return followService.deleteFollow(id, principal.getName());
     }
 
 }
