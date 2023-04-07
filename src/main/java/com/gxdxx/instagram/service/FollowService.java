@@ -37,7 +37,11 @@ public class FollowService {
             throw new FollowAlreadyExistsException();
         }
 
-        followRepository.save(Follow.createFollow(follower, following));
+        Follow follow = followRepository.findByFollowerAndFollowingAndDeleted(follower, following, true)
+                .orElse(Follow.createFollow(follower, following));
+        follow.changeDeleted(false);
+
+        followRepository.save(follow);
         return SuccessResponse.of("200 SUCCESS");
     }
 

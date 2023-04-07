@@ -53,5 +53,8 @@ public class Follow {
         return Objects.hash(id);
     }
 
+    public void changeDeleted(boolean status) {
+        this.deleted = status;
+    }
 
 }
