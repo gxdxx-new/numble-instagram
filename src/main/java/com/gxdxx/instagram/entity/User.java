@@ -45,6 +45,11 @@ public class User {
         return new User(nickname, password, profileImageUrl);
     }
 
+    public void updateProfile(String nickname, String profileImageUrl) {
+        this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

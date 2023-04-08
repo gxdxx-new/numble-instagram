@@ -1,9 +1,11 @@
 package com.gxdxx.instagram.service;
 
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
+import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserProfileResponse;
+import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.RefreshToken;
 import com.gxdxx.instagram.entity.User;
@@ -68,6 +70,19 @@ public class UserService {
         Long followerCount = followRepository.countByFollowing(user);
         Long followingCount = followRepository.countByFollower(user);
         return UserProfileResponse.of(user.getNickname(), user.getProfileImageUrl(), followerCount, followingCount);
+    }
+
+    public UserProfileUpdateResponse updateProfile(UserProfileUpdateRequest request, Principal principal) {
+        User user = getUserFromPrincipal(principal);
+
+        // TODO: 파일업로드 구현하기
+        String profileImageUrl = new StringBuffer()
+                .append("http://example.com/images/.jpg")
+                .insert(26, request.nickname())
+                .toString();
+
+        user.updateProfile(request.nickname(), profileImageUrl);
+        return UserProfileUpdateResponse.of(user.getId(), user.getNickname(), user.getProfileImageUrl());
     }
 
     private User getUserFromPrincipal(Principal principal) {
