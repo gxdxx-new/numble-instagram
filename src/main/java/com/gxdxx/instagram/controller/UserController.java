@@ -1,9 +1,11 @@
 package com.gxdxx.instagram.controller;
 
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
+import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserProfileResponse;
+import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.service.UserService;
@@ -54,6 +56,18 @@ public class UserController {
     @GetMapping("/profile")
     public UserProfileResponse getProfile(Principal principal) {
         return userService.getProfile(principal);
+    }
+
+    @PutMapping("/profile")
+    public UserProfileUpdateResponse updateProfile(
+            @Valid UserProfileUpdateRequest request,
+            BindingResult bindingResult,
+            Principal principal
+    ) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
+        return userService.updateProfile(request, principal);
     }
 
 }
