@@ -16,4 +16,8 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     @Where(clause = "")
     Optional<Follow> findByFollowerAndFollowingAndDeleted(User follower, User following, boolean status);
 
+    Long countByFollower(User follower);
+
+    Long countByFollowing(User following);
+
 }
