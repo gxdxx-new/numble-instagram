@@ -3,6 +3,7 @@ package com.gxdxx.instagram.service;
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
+import com.gxdxx.instagram.dto.response.UserProfileResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.RefreshToken;
 import com.gxdxx.instagram.entity.User;
@@ -12,6 +13,7 @@ import com.gxdxx.instagram.exception.PasswordNotMatchException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.jwt.JwtUtil;
 import com.gxdxx.instagram.jwt.TokenDto;
+import com.gxdxx.instagram.repository.FollowRepository;
 import com.gxdxx.instagram.repository.RefreshTokenRepository;
 import com.gxdxx.instagram.repository.UserRepository;
 import com.gxdxx.instagram.security.UserDetailsImpl;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
@@ -57,6 +61,19 @@ public class UserService {
         }
         userRepository.delete(deleteUser);
         return SuccessResponse.of("회원탈퇴를 성공했습니다.");
+    }
+
+    public UserProfileResponse getProfile(Principal principal) {
+        User user = getUserFromPrincipal(principal);
+        Long followerCount = followRepository.countByFollowing(user);
+        Long followingCount = followRepository.countByFollower(user);
+        return UserProfileResponse.of(user.getNickname(), user.getProfileImageUrl(), followerCount, followingCount);
+    }
+
+    private User getUserFromPrincipal(Principal principal) {
+        String nickname = principal.getName();
+        return userRepository.findByNickname(nickname)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     public SuccessResponse login(UserLoginRequest request, HttpServletResponse response) {
