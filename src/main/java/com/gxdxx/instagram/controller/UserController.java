@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class UserController {
     public UserSignUpResponse registerUser(
             @Valid UserSignUpRequest request,
             BindingResult bindingResult
-    ) {
+    ) throws IOException {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
         }
