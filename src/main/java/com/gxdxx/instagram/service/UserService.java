@@ -18,8 +18,6 @@ import com.gxdxx.instagram.jwt.TokenDto;
 import com.gxdxx.instagram.repository.FollowRepository;
 import com.gxdxx.instagram.repository.RefreshTokenRepository;
 import com.gxdxx.instagram.repository.UserRepository;
-import com.gxdxx.instagram.security.UserDetailsImpl;
-import com.gxdxx.instagram.security.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -38,21 +37,21 @@ public class UserService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final S3Uploader s3Uploader;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
-    public UserSignUpResponse saveUser(UserSignUpRequest request) {
+    public UserSignUpResponse saveUser(UserSignUpRequest request) throws IOException {
         userRepository.findByNickname(request.nickname()).ifPresent(user -> {
             throw new NicknameAlreadyExistsException();
         });
 
-        // TODO: 파일업로드 구현하기
-        String profileImageUrl = new StringBuffer()
-                .append("http://example.com/images/.jpg")
-                .insert(26, request.nickname())
-                .toString();
+        String storedFileName = "";
+        if(!request.profileImage().isEmpty()) {
+            storedFileName = s3Uploader.upload(request.profileImage(), "images");
+        }
 
-        User saveUser = User.of(request.nickname(), passwordEncoder.encode(request.password()), profileImageUrl);
+        User saveUser = User.of(request.nickname(), passwordEncoder.encode(request.password()), storedFileName);
         return UserSignUpResponse.of(userRepository.save(saveUser));
     }
 
