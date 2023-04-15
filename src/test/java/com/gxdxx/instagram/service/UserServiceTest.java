@@ -72,4 +72,21 @@ class UserServiceTest {
         assertEquals(storedFileName, response.profileImageUrl());
     }
 
+    @Test
+    @DisplayName("이미 존재하는 닉네임이면 회원가입에 실패한다.")
+    void saveUser_withExistingNickname_shouldThrowException() {
+        // given
+        String existingNickname = "existingNickname";
+        String password = "password";
+        String encodedPassword = "encodedPassword";
+        String storedFileName = "storedFileName";
+        MockMultipartFile mockFile = getMockMultipartFile();
+        UserSignUpRequest request = new UserSignUpRequest(existingNickname, password, mockFile);
+        User existingUser = User.of(existingNickname, encodedPassword, storedFileName);
+        when(userRepository.findByNickname(existingNickname)).thenReturn(Optional.of(existingUser));
+
+        // when & then
+        assertThrows(NicknameAlreadyExistsException.class, () -> userService.saveUser(request));
+    }
+
 }
