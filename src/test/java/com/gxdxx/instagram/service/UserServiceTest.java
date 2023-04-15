@@ -5,6 +5,7 @@ import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
+import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.jwt.JwtUtil;
 import com.gxdxx.instagram.repository.FollowRepository;
 import com.gxdxx.instagram.repository.RefreshTokenRepository;
@@ -110,6 +111,18 @@ class UserServiceTest {
         assertEquals("회원탈퇴를 성공했습니다.", response.message());
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).delete(deleteUser);
+    }
+
+    @Test
+    @DisplayName("[회원 탈퇴] - 실패 (존재하지 않는 회원)")
+    void deleteUser_userNotFound() {
+        Long userId = 1L;
+        String nickname = "nickname";
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.deleteUser(userId, nickname));
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, never()).delete(any());
     }
 
 }
