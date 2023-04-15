@@ -51,12 +51,7 @@ class UserServiceTest {
         String password = "password";
         String encodedPassword = "encodedPassword";
         String storedFileName = "storedFileName";
-        MockMultipartFile mockFile = new MockMultipartFile(
-                "file",
-                "test.png",
-                "image/png",
-                "test content".getBytes()
-        );
+        MockMultipartFile mockFile = getMockMultipartFile();
         UserSignUpRequest request = new UserSignUpRequest(nickname, password, mockFile);
         when(userRepository.findByNickname(anyString())).thenReturn(Optional.empty());
         when(s3Uploader.upload(any(), anyString())).thenReturn(storedFileName);
@@ -67,7 +62,6 @@ class UserServiceTest {
         UserSignUpResponse response = userService.saveUser(request);
 
         // then
-        assertNotNull(response);
         assertEquals(nickname, response.nickname());
         assertEquals(storedFileName, response.profileImageUrl());
     }
@@ -87,6 +81,16 @@ class UserServiceTest {
 
         // when & then
         assertThrows(NicknameAlreadyExistsException.class, () -> userService.saveUser(request));
+    }
+
+    private MockMultipartFile getMockMultipartFile() {
+        MockMultipartFile mockFile = new MockMultipartFile(
+                "file",
+                "test.png",
+                "image/png",
+                "test content".getBytes()
+        );
+        return mockFile;
     }
 
 }
