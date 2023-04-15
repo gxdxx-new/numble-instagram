@@ -1,6 +1,7 @@
 package com.gxdxx.instagram.service;
 
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
+import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
@@ -91,6 +92,24 @@ class UserServiceTest {
                 "test content".getBytes()
         );
         return mockFile;
+    }
+
+
+    @Test
+    @DisplayName("회원 탈퇴 성공")
+    void deleteUser_success() {
+        Long userId = 1L;
+        String nickname = "nickname";
+        String encodedPassword = "encodedPassword";
+        String storedFileName = "storedFileName";
+        User deleteUser = User.of(nickname, encodedPassword, storedFileName);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(deleteUser));
+
+        SuccessResponse response = userService.deleteUser(userId, nickname);
+
+        assertEquals("회원탈퇴를 성공했습니다.", response.message());
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).delete(deleteUser);
     }
 
 }
