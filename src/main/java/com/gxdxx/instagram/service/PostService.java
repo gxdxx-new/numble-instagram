@@ -4,6 +4,7 @@ import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.request.PostUpdateRequest;
 import com.gxdxx.instagram.dto.response.PostRegisterResponse;
 import com.gxdxx.instagram.dto.response.PostUpdateResponse;
+import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.Post;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.PostNotFoundException;
@@ -16,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Transactional
@@ -42,6 +42,15 @@ public class PostService {
         String imageUrl = s3Uploader.upload(request.image(), "images");
         updatingPost.update(request.content(), imageUrl);
         return PostUpdateResponse.of(updatingPost);
+    }
+
+    public SuccessResponse deletePost(Long postId, String requestedUserNickname) {
+        Post deletingPost = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        if (!deletingPost.getUser().getNickname().equals(requestedUserNickname)) {
+            throw new UnauthorizedAccessException();
+        }
+        postRepository.delete(deletingPost);
+        return SuccessResponse.of("200 SUCCESS");
     }
 
 }

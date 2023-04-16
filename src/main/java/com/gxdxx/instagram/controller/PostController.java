@@ -4,14 +4,12 @@ import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.request.PostUpdateRequest;
 import com.gxdxx.instagram.dto.response.PostRegisterResponse;
 import com.gxdxx.instagram.dto.response.PostUpdateResponse;
+import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -45,6 +43,14 @@ public class PostController {
             throw new InvalidRequestException();
         }
         return postService.updatePost(request, principal.getName());
+    }
+
+    @DeleteMapping("/{id}")
+    public SuccessResponse deletePost(
+            @PathVariable("id") Long id,
+            Principal principal
+    ) {
+        return postService.deletePost(id, principal.getName());
     }
 
 }
