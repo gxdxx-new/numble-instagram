@@ -34,13 +34,14 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Post(String content, String imageUrl) {
+    private Post(String content, String imageUrl, User user) {
         this.content = content;
         this.imageUrl = imageUrl;
+        this.user = user;
     }
 
-    public static Post of(String content, String imageUrl) {
-        return new Post(content, imageUrl);
+    public static Post of(String content, String imageUrl, User user) {
+        return new Post(content, imageUrl, user);
     }
 
     @Override
