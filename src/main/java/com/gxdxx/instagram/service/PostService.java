@@ -27,16 +27,18 @@ public class PostService {
     private final UserRepository userRepository;
     private final S3Uploader s3Uploader;
 
-    public PostRegisterResponse registerPost(PostRegisterRequest request, String userNickname) throws IOException {
-        User user = userRepository.findByNickname(userNickname).orElseThrow(UserNotFoundException::new);
+    public PostRegisterResponse registerPost(PostRegisterRequest request, String requestingUserNickname) throws IOException {
+        User registeringUser = userRepository.findByNickname(requestingUserNickname)
+                .orElseThrow(UserNotFoundException::new);
         String imageUrl = s3Uploader.upload(request.image(), "images");
-        Post post = Post.of(request.content(), imageUrl, user);
-        return PostRegisterResponse.of(postRepository.save(post));
+        Post registeringPost = Post.of(request.content(), imageUrl, registeringUser);
+        return PostRegisterResponse.of(postRepository.save(registeringPost));
     }
 
-    public PostUpdateResponse updatePost(PostUpdateRequest request, String userNickname) throws IOException {
-        Post updatingPost = postRepository.findById(request.id()).orElseThrow(PostNotFoundException::new);
-        if (!updatingPost.getUser().getNickname().equals(userNickname)) {
+    public PostUpdateResponse updatePost(PostUpdateRequest request, String requestingUserNickname) throws IOException {
+        Post updatingPost = postRepository.findById(request.id())
+                .orElseThrow(PostNotFoundException::new);
+        if (!updatingPost.getUser().getNickname().equals(requestingUserNickname)) {
             throw new UnauthorizedAccessException();
         }
         String imageUrl = s3Uploader.upload(request.image(), "images");
@@ -44,9 +46,10 @@ public class PostService {
         return PostUpdateResponse.of(updatingPost);
     }
 
-    public SuccessResponse deletePost(Long postId, String requestedUserNickname) {
-        Post deletingPost = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        if (!deletingPost.getUser().getNickname().equals(requestedUserNickname)) {
+    public SuccessResponse deletePost(Long postId, String requestingUserNickname) {
+        Post deletingPost = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+        if (!deletingPost.getUser().getNickname().equals(requestingUserNickname)) {
             throw new UnauthorizedAccessException();
         }
         postRepository.delete(deletingPost);
