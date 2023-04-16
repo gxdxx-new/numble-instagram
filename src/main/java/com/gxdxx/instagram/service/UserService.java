@@ -9,7 +9,7 @@ import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.RefreshToken;
 import com.gxdxx.instagram.entity.User;
-import com.gxdxx.instagram.exception.AuthorizationException;
+import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.exception.PasswordNotMatchException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
@@ -58,7 +58,7 @@ public class UserService {
     public SuccessResponse deleteUser(Long id, String nickname) {
         User deleteUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         if (!deleteUser.getNickname().equals(nickname)) {
-            throw new AuthorizationException();
+            throw new UnauthorizedAccessException();
         }
         userRepository.delete(deleteUser);
         return SuccessResponse.of("회원탈퇴를 성공했습니다.");

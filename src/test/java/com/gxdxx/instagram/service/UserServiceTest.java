@@ -4,7 +4,7 @@ import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.User;
-import com.gxdxx.instagram.exception.AuthorizationException;
+import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.jwt.JwtUtil;
@@ -138,7 +138,7 @@ class UserServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(deleteUser));
 
-        assertThrows(AuthorizationException.class, () -> userService.deleteUser(userId, nickname));
+        assertThrows(UnauthorizedAccessException.class, () -> userService.deleteUser(userId, nickname));
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, never()).delete(any());
     }

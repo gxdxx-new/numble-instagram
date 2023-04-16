@@ -33,9 +33,14 @@ public class RestControllerExceptionAdvice {
         return new ErrorResponse("존재하지 않는 팔로우입니다.");
     }
 
-    @ExceptionHandler(AuthorizationException.class)
-    public ErrorResponse authorizationException(AuthorizationException ex) {
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ErrorResponse authorizationException(UnauthorizedAccessException ex) {
         return new ErrorResponse("권한이 없습니다.");
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ErrorResponse postNotFoundException(PostNotFoundException ex) {
+        return new ErrorResponse("존재하지 않는 게시물입니다.");
     }
 
     @ExceptionHandler(InvalidRequestException.class)
