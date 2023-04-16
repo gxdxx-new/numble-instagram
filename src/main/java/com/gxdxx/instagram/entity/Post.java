@@ -44,6 +44,11 @@ public class Post {
         return new Post(content, imageUrl, user);
     }
 
+    public void update(String content, String imageUrl) {
+        this.content = content;
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
