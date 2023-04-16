@@ -4,6 +4,7 @@ import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.exception.AuthorizationException;
 import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.jwt.JwtUtil;
@@ -121,6 +122,23 @@ class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.deleteUser(userId, nickname));
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, never()).delete(any());
+    }
+
+    @Test
+    @DisplayName("[회원 탈퇴] - 실패 (인가되지 않은 회원)")
+    void deleteUser_authorizationFailed() {
+        Long userId = 1L;
+        String nickname = "nickname";
+        String wrongNickname = "wrongNickname";
+        String encodedPassword = "encodedPassword";
+        String storedFileName = "storedFileName";
+        User deleteUser = User.of(wrongNickname, encodedPassword, storedFileName);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(deleteUser));
+
+        assertThrows(AuthorizationException.class, () -> userService.deleteUser(userId, nickname));
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, never()).delete(any());
     }
