@@ -7,6 +7,7 @@ import com.gxdxx.instagram.dto.response.PostUpdateResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class PostController {
 
     @PostMapping
     public PostRegisterResponse registerPost(
-            PostRegisterRequest request,
+            @Valid PostRegisterRequest request,
             BindingResult bindingResult,
             Principal principal
     ) throws IOException {
@@ -35,7 +36,7 @@ public class PostController {
 
     @PutMapping("/{id}")
     public PostUpdateResponse updatePost(
-            PostUpdateRequest request,
+            @Valid PostUpdateRequest request,
             BindingResult bindingResult,
             Principal principal
     ) throws IOException {
