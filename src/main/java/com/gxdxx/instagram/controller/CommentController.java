@@ -4,6 +4,7 @@ import com.gxdxx.instagram.dto.request.CommentRegisterRequest;
 import com.gxdxx.instagram.dto.request.CommentUpdateRequest;
 import com.gxdxx.instagram.dto.response.CommentRegisterResponse;
 import com.gxdxx.instagram.dto.response.CommentUpdateResponse;
+import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.service.CommentService;
 import jakarta.validation.Valid;
@@ -43,6 +44,14 @@ public class CommentController {
             throw new InvalidRequestException();
         }
         return commentService.updateComment(request, principal.getName());
+    }
+
+    @DeleteMapping("/{id}")
+    public SuccessResponse deleteComment(
+            @PathVariable("id") Long id,
+            Principal principal
+    ) {
+        return commentService.deleteComment(id, principal.getName());
     }
 
 }

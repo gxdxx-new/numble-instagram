@@ -4,6 +4,7 @@ import com.gxdxx.instagram.dto.request.CommentRegisterRequest;
 import com.gxdxx.instagram.dto.request.CommentUpdateRequest;
 import com.gxdxx.instagram.dto.response.CommentRegisterResponse;
 import com.gxdxx.instagram.dto.response.CommentUpdateResponse;
+import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.Comment;
 import com.gxdxx.instagram.entity.Post;
 import com.gxdxx.instagram.entity.User;
@@ -46,4 +47,14 @@ public class CommentService {
         return CommentUpdateResponse.of(updatingComment);
     }
 
+    public SuccessResponse deleteComment(Long commentId, String requestingUserNickname) {
+        Comment deletingComment = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+        if (!deletingComment.getUser().getNickname().equals(requestingUserNickname)) {
+            throw new UnauthorizedAccessException();
+        }
+        commentRepository.delete(deletingComment);
+        return SuccessResponse.of("200 SUCCESS");
+    }
+    
 }
