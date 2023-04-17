@@ -1,12 +1,12 @@
 package com.gxdxx.instagram.controller;
 
-import com.gxdxx.instagram.dto.request.PostRegisterRequest;
-import com.gxdxx.instagram.dto.request.PostUpdateRequest;
-import com.gxdxx.instagram.dto.response.PostRegisterResponse;
-import com.gxdxx.instagram.dto.response.PostUpdateResponse;
+import com.gxdxx.instagram.dto.request.CommentRegisterRequest;
+import com.gxdxx.instagram.dto.request.CommentUpdateRequest;
+import com.gxdxx.instagram.dto.response.CommentRegisterResponse;
+import com.gxdxx.instagram.dto.response.CommentUpdateResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.PostService;
+import com.gxdxx.instagram.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -16,42 +16,42 @@ import java.io.IOException;
 import java.security.Principal;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/posts")
+@RequestMapping("/api/comments")
 @RestController
-public class PostController {
+public class CommentController {
 
-    private final PostService postService;
+    private final CommentService commentService;
 
     @PostMapping
-    public PostRegisterResponse registerPost(
-            @Valid PostRegisterRequest request,
+    public CommentRegisterResponse registerComment(
+            @RequestBody @Valid CommentRegisterRequest request,
             BindingResult bindingResult,
             Principal principal
-    ) throws IOException {
+    ) {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
         }
-        return postService.registerPost(request, principal.getName());
+        return commentService.registerComment(request, principal.getName());
     }
 
     @PutMapping("/{id}")
-    public PostUpdateResponse updatePost(
-            @Valid PostUpdateRequest request,
+    public CommentUpdateResponse updateComment(
+            @RequestBody @Valid CommentUpdateRequest request,
             BindingResult bindingResult,
             Principal principal
-    ) throws IOException {
+    ) {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
         }
-        return postService.updatePost(request, principal.getName());
+        return commentService.updateComment(request, principal.getName());
     }
 
     @DeleteMapping("/{id}")
-    public SuccessResponse deletePost(
+    public SuccessResponse deleteComment(
             @PathVariable("id") Long id,
             Principal principal
     ) {
-        return postService.deletePost(id, principal.getName());
+        return commentService.deleteComment(id, principal.getName());
     }
 
 }
