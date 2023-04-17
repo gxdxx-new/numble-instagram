@@ -46,6 +46,10 @@ public class Comment {
         return new Comment(content, user, post);
     }
 
+    public void update(String content) {
+        this.content = content;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

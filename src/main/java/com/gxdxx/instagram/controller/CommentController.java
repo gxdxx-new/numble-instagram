@@ -1,16 +1,15 @@
 package com.gxdxx.instagram.controller;
 
 import com.gxdxx.instagram.dto.request.CommentRegisterRequest;
+import com.gxdxx.instagram.dto.request.CommentUpdateRequest;
 import com.gxdxx.instagram.dto.response.CommentRegisterResponse;
+import com.gxdxx.instagram.dto.response.CommentUpdateResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -32,6 +31,18 @@ public class CommentController {
             throw new InvalidRequestException();
         }
         return commentService.registerComment(request, principal.getName());
+    }
+
+    @PutMapping("/{id}")
+    public CommentUpdateResponse updateComment(
+            @RequestBody @Valid CommentUpdateRequest request,
+            BindingResult bindingResult,
+            Principal principal
+    ) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
+        return commentService.updateComment(request, principal.getName());
     }
 
 }

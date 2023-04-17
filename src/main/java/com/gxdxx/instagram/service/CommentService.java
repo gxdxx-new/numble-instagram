@@ -7,7 +7,9 @@ import com.gxdxx.instagram.dto.response.CommentUpdateResponse;
 import com.gxdxx.instagram.entity.Comment;
 import com.gxdxx.instagram.entity.Post;
 import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.exception.CommentNotFoundException;
 import com.gxdxx.instagram.exception.PostNotFoundException;
+import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.CommentRepository;
 import com.gxdxx.instagram.repository.PostRepository;
@@ -32,6 +34,16 @@ public class CommentService {
                 .orElseThrow(PostNotFoundException::new);
         Comment registeringComment = Comment.of(request.content(), registeringUser, postForComment);
         return CommentRegisterResponse.of(commentRepository.save(registeringComment));
+    }
+
+    public CommentUpdateResponse updateComment(CommentUpdateRequest request, String requestingUserNickname) {
+        Comment updatingComment = commentRepository.findById(request.id())
+                .orElseThrow(CommentNotFoundException::new);
+        if (!updatingComment.getUser().getNickname().equals(requestingUserNickname)) {
+            throw new UnauthorizedAccessException();
+        }
+        updatingComment.update(request.content());
+        return CommentUpdateResponse.of(updatingComment);
     }
 
 }
