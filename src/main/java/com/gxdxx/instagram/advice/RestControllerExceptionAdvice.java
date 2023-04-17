@@ -43,6 +43,11 @@ public class RestControllerExceptionAdvice {
         return new ErrorResponse("존재하지 않는 게시물입니다.");
     }
 
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ErrorResponse commentNotFoundException(CommentNotFoundException ex) {
+        return new ErrorResponse("존재하지 않는 게시물입니다.");
+    }
+
     @ExceptionHandler(InvalidRequestException.class)
     public ErrorResponse invalidRequestException(InvalidRequestException ex) {
         return new ErrorResponse("입력값을 확인해주세요.");
