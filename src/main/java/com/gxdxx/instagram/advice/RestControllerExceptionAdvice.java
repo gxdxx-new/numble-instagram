@@ -45,7 +45,12 @@ public class RestControllerExceptionAdvice {
 
     @ExceptionHandler(CommentNotFoundException.class)
     public ErrorResponse commentNotFoundException(CommentNotFoundException ex) {
-        return new ErrorResponse("존재하지 않는 게시물입니다.");
+        return new ErrorResponse("존재하지 않는 댓글입니다.");
+    }
+
+    @ExceptionHandler(ReplyNotFoundException.class)
+    public ErrorResponse replyNotFoundException(ReplyNotFoundException ex) {
+        return new ErrorResponse("존재하지 않는 답글입니다.");
     }
 
     @ExceptionHandler(InvalidRequestException.class)
