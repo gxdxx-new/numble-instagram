@@ -4,6 +4,7 @@ import com.gxdxx.instagram.dto.request.ReplyRegisterRequest;
 import com.gxdxx.instagram.dto.request.ReplyUpdateRequest;
 import com.gxdxx.instagram.dto.response.ReplyRegisterResponse;
 import com.gxdxx.instagram.dto.response.ReplyUpdateResponse;
+import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.Comment;
 import com.gxdxx.instagram.entity.Reply;
 import com.gxdxx.instagram.entity.User;
@@ -44,6 +45,16 @@ public class ReplyService {
         }
         updatingReply.update(request.content());
         return ReplyUpdateResponse.of(updatingReply);
+    }
+
+    public SuccessResponse deleteReply(Long replyId, String requestingUserNickname) {
+        Reply deletingReply = replyRepository.findById(replyId)
+                .orElseThrow(ReplyNotFoundException::new);
+        if (!deletingReply.getUser().getNickname().equals(requestingUserNickname)) {
+            throw new UnauthorizedAccessException();
+        }
+        replyRepository.delete(deletingReply);
+        return SuccessResponse.of("200 SUCCESS");
     }
 
 }
