@@ -1,11 +1,15 @@
 package com.gxdxx.instagram.service;
 
 import com.gxdxx.instagram.dto.request.ReplyRegisterRequest;
+import com.gxdxx.instagram.dto.request.ReplyUpdateRequest;
 import com.gxdxx.instagram.dto.response.ReplyRegisterResponse;
+import com.gxdxx.instagram.dto.response.ReplyUpdateResponse;
 import com.gxdxx.instagram.entity.Comment;
 import com.gxdxx.instagram.entity.Reply;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.CommentNotFoundException;
+import com.gxdxx.instagram.exception.ReplyNotFoundException;
+import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.CommentRepository;
 import com.gxdxx.instagram.repository.ReplyRepository;
@@ -31,5 +35,15 @@ public class ReplyService {
         Reply registeringReply = Reply.of(request.content(), registeringUser, registeringComment);
         return ReplyRegisterResponse.of(replyRepository.save(registeringReply));
     }
-    
+
+    public ReplyUpdateResponse updateReply(ReplyUpdateRequest request, String requestingUserNickname) {
+        Reply updatingReply = replyRepository.findById(request.id())
+                .orElseThrow(ReplyNotFoundException::new);
+        if (!updatingReply.getUser().getNickname().equals(requestingUserNickname)) {
+            throw new UnauthorizedAccessException();
+        }
+        updatingReply.update(request.content());
+        return ReplyUpdateResponse.of(updatingReply);
+    }
+
 }
