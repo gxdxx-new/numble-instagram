@@ -30,7 +30,7 @@ public class Post {
 
     private boolean deleted = Boolean.FALSE;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
