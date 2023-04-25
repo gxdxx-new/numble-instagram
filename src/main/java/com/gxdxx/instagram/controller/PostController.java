@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.controller;
 
+import com.gxdxx.instagram.dto.request.PostFeedRequest;
 import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.request.PostUpdateRequest;
 import com.gxdxx.instagram.dto.response.PostRegisterResponse;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
@@ -53,5 +55,19 @@ public class PostController {
     ) {
         return postService.deletePost(id, principal.getName());
     }
+
+    @GetMapping("/{id}/feed")
+    public Map<String, Object> getFeed(
+            @RequestBody @Valid PostFeedRequest request,
+            BindingResult bindingResult,
+            Principal principal
+    ) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
+
+        return postService.getFeed(request, principal.getName());
+    }
+
 
 }
