@@ -65,7 +65,7 @@ public class PostService {
         User user = userRepository.findByNickname(requestingUserNickname)
                 .orElseThrow(UserNotFoundException::new);
         List<PostFeedResponse> feeds = postRepository.getPostsByCursor(user.getId(), request.cursor(), 5);
-        Long cursor = !feeds.isEmpty() ? feeds.get(0).getPostId() : 0L;
+        Long cursor = !feeds.isEmpty() ? feeds.get(feeds.size() - 1).getPostId() : 0L;
         Map<String, Object> response = new HashMap<>();
         response.put("cursor", cursor);
         response.put("posts", feeds);
