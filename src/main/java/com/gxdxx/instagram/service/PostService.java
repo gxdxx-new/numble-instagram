@@ -64,10 +64,13 @@ public class PostService {
     public Map<String, Object> getFeed(PostFeedRequest request, String requestingUserNickname) {
         User user = userRepository.findByNickname(requestingUserNickname)
                 .orElseThrow(UserNotFoundException::new);
-        List<PostFeedResponse> feeds = postRepository.getPostsByCursor(user.getId(), request.cursor(), 5);
-        Long cursor = !feeds.isEmpty() ? feeds.get(feeds.size() - 1).getPostId() : 0L;
+        Long cursor = (request.cursor() == null)
+                ? postRepository.findMaxPostId().map(maxId -> maxId + 1).orElse(0L)
+                : request.cursor();
+        List<PostFeedResponse> feeds = postRepository.getPostsByCursor(user.getId(), cursor, 5);
+        Long nextCursor = !feeds.isEmpty() ? feeds.get(feeds.size() - 1).getPostId() : 0L;
         Map<String, Object> response = new HashMap<>();
-        response.put("cursor", cursor);
+        response.put("cursor", nextCursor);
         response.put("posts", feeds);
 
         return response;
