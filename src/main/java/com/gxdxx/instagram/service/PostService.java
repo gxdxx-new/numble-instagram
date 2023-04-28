@@ -1,7 +1,9 @@
 package com.gxdxx.instagram.service;
 
+import com.gxdxx.instagram.dto.request.PostFeedRequest;
 import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.request.PostUpdateRequest;
+import com.gxdxx.instagram.dto.response.PostFeedResponse;
 import com.gxdxx.instagram.dto.response.PostRegisterResponse;
 import com.gxdxx.instagram.dto.response.PostUpdateResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
@@ -17,6 +19,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Transactional
@@ -54,6 +59,21 @@ public class PostService {
         }
         postRepository.delete(deletingPost);
         return SuccessResponse.of("200 SUCCESS");
+    }
+
+    public Map<String, Object> getFeed(PostFeedRequest request, String requestingUserNickname) {
+        User user = userRepository.findByNickname(requestingUserNickname)
+                .orElseThrow(UserNotFoundException::new);
+        Long cursor = (request.cursor() == null)
+                ? postRepository.findMaxPostId().map(maxId -> maxId + 1).orElse(0L)
+                : request.cursor();
+        List<PostFeedResponse> feeds = postRepository.getPostsByCursor(user.getId(), cursor, 5);
+        Long nextCursor = !feeds.isEmpty() ? feeds.get(feeds.size() - 1).getPostId() : 0L;
+        Map<String, Object> response = new HashMap<>();
+        response.put("cursor", nextCursor);
+        response.put("posts", feeds);
+
+        return response;
     }
 
 }

@@ -10,10 +10,7 @@ import com.gxdxx.instagram.service.ReplyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -24,6 +21,7 @@ public class ReplyController {
 
     private final ReplyService replyService;
 
+    @PostMapping
     public ReplyRegisterResponse registerReply(
             @RequestBody @Valid ReplyRegisterRequest request,
             BindingResult bindingResult,
@@ -35,6 +33,7 @@ public class ReplyController {
         return replyService.registerReply(request, principal.getName());
     }
 
+    @PutMapping("/{id}")
     public ReplyUpdateResponse updateReply(
             @RequestBody @Valid ReplyUpdateRequest request,
             BindingResult bindingResult,
@@ -46,6 +45,7 @@ public class ReplyController {
         return replyService.updateReply(request, principal.getName());
     }
 
+    @DeleteMapping("/{id}")
     public SuccessResponse deleteReply(
             @PathVariable("id") Long id,
             Principal principal
