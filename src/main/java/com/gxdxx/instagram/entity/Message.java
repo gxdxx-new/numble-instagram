@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -36,17 +37,20 @@ public class Message {
     @JoinColumn(name = "receiver_id")
     private User receiver;
 
+    private LocalDateTime sentAt;
+
     private boolean deleted = Boolean.FALSE;
 
-    private Message(String content, ChatRoom chatRoom, User sender, User receiver) {
+    private Message(String content, ChatRoom chatRoom, User sender, User receiver, LocalDateTime sentAt) {
         this.content = content;
         this.chatRoom = chatRoom;
         this.sender = sender;
         this.receiver = receiver;
+        this.sentAt = sentAt;
     }
 
-    public static Message of(String content, ChatRoom chatRoom, User sender, User receiver) {
-        return new Message(content, chatRoom, sender, receiver);
+    public static Message of(String content, ChatRoom chatRoom, User sender, User receiver, LocalDateTime sentAt) {
+        return new Message(content, chatRoom, sender, receiver, sentAt);
     }
 
     @Override
