@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -28,7 +30,9 @@ public class MessageService {
         User receiveUser = getUserById(request.userId());
         validateUsers(sendUser, receiveUser);
         ChatRoom chatRoom = getOrCreateChatRoom(sendUser, receiveUser);
-        Message message = Message.of(request.content(), chatRoom, sendUser, receiveUser);
+        LocalDateTime now = LocalDateTime.now();
+        chatRoom.updateLastMessage(request.content(), now);
+        Message message = Message.of(request.content(), chatRoom, sendUser, receiveUser, now);
         messageRepository.save(message);
         return SuccessResponse.of("200 SUCCESS");
     }
