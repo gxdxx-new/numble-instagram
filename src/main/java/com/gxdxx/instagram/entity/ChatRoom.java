@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -30,6 +31,10 @@ public class ChatRoom {
     @JoinColumn(name = "user_b_id")
     private User userB;
 
+    private String lastMessage;
+
+    private LocalDateTime lastSentAt;
+
     private boolean deleted = Boolean.FALSE;
 
     private ChatRoom(User userA, User userB) {
@@ -39,6 +44,11 @@ public class ChatRoom {
 
     public static ChatRoom of(User userA, User userB) {
         return new ChatRoom(userA, userB);
+    }
+
+    public void updateLastMessage(String lastMessage, LocalDateTime lastSentAt) {
+        this.lastMessage = lastMessage;
+        this.lastSentAt = lastSentAt;
     }
 
     @Override
