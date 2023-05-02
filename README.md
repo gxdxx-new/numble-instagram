@@ -7,4 +7,4 @@
 
 ## ERD
 
-<img src="https://user-images.githubusercontent.com/35963403/232229007-125589fa-1d59-4df9-a741-b1a0c06468fb.PNG" width="500">
+<img src="https://user-images.githubusercontent.com/35963403/235620136-fbf8b0e0-4c34-47c8-8722-6286bc58cebf.PNG" width="500">
