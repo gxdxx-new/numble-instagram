@@ -70,7 +70,7 @@ public class MessageService {
         User requestUser = getUserByNickname(nickname);
         ChatRoom chatRoom = chatRoomRepository.findById(request.chatRoomId())
                 .orElseThrow(ChatRoomNotFoundException::new);
-        if (!chatRoom.getUserA().equals(requestUser) && !chatRoom.getUserB().equals(requestUser)) {
+        if (!chatRoom.hasUser(requestUser)) {
             throw new UnauthorizedAccessException();
         }
         Long cursor = (request.cursor() == null)
