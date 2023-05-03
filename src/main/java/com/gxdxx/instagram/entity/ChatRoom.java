@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.entity;
 
+import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -49,6 +50,11 @@ public class ChatRoom {
     public void updateLastMessage(String lastMessage, LocalDateTime lastSentAt) {
         this.lastMessage = lastMessage;
         this.lastSentAt = lastSentAt;
+    }
+
+    public boolean hasUser(User requestUser) {
+        return this.getUserA().equals(requestUser) ||
+                this.getUserB().equals(requestUser);
     }
 
     @Override

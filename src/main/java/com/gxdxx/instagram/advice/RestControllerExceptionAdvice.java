@@ -53,6 +53,11 @@ public class RestControllerExceptionAdvice {
         return new ErrorResponse("존재하지 않는 답글입니다.");
     }
 
+    @ExceptionHandler(ChatRoomNotFoundException.class)
+    public ErrorResponse chatRoomNotFoundException(ChatRoomNotFoundException ex) {
+        return new ErrorResponse("존재하지 않는 채팅방입니다.");
+    }
+
     @ExceptionHandler(InvalidRequestException.class)
     public ErrorResponse invalidRequestException(InvalidRequestException ex) {
         return new ErrorResponse("입력값을 확인해주세요.");
