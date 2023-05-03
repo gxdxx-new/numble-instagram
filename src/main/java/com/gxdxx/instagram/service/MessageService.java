@@ -78,11 +78,8 @@ public class MessageService {
                 : request.cursor();
         List<MessageListResponse> messages = messageRepository.getMessagesByCursor(requestUser.getId(), chatRoom.getId(), cursor, 5);
         Long nextCursor = messages.isEmpty() ? 0L : messages.get(messages.size() - 1).getMessageId();
-        Map<String, Object> response = new HashMap<>();
-        response.put("cursor", nextCursor);
-        response.put("messages", messages);
 
-        return response;
+        return Map.of("cursor", nextCursor, "messages", messages);
     }
 
 }
