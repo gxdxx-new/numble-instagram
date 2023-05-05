@@ -29,7 +29,7 @@ public class FollowService {
         User following = userRepository.findById(request.userId())
                 .orElseThrow(UserNotFoundException::new);
 
-        if (follower.getId() == following.getId()) {
+        if (follower.equals(following)) {
             throw new InvalidRequestException();
         }
 
