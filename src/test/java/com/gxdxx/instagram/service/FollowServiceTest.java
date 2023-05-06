@@ -105,11 +105,12 @@ class FollowServiceTest {
     @Test
     @DisplayName("[팔로우] - 실패 (요청자 닉네임에 해당하는 유저가 존재하지 않는 경우)")
     public void createFollow_withFollowerNotFound_shouldThrowUserNotFoundException() {
+        String nonExistingNickname = "non-existing-nickname";
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
 
-        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.empty());
+        when(userRepository.findByNickname(nonExistingNickname)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () -> followService.createFollow(request, follower.getNickname()));
+        Assertions.assertThrows(UserNotFoundException.class, () -> followService.createFollow(request, nonExistingNickname));
     }
 
     @Test
