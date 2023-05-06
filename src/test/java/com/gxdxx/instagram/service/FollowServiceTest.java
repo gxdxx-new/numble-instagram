@@ -46,7 +46,7 @@ class FollowServiceTest {
 
     @Test
     @DisplayName("[팔로우] - 성공 (soft delete되었던 팔로우)")
-    public void createFollow_withSoftDeletedFollow_shouldCreateFollow() {
+    public void createFollow_withSoftDeletedFollow_shouldSucceed() {
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
         Follow softDeletedFollow = Follow.createFollow(follower, following);
         softDeletedFollow.changeDeleted(true);
@@ -63,7 +63,7 @@ class FollowServiceTest {
 
     @Test
     @DisplayName("[팔로우] - 성공 (soft delete되었던 적 없는 팔로우)")
-    public void createFollow_withoutSoftDelete_shouldCreateFollow() {
+    public void createFollow_withoutSoftDeletedFollow_shouldSucceed() {
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
         Follow newFollow = Follow.createFollow(follower, following);
 
@@ -79,7 +79,7 @@ class FollowServiceTest {
 
     @Test
     @DisplayName("[팔로우] - 실패 (요청자와 팔로우할 유저가 같을 경우)")
-    public void createFollow_withSameUser_shouldFail() {
+    public void createFollow_withSameUser_shouldThrowInvalidRequestException() {
         FollowCreateRequest request = new FollowCreateRequest(follower.getId());
 
         when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
@@ -90,7 +90,7 @@ class FollowServiceTest {
 
     @Test
     @DisplayName("[팔로우] - 실패 (이미 존재하는 팔로우 관계일 경우)")
-    public void createFollow_withAlreadyExists_shouldFail() {
+    public void createFollow_withAlreadyExistsFollow_shouldThrowFollowAlreadyExistsException() {
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
 
         when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
@@ -102,7 +102,7 @@ class FollowServiceTest {
 
     @Test
     @DisplayName("[팔로우] - 실패 (요청자 닉네임에 해당하는 유저가 존재하지 않는 경우)")
-    public void create_Follow_withFollowerNotFound_shouldFail() {
+    public void createFollow_withFollowerNotFound_shouldThrowUserNotFoundException() {
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
 
         when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.empty());
