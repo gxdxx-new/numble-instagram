@@ -138,4 +138,14 @@ class FollowServiceTest {
         Assertions.assertThrows(FollowNotFountException.class, () -> followService.deleteFollow(following.getId(), follower.getNickname()));
     }
 
+    @Test
+    @DisplayName("[팔로우 취소] - 실패 (요청자 닉네임에 해당하는 유저가 존재하지 않는 경우)")
+    public void deleteFollow_withNonExistingUser_shouldThrowUserNotFoundException() {
+        String nonExistingNickname = "non-existing-nickname";
+
+        when(userRepository.findByNickname(nonExistingNickname)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(UserNotFoundException.class, () -> followService.deleteFollow(following.getId(), nonExistingNickname));
+    }
+
 }
