@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,6 +53,22 @@ class FollowServiceTest {
         when(followRepository.existsByFollowerAndFollowing(follower, following)).thenReturn(false);
         when(followRepository.findByFollowerAndFollowingAndDeleted(follower, following, true)).thenReturn(Optional.of(softDeletedFollow));
         when(followRepository.save(softDeletedFollow)).thenReturn(softDeletedFollow);
+
+        SuccessResponse response = followService.createFollow(request, follower.getNickname());
+        Assertions.assertEquals("200 SUCCESS", response.message());
+    }
+
+    @Test
+    @DisplayName("[팔로우] - 성공 (soft delete되었던 적 없는 팔로우)")
+    public void createFollow_withoutSoftDelete_shouldCreateFollow() {
+        FollowCreateRequest request = new FollowCreateRequest(following.getId());
+        Follow newFollow = Follow.createFollow(follower, following);
+
+        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
+        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
+        when(followRepository.existsByFollowerAndFollowing(follower, following)).thenReturn(false);
+        when(followRepository.findByFollowerAndFollowingAndDeleted(follower, following, true)).thenReturn(Optional.empty());
+        when(followRepository.save(any())).thenReturn(newFollow);
 
         SuccessResponse response = followService.createFollow(request, follower.getNickname());
         Assertions.assertEquals("200 SUCCESS", response.message());
