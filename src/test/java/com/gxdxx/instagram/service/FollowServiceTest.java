@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -108,6 +109,21 @@ class FollowServiceTest {
         when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.empty());
 
         Assertions.assertThrows(UserNotFoundException.class, () -> followService.createFollow(request, follower.getNickname()));
+    }
+
+    @Test
+    @DisplayName("[팔로우 취소] - 성공")
+    public void deleteFollow_shouldSucceed() {
+        Follow follow = Follow.createFollow(follower, following);
+
+        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
+        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
+        when(followRepository.findByFollowerAndFollowing(follower, following)).thenReturn(Optional.of(follow));
+        doNothing().when(followRepository).delete(follow);
+
+        SuccessResponse response = followService.deleteFollow(following.getId(), follower.getNickname());
+
+        Assertions.assertEquals("200 SUCCESS", response.message());
     }
 
 }
