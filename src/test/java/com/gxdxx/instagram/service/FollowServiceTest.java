@@ -5,6 +5,7 @@ import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.Follow;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.FollowAlreadyExistsException;
+import com.gxdxx.instagram.exception.FollowNotFountException;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.FollowRepository;
@@ -21,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -103,11 +105,48 @@ class FollowServiceTest {
     @Test
     @DisplayName("[팔로우] - 실패 (요청자 닉네임에 해당하는 유저가 존재하지 않는 경우)")
     public void createFollow_withFollowerNotFound_shouldThrowUserNotFoundException() {
+        String nonExistingNickname = "non-existing-nickname";
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
 
-        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.empty());
+        when(userRepository.findByNickname(nonExistingNickname)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () -> followService.createFollow(request, follower.getNickname()));
+        Assertions.assertThrows(UserNotFoundException.class, () -> followService.createFollow(request, nonExistingNickname));
+    }
+
+    @Test
+    @DisplayName("[팔로우 취소] - 성공")
+    public void deleteFollow_shouldSucceed() {
+        Follow follow = Follow.createFollow(follower, following);
+
+        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
+        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
+        when(followRepository.findByFollowerAndFollowing(follower, following)).thenReturn(Optional.of(follow));
+        doNothing().when(followRepository).delete(follow);
+
+        SuccessResponse response = followService.deleteFollow(following.getId(), follower.getNickname());
+
+        Assertions.assertEquals("200 SUCCESS", response.message());
+    }
+
+    @Test
+    @DisplayName("[팔로우 취소] - 실패 (존재하지 않는 팔로우 관계)")
+    public void deleteFollow_withNonExistingFollow_shouldThrowFollowNotFoundException() {
+        
+        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
+        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
+        when(followRepository.findByFollowerAndFollowing(follower, following)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(FollowNotFountException.class, () -> followService.deleteFollow(following.getId(), follower.getNickname()));
+    }
+
+    @Test
+    @DisplayName("[팔로우 취소] - 실패 (요청자 닉네임에 해당하는 유저가 존재하지 않는 경우)")
+    public void deleteFollow_withNonExistingUser_shouldThrowUserNotFoundException() {
+        String nonExistingNickname = "non-existing-nickname";
+
+        when(userRepository.findByNickname(nonExistingNickname)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(UserNotFoundException.class, () -> followService.deleteFollow(following.getId(), nonExistingNickname));
     }
 
 }
