@@ -4,6 +4,7 @@ import com.gxdxx.instagram.dto.request.FollowCreateRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.Follow;
 import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.exception.FollowAlreadyExistsException;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.repository.FollowRepository;
 import com.gxdxx.instagram.repository.UserRepository;
@@ -84,6 +85,18 @@ class FollowServiceTest {
         when(userRepository.findById(follower.getId())).thenReturn(Optional.of(follower));
 
         Assertions.assertThrows(InvalidRequestException.class, () -> followService.createFollow(request, follower.getNickname()));
+    }
+
+    @Test
+    @DisplayName("[팔로우] - 실패 (이미 존재하는 팔로우 관계일 경우)")
+    public void createFollow_withAlreadyExists_shouldFail() {
+        FollowCreateRequest request = new FollowCreateRequest(following.getId());
+
+        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
+        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
+        when(followRepository.existsByFollowerAndFollowing(follower, following)).thenReturn(true);
+
+        Assertions.assertThrows(FollowAlreadyExistsException.class, () -> followService.createFollow(request, follower.getNickname()));
     }
 
 }
