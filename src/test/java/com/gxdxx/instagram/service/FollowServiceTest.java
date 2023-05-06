@@ -6,6 +6,7 @@ import com.gxdxx.instagram.entity.Follow;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.FollowAlreadyExistsException;
 import com.gxdxx.instagram.exception.InvalidRequestException;
+import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.FollowRepository;
 import com.gxdxx.instagram.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -97,6 +98,16 @@ class FollowServiceTest {
         when(followRepository.existsByFollowerAndFollowing(follower, following)).thenReturn(true);
 
         Assertions.assertThrows(FollowAlreadyExistsException.class, () -> followService.createFollow(request, follower.getNickname()));
+    }
+
+    @Test
+    @DisplayName("[팔로우] - 실패 (요청자 닉네임에 해당하는 유저가 존재하지 않는 경우)")
+    public void create_Follow_withFollowerNotFound_shouldFail() {
+        FollowCreateRequest request = new FollowCreateRequest(following.getId());
+
+        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(UserNotFoundException.class, () -> followService.createFollow(request, follower.getNickname()));
     }
 
 }
