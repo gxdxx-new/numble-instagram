@@ -5,6 +5,7 @@ import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.Follow;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.FollowAlreadyExistsException;
+import com.gxdxx.instagram.exception.FollowNotFountException;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.FollowRepository;
@@ -124,6 +125,17 @@ class FollowServiceTest {
         SuccessResponse response = followService.deleteFollow(following.getId(), follower.getNickname());
 
         Assertions.assertEquals("200 SUCCESS", response.message());
+    }
+
+    @Test
+    @DisplayName("[팔로우 취소] - 실패 (존재하지 않는 팔로우 관계)")
+    public void deleteFollow_withNonExistingFollow_shouldThrowFollowNotFoundException() {
+        
+        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
+        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
+        when(followRepository.findByFollowerAndFollowing(follower, following)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(FollowNotFountException.class, () -> followService.deleteFollow(following.getId(), follower.getNickname()));
     }
 
 }
