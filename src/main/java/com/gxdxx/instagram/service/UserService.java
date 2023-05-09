@@ -64,15 +64,15 @@ public class UserService {
         return SuccessResponse.of("회원탈퇴를 성공했습니다.");
     }
 
-    public UserProfileResponse getProfile(Principal principal) {
-        User user = getUserFromPrincipal(principal);
+    public UserProfileResponse getProfile(String nickname) {
+        User user = getUserFromNickname(nickname);
         Long followerCount = followRepository.countByFollowing(user);
         Long followingCount = followRepository.countByFollower(user);
         return UserProfileResponse.of(user.getNickname(), user.getProfileImageUrl(), followerCount, followingCount);
     }
 
-    public UserProfileUpdateResponse updateProfile(UserProfileUpdateRequest request, Principal principal) {
-        User user = getUserFromPrincipal(principal);
+    public UserProfileUpdateResponse updateProfile(UserProfileUpdateRequest request, String nickname) {
+        User user = getUserFromNickname(nickname);
 
         // TODO: 파일업로드 구현하기
         String profileImageUrl = new StringBuffer()
@@ -84,8 +84,7 @@ public class UserService {
         return UserProfileUpdateResponse.of(user.getId(), user.getNickname(), user.getProfileImageUrl());
     }
 
-    private User getUserFromPrincipal(Principal principal) {
-        String nickname = principal.getName();
+    private User getUserFromNickname(String nickname) {
         return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
     }
