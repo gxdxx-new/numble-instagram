@@ -64,7 +64,7 @@ public class UserController {
             @Valid UserProfileUpdateRequest request,
             BindingResult bindingResult,
             Principal principal
-    ) {
+    ) throws IOException {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
         }
