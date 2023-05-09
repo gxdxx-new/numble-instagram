@@ -46,12 +46,9 @@ public class UserService {
             throw new NicknameAlreadyExistsException();
         });
 
-        String storedFileName = "";
-        if(!request.profileImage().isEmpty()) {
-            storedFileName = s3Uploader.upload(request.profileImage(), "images");
-        }
+        String profileImageUrl = s3Uploader.upload(request.profileImage(), "images");
 
-        User saveUser = User.of(request.nickname(), passwordEncoder.encode(request.password()), storedFileName);
+        User saveUser = User.of(request.nickname(), passwordEncoder.encode(request.password()), profileImageUrl);
         return UserSignUpResponse.of(userRepository.save(saveUser));
     }
 
