@@ -56,7 +56,7 @@ public class UserController {
     
     @GetMapping("/profile")
     public UserProfileResponse getProfile(Principal principal) {
-        return userService.getProfile(principal);
+        return userService.getProfile(principal.getName());
     }
 
     @PutMapping("/profile")
@@ -68,7 +68,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
         }
-        return userService.updateProfile(request, principal);
+        return userService.updateProfile(request, principal.getName());
     }
 
 }
