@@ -2,6 +2,7 @@ package com.gxdxx.instagram.service;
 
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
+import com.gxdxx.instagram.dto.response.UserProfileResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
@@ -141,6 +142,29 @@ class UserServiceTest {
         assertThrows(UnauthorizedAccessException.class, () -> userService.deleteUser(userId, nickname));
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, never()).delete(any());
+    }
+
+    @Test
+    @DisplayName("[프로필 조회] - 성공")
+    void getProfile_shouldSucceed() {
+        User user = createUser();
+        Long followerCount = 10L;
+        Long followingCount = 15L;
+
+        when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.of(user));
+        when(followRepository.countByFollowing(user)).thenReturn(followerCount);
+        when(followRepository.countByFollower(user)).thenReturn(followingCount);
+
+        UserProfileResponse response = userService.getProfile(user.getNickname());
+
+        assertEquals(user.getNickname(), response.nickname());
+        assertEquals(user.getProfileImageUrl(), response.profileImageUrl());
+        assertEquals(followingCount, response.following());
+        assertEquals(followerCount, response.follower());
+    }
+
+    private User createUser() {
+        return User.of("nickname", "encodedPassword", "profileImageUrl");
     }
 
 }
