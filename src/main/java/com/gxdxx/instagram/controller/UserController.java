@@ -31,7 +31,7 @@ public class UserController {
             @Valid UserSignUpRequest request,
             BindingResult bindingResult
     ) throws IOException {
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() || request.profileImage().isEmpty()) {
             throw new InvalidRequestException();
         }
         return userService.saveUser(request);
@@ -64,8 +64,8 @@ public class UserController {
             @Valid UserProfileUpdateRequest request,
             BindingResult bindingResult,
             Principal principal
-    ) {
-        if (bindingResult.hasErrors()) {
+    ) throws IOException {
+        if (bindingResult.hasErrors() || request.profileImage().isEmpty()) {
             throw new InvalidRequestException();
         }
         return userService.updateProfile(request, principal.getName());

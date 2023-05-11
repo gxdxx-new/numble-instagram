@@ -46,12 +46,9 @@ public class UserService {
             throw new NicknameAlreadyExistsException();
         });
 
-        String storedFileName = "";
-        if(!request.profileImage().isEmpty()) {
-            storedFileName = s3Uploader.upload(request.profileImage(), "images");
-        }
+        String profileImageUrl = s3Uploader.upload(request.profileImage(), "images");
 
-        User saveUser = User.of(request.nickname(), passwordEncoder.encode(request.password()), storedFileName);
+        User saveUser = User.of(request.nickname(), passwordEncoder.encode(request.password()), profileImageUrl);
         return UserSignUpResponse.of(userRepository.save(saveUser));
     }
 
@@ -71,14 +68,10 @@ public class UserService {
         return UserProfileResponse.of(user.getNickname(), user.getProfileImageUrl(), followerCount, followingCount);
     }
 
-    public UserProfileUpdateResponse updateProfile(UserProfileUpdateRequest request, String nickname) {
+    public UserProfileUpdateResponse updateProfile(UserProfileUpdateRequest request, String nickname) throws IOException {
         User user = getUserFromNickname(nickname);
 
-        // TODO: 파일업로드 구현하기
-        String profileImageUrl = new StringBuffer()
-                .append("http://example.com/images/.jpg")
-                .insert(26, request.nickname())
-                .toString();
+        String profileImageUrl =  s3Uploader.upload(request.profileImage(), "images");
 
         user.updateProfile(request.nickname(), profileImageUrl);
         return UserProfileUpdateResponse.of(user.getId(), user.getNickname(), user.getProfileImageUrl());

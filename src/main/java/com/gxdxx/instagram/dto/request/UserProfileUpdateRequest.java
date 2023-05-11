@@ -7,6 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public record UserProfileUpdateRequest(
         @JsonProperty("nickname") @NotBlank String nickname,
-        @JsonProperty("profile_image") @NotNull MultipartFile profileImage
+        @JsonProperty("profile_image") MultipartFile profileImage
 ) {
 }

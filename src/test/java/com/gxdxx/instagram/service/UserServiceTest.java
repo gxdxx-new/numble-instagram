@@ -1,8 +1,10 @@
 package com.gxdxx.instagram.service;
 
+import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserProfileResponse;
+import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.FollowNotFountException;
@@ -175,8 +177,40 @@ class UserServiceTest {
         Assertions.assertThrows(UserNotFoundException.class, () -> userService.getProfile(user.getNickname()));
     }
 
+    @Test
+    @DisplayName("[프로필 수정] - 성공")
+    void updateProfile_shouldSucceed() throws IOException {
+        User user = createUser();
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest();
+        String updateProfileImageUrl = "updateProfileImageUrl";
+        when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.of(user));
+        when(s3Uploader.upload(any(), anyString())).thenReturn(updateProfileImageUrl);
+
+        UserProfileUpdateResponse response = userService.updateProfile(request, user.getNickname());
+
+        assertEquals(request.nickname(), response.nickname());
+        assertEquals(updateProfileImageUrl, response.profileImageUrl());
+    }
+
+    @Test
+    @DisplayName("[프로필 수정] - 실패 (존재하지 않는 유저)")
+    void updateProfile_withNonExistingUser_shouldThrowUserNotFoundException() {
+        User user = createUser();
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest();
+        when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.updateProfile(request, user.getNickname()));
+    }
+
     private User createUser() {
         return User.of("nickname", "encodedPassword", "profileImageUrl");
     }
+
+    private UserProfileUpdateRequest createUserProfileUpdateRequest() {
+        MockMultipartFile mockFile = getMockMultipartFile();
+        String updateNickname = "updateNickname";
+        return new UserProfileUpdateRequest(updateNickname, mockFile);
+    }
+
 
 }

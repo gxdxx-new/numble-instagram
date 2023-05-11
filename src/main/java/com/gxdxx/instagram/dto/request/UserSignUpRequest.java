@@ -8,6 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 public record UserSignUpRequest(
         @NotBlank String nickname,
         @NotBlank String password,
-        @RequestPart(value = "profile_image") @NotNull MultipartFile profileImage
+        @RequestPart(value = "profile_image") MultipartFile profileImage
 ) {
 }
