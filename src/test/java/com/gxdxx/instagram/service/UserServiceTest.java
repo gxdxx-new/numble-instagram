@@ -1,8 +1,10 @@
 package com.gxdxx.instagram.service;
 
+import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.dto.response.UserProfileResponse;
+import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.FollowNotFountException;
@@ -173,6 +175,23 @@ class UserServiceTest {
         when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.empty());
 
         Assertions.assertThrows(UserNotFoundException.class, () -> userService.getProfile(user.getNickname()));
+    }
+
+    @Test
+    @DisplayName("[프로필 수정] - 성공")
+    void updateProfile_shouldSucceed() throws IOException {
+        User user = createUser();
+        MockMultipartFile mockFile = getMockMultipartFile();
+        String updateNickname = "updateNickname";
+        String updateProfileImageUrl = "updateProfileImageUrl";
+        UserProfileUpdateRequest request = new UserProfileUpdateRequest(updateNickname, mockFile);
+        when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.of(user));
+        when(s3Uploader.upload(any(), anyString())).thenReturn(updateProfileImageUrl);
+
+        UserProfileUpdateResponse response = userService.updateProfile(request, user.getNickname());
+
+        assertEquals(updateNickname, response.nickname());
+        assertEquals(updateProfileImageUrl, response.profileImageUrl());
     }
 
     private User createUser() {
