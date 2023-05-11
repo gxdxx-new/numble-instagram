@@ -181,21 +181,36 @@ class UserServiceTest {
     @DisplayName("[프로필 수정] - 성공")
     void updateProfile_shouldSucceed() throws IOException {
         User user = createUser();
-        MockMultipartFile mockFile = getMockMultipartFile();
-        String updateNickname = "updateNickname";
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest();
         String updateProfileImageUrl = "updateProfileImageUrl";
-        UserProfileUpdateRequest request = new UserProfileUpdateRequest(updateNickname, mockFile);
         when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.of(user));
         when(s3Uploader.upload(any(), anyString())).thenReturn(updateProfileImageUrl);
 
         UserProfileUpdateResponse response = userService.updateProfile(request, user.getNickname());
 
-        assertEquals(updateNickname, response.nickname());
+        assertEquals(request.nickname(), response.nickname());
         assertEquals(updateProfileImageUrl, response.profileImageUrl());
+    }
+
+    @Test
+    @DisplayName("[프로필 수정] - 실패 (존재하지 않는 유저)")
+    void updateProfile_withNonExistingUser_shouldThrowUserNotFoundException() {
+        User user = createUser();
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest();
+        when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.updateProfile(request, user.getNickname()));
     }
 
     private User createUser() {
         return User.of("nickname", "encodedPassword", "profileImageUrl");
     }
+
+    private UserProfileUpdateRequest createUserProfileUpdateRequest() {
+        MockMultipartFile mockFile = getMockMultipartFile();
+        String updateNickname = "updateNickname";
+        return new UserProfileUpdateRequest(updateNickname, mockFile);
+    }
+
 
 }
