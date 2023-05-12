@@ -4,8 +4,10 @@ import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.response.PostRegisterResponse;
 import com.gxdxx.instagram.entity.Post;
 import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.PostRepository;
 import com.gxdxx.instagram.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,6 +53,16 @@ public class PostServiceTest {
 
         assertEquals(request.content(), response.content());
         assertEquals(imageUrl, response.imageUrl());
+    }
+
+    @Test
+    @DisplayName("[게시물 등록] - 실패 (존재하지 않는 유저)")
+    void registerPost_withNonExistingUser_shouldThrowUserNotFoundException() {
+        PostRegisterRequest request = createPostRegisterRequest();
+        User user = createUser();
+        when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(UserNotFoundException.class, () -> postService.registerPost(request, user.getNickname()));
     }
 
     private User createUser() {
