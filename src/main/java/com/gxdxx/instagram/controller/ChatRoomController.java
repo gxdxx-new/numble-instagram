@@ -27,10 +27,14 @@ public class ChatRoomController {
             BindingResult bindingResult,
             Principal principal
     ) {
+        validateRequest(bindingResult);
+        return chatRoomService.getChatRooms(request, principal.getName());
+    }
+
+    private void validateRequest(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
         }
-        return chatRoomService.getChatRooms(request, principal.getName());
     }
 
 }

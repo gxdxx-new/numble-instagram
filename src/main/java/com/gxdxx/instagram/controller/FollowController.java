@@ -24,17 +24,19 @@ public class FollowController {
             BindingResult bindingResult,
             Principal principal
     ) {
-
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
-
+        validateRequest(bindingResult);
         return followService.createFollow(request, principal.getName());
     }
 
     @DeleteMapping("/{id}")
     public SuccessResponse deleteFollow(@PathVariable("id") Long id, Principal principal) {
         return followService.deleteFollow(id, principal.getName());
+    }
+
+    private void validateRequest(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
     }
 
 }

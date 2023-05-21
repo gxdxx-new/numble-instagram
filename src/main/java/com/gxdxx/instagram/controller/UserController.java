@@ -31,7 +31,8 @@ public class UserController {
             @Valid UserSignUpRequest request,
             BindingResult bindingResult
     ) throws IOException {
-        if (bindingResult.hasErrors() || request.profileImage().isEmpty()) {
+        validateRequest(bindingResult);
+        if (request.profileImage().isEmpty()) {
             throw new InvalidRequestException();
         }
         return userService.saveUser(request);
@@ -48,9 +49,7 @@ public class UserController {
             BindingResult bindingResult,
             HttpServletResponse response
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
+        validateRequest(bindingResult);
         return userService.login(request, response);
     }
     
@@ -65,10 +64,17 @@ public class UserController {
             BindingResult bindingResult,
             Principal principal
     ) throws IOException {
-        if (bindingResult.hasErrors() || request.profileImage().isEmpty()) {
+        validateRequest(bindingResult);
+        if (request.profileImage().isEmpty()) {
             throw new InvalidRequestException();
         }
         return userService.updateProfile(request, principal.getName());
+    }
+
+    private void validateRequest(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
     }
 
 }

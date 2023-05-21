@@ -27,9 +27,7 @@ public class ReplyController {
             BindingResult bindingResult,
             Principal principal
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
+        validateRequest(bindingResult);
         return replyService.registerReply(request, principal.getName());
     }
 
@@ -39,9 +37,7 @@ public class ReplyController {
             BindingResult bindingResult,
             Principal principal
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
+        validateRequest(bindingResult);
         return replyService.updateReply(request, principal.getName());
     }
 
@@ -51,6 +47,12 @@ public class ReplyController {
             Principal principal
     ) {
         return replyService.deleteReply(id, principal.getName());
+    }
+
+    private void validateRequest(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
     }
 
 }
