@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -32,9 +33,7 @@ public class UserController {
             BindingResult bindingResult
     ) throws IOException {
         validateRequest(bindingResult);
-        if (request.profileImage().isEmpty()) {
-            throw new InvalidRequestException();
-        }
+        validateProfileImage(request.profileImage());
         return userService.saveUser(request);
     }
 
@@ -65,14 +64,18 @@ public class UserController {
             Principal principal
     ) throws IOException {
         validateRequest(bindingResult);
-        if (request.profileImage().isEmpty()) {
-            throw new InvalidRequestException();
-        }
+        validateProfileImage(request.profileImage());
         return userService.updateProfile(request, principal.getName());
     }
 
     private void validateRequest(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
+    }
+
+    private void validateProfileImage(MultipartFile profileImage) {
+        if (profileImage.isEmpty()) {
             throw new InvalidRequestException();
         }
     }
