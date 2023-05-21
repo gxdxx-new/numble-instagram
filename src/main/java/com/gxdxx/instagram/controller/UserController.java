@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -31,9 +32,8 @@ public class UserController {
             @Valid UserSignUpRequest request,
             BindingResult bindingResult
     ) throws IOException {
-        if (bindingResult.hasErrors() || request.profileImage().isEmpty()) {
-            throw new InvalidRequestException();
-        }
+        validateRequest(bindingResult);
+        validateProfileImage(request.profileImage());
         return userService.saveUser(request);
     }
 
@@ -48,9 +48,7 @@ public class UserController {
             BindingResult bindingResult,
             HttpServletResponse response
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
+        validateRequest(bindingResult);
         return userService.login(request, response);
     }
     
@@ -65,10 +63,21 @@ public class UserController {
             BindingResult bindingResult,
             Principal principal
     ) throws IOException {
-        if (bindingResult.hasErrors() || request.profileImage().isEmpty()) {
+        validateRequest(bindingResult);
+        validateProfileImage(request.profileImage());
+        return userService.updateProfile(request, principal.getName());
+    }
+
+    private void validateRequest(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
         }
-        return userService.updateProfile(request, principal.getName());
+    }
+
+    private void validateProfileImage(MultipartFile profileImage) {
+        if (profileImage.isEmpty()) {
+            throw new InvalidRequestException();
+        }
     }
 
 }

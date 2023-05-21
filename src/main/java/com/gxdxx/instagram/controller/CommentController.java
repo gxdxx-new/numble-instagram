@@ -28,9 +28,7 @@ public class CommentController {
             BindingResult bindingResult,
             Principal principal
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
+        validateRequest(bindingResult);
         return commentService.registerComment(request, principal.getName());
     }
 
@@ -40,9 +38,7 @@ public class CommentController {
             BindingResult bindingResult,
             Principal principal
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
+        validateRequest(bindingResult);
         return commentService.updateComment(request, principal.getName());
     }
 
@@ -52,6 +48,12 @@ public class CommentController {
             Principal principal
     ) {
         return commentService.deleteComment(id, principal.getName());
+    }
+
+    private void validateRequest(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
     }
 
 }

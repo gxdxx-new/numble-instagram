@@ -30,9 +30,7 @@ public class PostController {
             BindingResult bindingResult,
             Principal principal
     ) throws IOException {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
+        validateRequest(bindingResult);
         return postService.registerPost(request, principal.getName());
     }
 
@@ -42,9 +40,7 @@ public class PostController {
             BindingResult bindingResult,
             Principal principal
     ) throws IOException {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
+        validateRequest(bindingResult);
         return postService.updatePost(request, principal.getName());
     }
 
@@ -62,12 +58,14 @@ public class PostController {
             BindingResult bindingResult,
             Principal principal
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
-
+        validateRequest(bindingResult);
         return postService.getFeed(request, principal.getName());
     }
 
+    private void validateRequest(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
+    }
 
 }

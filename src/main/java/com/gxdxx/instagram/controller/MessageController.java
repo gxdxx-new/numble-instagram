@@ -26,11 +26,7 @@ public class MessageController {
             BindingResult bindingResult,
             Principal principal
     ) {
-
-        if (bindingResult.hasErrors()) {
-            throw new InvalidRequestException();
-        }
-
+        validateRequest(bindingResult);
         return messageService.sendMessage(request, principal.getName());
     }
 
@@ -40,12 +36,14 @@ public class MessageController {
             BindingResult bindingResult,
             Principal principal
     ) {
+        validateRequest(bindingResult);
+        return messageService.getMessages(request, principal.getName());
+    }
 
+    private void validateRequest(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException();
         }
-
-        return messageService.getMessages(request, principal.getName());
     }
 
 }
