@@ -63,4 +63,9 @@ public class RestControllerExceptionAdvice {
         return new ErrorResponse("입력값을 확인해주세요.");
     }
 
+    @ExceptionHandler(FileProcessingException.class)
+    public ErrorResponse fileProcessingException(FileProcessingException ex) {
+        return new ErrorResponse("파일 업로드 중 문제가 발생했습니다.");
+    }
+
 }
