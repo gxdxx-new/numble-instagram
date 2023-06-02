@@ -9,6 +9,7 @@ import com.gxdxx.instagram.dto.response.PostUpdateResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.Post;
 import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.exception.FileProcessingException;
 import com.gxdxx.instagram.exception.PostNotFoundException;
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
@@ -32,7 +33,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final S3Uploader s3Uploader;
 
-    public PostRegisterResponse registerPost(PostRegisterRequest request, String requestingUserNickname) throws IOException {
+    public PostRegisterResponse registerPost(PostRegisterRequest request, String requestingUserNickname) {
         User registeringUser = userRepository.findByNickname(requestingUserNickname)
                 .orElseThrow(UserNotFoundException::new);
         String imageUrl = s3Uploader.upload(request.image(), "images");
@@ -40,7 +41,7 @@ public class PostService {
         return PostRegisterResponse.of(postRepository.save(registeringPost));
     }
 
-    public PostUpdateResponse updatePost(PostUpdateRequest request, String requestingUserNickname) throws IOException {
+    public PostUpdateResponse updatePost(PostUpdateRequest request, String requestingUserNickname) {
         Post updatingPost = postRepository.findById(request.id())
                 .orElseThrow(PostNotFoundException::new);
         if (!updatingPost.getUser().getNickname().equals(requestingUserNickname)) {

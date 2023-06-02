@@ -53,7 +53,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("유효한 요청이 오면 회원가입에 성공한다.")
-    void saveUser_withValidRequest_shouldSaveUser() throws IOException {
+    void saveUser_withValidRequest_shouldSaveUser() {
         // given
         String nickname = "nickname";
         String password = "password";
@@ -179,7 +179,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("[프로필 수정] - 성공")
-    void updateProfile_shouldSucceed() throws IOException {
+    void updateProfile_shouldSucceed() {
         User user = createUser();
         UserProfileUpdateRequest request = createUserProfileUpdateRequest();
         String updateProfileImageUrl = "updateProfileImageUrl";

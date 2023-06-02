@@ -29,7 +29,7 @@ public class PostController {
             @Valid PostRegisterRequest request,
             BindingResult bindingResult,
             Principal principal
-    ) throws IOException {
+    ) {
         validateRequest(bindingResult);
         return postService.registerPost(request, principal.getName());
     }
@@ -39,7 +39,7 @@ public class PostController {
             @Valid PostUpdateRequest request,
             BindingResult bindingResult,
             Principal principal
-    ) throws IOException {
+    ) {
         validateRequest(bindingResult);
         return postService.updatePost(request, principal.getName());
     }
