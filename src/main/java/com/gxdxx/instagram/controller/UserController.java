@@ -31,7 +31,7 @@ public class UserController {
     public UserSignUpResponse registerUser(
             @Valid UserSignUpRequest request,
             BindingResult bindingResult
-    ) throws IOException {
+    ) {
         validateRequest(bindingResult);
         validateProfileImage(request.profileImage());
         return userService.saveUser(request);
@@ -62,7 +62,7 @@ public class UserController {
             @Valid UserProfileUpdateRequest request,
             BindingResult bindingResult,
             Principal principal
-    ) throws IOException {
+    ) {
         validateRequest(bindingResult);
         validateProfileImage(request.profileImage());
         return userService.updateProfile(request, principal.getName());

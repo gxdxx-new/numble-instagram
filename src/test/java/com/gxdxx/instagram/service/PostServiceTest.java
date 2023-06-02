@@ -41,7 +41,7 @@ public class PostServiceTest {
 
     @Test
     @DisplayName("[게시물 등록] - 성공")
-    void registerPost_withValidRequest_shouldSucceed() throws IOException {
+    void registerPost_withValidRequest_shouldSucceed() {
         PostRegisterRequest request = createPostRegisterRequest();
         User user = createUser();
         String imageUrl = "imageUrl";

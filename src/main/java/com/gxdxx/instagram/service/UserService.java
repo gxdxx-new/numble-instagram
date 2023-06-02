@@ -41,7 +41,7 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
-    public UserSignUpResponse saveUser(UserSignUpRequest request) throws IOException {
+    public UserSignUpResponse saveUser(UserSignUpRequest request) {
         userRepository.findByNickname(request.nickname()).ifPresent(user -> {
             throw new NicknameAlreadyExistsException();
         });
@@ -68,7 +68,7 @@ public class UserService {
         return UserProfileResponse.of(user.getNickname(), user.getProfileImageUrl(), followerCount, followingCount);
     }
 
-    public UserProfileUpdateResponse updateProfile(UserProfileUpdateRequest request, String nickname) throws IOException {
+    public UserProfileUpdateResponse updateProfile(UserProfileUpdateRequest request, String nickname) {
         User user = getUserFromNickname(nickname);
 
         String profileImageUrl =  s3Uploader.upload(request.profileImage(), "images");
