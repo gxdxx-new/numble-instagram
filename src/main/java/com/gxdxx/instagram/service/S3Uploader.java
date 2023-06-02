@@ -3,6 +3,7 @@ package com.gxdxx.instagram.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.gxdxx.instagram.exception.FileProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,9 +25,9 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
+    public String upload(MultipartFile multipartFile, String dirName) {
         File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
+                .orElseThrow(() -> new FileProcessingException());
         String uploadImageUrl = putS3(uploadFile, dirName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
@@ -57,11 +58,15 @@ public class S3Uploader {
         }
     }
 
-    private Optional<File> convert(MultipartFile file) throws IOException {
+    private Optional<File> convert(MultipartFile file) {
         File convertFile = new File(file.getOriginalFilename());
-        if (convertFile.createNewFile()) {
-            file.transferTo(convertFile);
-            return Optional.of(convertFile);
+        try {
+            if (convertFile.createNewFile()) {
+                file.transferTo(convertFile);
+                return Optional.of(convertFile);
+            }
+        } catch (IOException e) {
+            throw new FileProcessingException();
         }
         return Optional.empty();
     }
