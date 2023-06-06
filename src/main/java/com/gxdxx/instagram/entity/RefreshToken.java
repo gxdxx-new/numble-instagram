@@ -1,10 +1,8 @@
 package com.gxdxx.instagram.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +18,9 @@ public class RefreshToken {
     @NotBlank
     private String refreshToken;
 
+    @Size(min = 2, max = 20)
     @NotBlank
+    @Column(nullable = false, length = 20)
     private String nickname;
 
     private RefreshToken(String token, String nickname) {
