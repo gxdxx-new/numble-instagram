@@ -2,6 +2,7 @@ package com.gxdxx.instagram.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,9 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 2, max = 100)
     @NotBlank
+    @Column(nullable = false, length = 100)
     private String content;
 
     private boolean deleted = Boolean.FALSE;
