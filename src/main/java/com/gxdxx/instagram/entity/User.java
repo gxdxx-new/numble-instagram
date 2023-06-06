@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,13 +24,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 2, max = 20)
     @NotBlank
     @Column(nullable = false, length = 20)
     private String nickname;
 
     @NotBlank
+    @Column(nullable = false)
     private String password;
 
+    @NotBlank
+    @Column(nullable = false)
     private String profileImageUrl;
 
     private boolean deleted = Boolean.FALSE;

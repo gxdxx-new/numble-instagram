@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -31,6 +32,7 @@ public class PostController {
             Principal principal
     ) {
         validateRequest(bindingResult);
+        validatePostImage(request.image());
         return postService.registerPost(request, principal.getName());
     }
 
@@ -41,6 +43,7 @@ public class PostController {
             Principal principal
     ) {
         validateRequest(bindingResult);
+        validatePostImage(request.image());
         return postService.updatePost(request, principal.getName());
     }
 
@@ -64,6 +67,12 @@ public class PostController {
 
     private void validateRequest(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException();
+        }
+    }
+
+    private void validatePostImage(MultipartFile postImage) {
+        if (postImage.isEmpty()) {
             throw new InvalidRequestException();
         }
     }

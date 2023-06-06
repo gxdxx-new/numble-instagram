@@ -2,6 +2,7 @@ package com.gxdxx.instagram.entity;
 
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,12 +25,14 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_a_id")
+    @JoinColumn(name = "user_a_id", nullable = false)
     private User userA;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_b_id")
+    @JoinColumn(name = "user_b_id", nullable = false)
     private User userB;
 
     private String lastMessage;

@@ -2,6 +2,8 @@ package com.gxdxx.instagram.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,15 +25,20 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 2, max = 100)
     @NotBlank
+    @Column(nullable = false, length = 100)
     private String content;
 
+    @NotBlank
+    @Column(nullable = false)
     private String imageUrl;
 
     private boolean deleted = Boolean.FALSE;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private Post(String content, String imageUrl, User user) {
