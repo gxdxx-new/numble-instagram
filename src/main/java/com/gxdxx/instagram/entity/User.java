@@ -1,10 +1,7 @@
 package com.gxdxx.instagram.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,15 +25,15 @@ public class User {
     private Long id;
 
     @Size(min = 2, max = 20)
-    @NotNull
+    @NotBlank
     @Column(nullable = false, length = 20)
     private String nickname;
 
-    @NotNull
+    @NotBlank
     @Column(nullable = false)
     private String password;
 
-    @NotNull
+    @NotBlank
     @Column(nullable = false)
     private String profileImageUrl;
 
