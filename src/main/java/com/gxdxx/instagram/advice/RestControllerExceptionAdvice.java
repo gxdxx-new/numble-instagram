@@ -2,6 +2,7 @@ package com.gxdxx.instagram.advice;
 
 import com.gxdxx.instagram.dto.response.ErrorResponse;
 import com.gxdxx.instagram.exception.*;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -66,6 +67,11 @@ public class RestControllerExceptionAdvice {
     @ExceptionHandler(FileProcessingException.class)
     public ErrorResponse fileProcessingException(FileProcessingException ex) {
         return new ErrorResponse("파일 업로드 중 문제가 발생했습니다.");
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ErrorResponse constraintViolationException(ConstraintViolationException ex) {
+        return new ErrorResponse("문제가 발생했습니다. 관리자에게 문의해주세요.");
     }
 
 }
