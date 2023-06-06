@@ -36,8 +36,9 @@ public class Post {
 
     private boolean deleted = Boolean.FALSE;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private Post(String content, String imageUrl, User user) {
