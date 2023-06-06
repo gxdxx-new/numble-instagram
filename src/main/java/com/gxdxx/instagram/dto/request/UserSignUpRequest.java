@@ -1,13 +1,22 @@
 package com.gxdxx.instagram.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 public record UserSignUpRequest(
-        @NotBlank String nickname,
-        @NotBlank String password,
-        @RequestPart(value = "profile_image") MultipartFile profileImage
+
+        @Size(min = 2, max = 20)
+        @NotBlank
+        String nickname,
+
+        @Size(min = 4, max = 15)
+        @NotBlank
+        String password,
+
+        @RequestPart(value = "profile_image")
+        MultipartFile profileImage
+
 ) {
 }
