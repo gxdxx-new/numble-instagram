@@ -44,11 +44,13 @@ public class MessageService {
         return SuccessResponse.of("200 SUCCESS");
     }
 
+    @Transactional(readOnly = true)
     private User getUserByNickname(String nickname) {
         return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
     }
 
+    @Transactional(readOnly = true)
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
@@ -65,6 +67,7 @@ public class MessageService {
                 .orElseGet(() -> chatRoomRepository.save(ChatRoom.of(sendUser, receiveUser)));
     }
 
+    @Transactional(readOnly = true)
     public Map<String, Object> getMessages(MessageListRequest request, String nickname) {
         User requestUser = getUserByNickname(nickname);
         ChatRoom chatRoom = chatRoomRepository.findById(request.chatRoomId())

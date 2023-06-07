@@ -22,6 +22,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public Map<String, Object> getChatRooms(ChatRoomListRequest request, String nickname) {
         User user = userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);

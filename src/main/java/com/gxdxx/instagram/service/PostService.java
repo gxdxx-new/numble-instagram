@@ -60,6 +60,7 @@ public class PostService {
         return SuccessResponse.of("200 SUCCESS");
     }
 
+    @Transactional(readOnly = true)
     public Map<String, Object> getFeed(PostFeedRequest request, String requestingUserNickname) {
         User user = userRepository.findByNickname(requestingUserNickname)
                 .orElseThrow(UserNotFoundException::new);

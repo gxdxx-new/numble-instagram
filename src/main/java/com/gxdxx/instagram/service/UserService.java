@@ -59,6 +59,7 @@ public class UserService {
         return SuccessResponse.of("회원탈퇴를 성공했습니다.");
     }
 
+    @Transactional(readOnly = true)
     public UserProfileResponse getProfile(String nickname) {
         User user = getUserFromNickname(nickname);
         Long followerCount = followRepository.countByFollowing(user);
@@ -75,6 +76,7 @@ public class UserService {
         return UserProfileUpdateResponse.of(user.getId(), user.getNickname(), user.getProfileImageUrl());
     }
 
+    @Transactional(readOnly = true)
     private User getUserFromNickname(String nickname) {
         return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
