@@ -9,17 +9,15 @@ import com.gxdxx.instagram.dto.response.PostUpdateResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.Post;
 import com.gxdxx.instagram.entity.User;
-import com.gxdxx.instagram.exception.FileProcessingException;
 import com.gxdxx.instagram.exception.PostNotFoundException;
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.PostRepository;
 import com.gxdxx.instagram.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

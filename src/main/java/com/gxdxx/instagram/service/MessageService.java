@@ -2,7 +2,6 @@ package com.gxdxx.instagram.service;
 
 import com.gxdxx.instagram.dto.request.MessageListRequest;
 import com.gxdxx.instagram.dto.request.MessageSendRequest;
-import com.gxdxx.instagram.dto.response.ChatRoomListResponse;
 import com.gxdxx.instagram.dto.response.MessageListResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.ChatRoom;
@@ -15,9 +14,9 @@ import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.ChatRoomRepository;
 import com.gxdxx.instagram.repository.MessageRepository;
 import com.gxdxx.instagram.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

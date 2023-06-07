@@ -19,14 +19,12 @@ import com.gxdxx.instagram.repository.FollowRepository;
 import com.gxdxx.instagram.repository.RefreshTokenRepository;
 import com.gxdxx.instagram.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.security.Principal;
 import java.util.Optional;
 
 @RequiredArgsConstructor
