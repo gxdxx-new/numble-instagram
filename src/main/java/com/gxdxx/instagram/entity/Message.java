@@ -20,7 +20,7 @@ import java.util.Objects;
 @SQLDelete(sql = "UPDATE message SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @Entity
-public class Message {
+public class Message extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

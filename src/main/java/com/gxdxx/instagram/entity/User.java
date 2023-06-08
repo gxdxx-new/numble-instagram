@@ -18,7 +18,7 @@ import java.util.Objects;
 @Where(clause = "deleted = false")
 @Table(name = "users")
 @Entity
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

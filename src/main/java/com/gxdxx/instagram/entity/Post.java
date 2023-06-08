@@ -19,7 +19,7 @@ import java.util.Objects;
 @SQLDelete(sql = "UPDATE post SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @Entity
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

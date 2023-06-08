@@ -19,7 +19,7 @@ import java.util.Objects;
 @SQLDelete(sql = "UPDATE chat_room SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @Entity
-public class ChatRoom {
+public class ChatRoom extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
