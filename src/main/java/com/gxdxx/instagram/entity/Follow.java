@@ -17,7 +17,7 @@ import java.util.Objects;
 @SQLDelete(sql = "UPDATE follow SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @Entity
-public class Follow {
+public class Follow extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
