@@ -44,13 +44,11 @@ public class MessageService {
         return SuccessResponse.of("200 SUCCESS");
     }
 
-    @Transactional(readOnly = true)
     private User getUserByNickname(String nickname) {
         return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    @Transactional(readOnly = true)
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
