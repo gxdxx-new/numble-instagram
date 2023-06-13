@@ -3,23 +3,29 @@ package com.gxdxx.instagram.controller;
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
-import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.dto.response.UserProfileResponse;
-import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
-import com.gxdxx.instagram.dto.response.UserSignUpResponse;
+import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.security.Principal;
 
+@Tag(name = "users", description = "회원 API")
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 @RestController
@@ -27,7 +33,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/signup")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "회원가입 성공",
+                    content = @Content(schema = @Schema(implementation = UserSignUpResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "회원가입 메소드", description = "회원가입 메소드입니다.")
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public UserSignUpResponse registerUser(
             @Valid UserSignUpRequest request,
             BindingResult bindingResult
@@ -37,12 +50,29 @@ public class UserController {
         return userService.saveUser(request);
     }
 
-    @DeleteMapping("/{id}")
-    public SuccessResponse deleteUser(@PathVariable("id") Long id, Principal principal) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "회원탈퇴 성공",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "회원탈퇴 메소드", description = "회원탈퇴 메소드입니다.")
+    @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public SuccessResponse deleteUser(
+            @Parameter(name = "id", description = "회원의 id", in = ParameterIn.PATH) @PathVariable("id") Long id,
+            Principal principal
+    ) {
         return userService.deleteUser(id, principal.getName());
     }
 
-    @PostMapping("/login")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "로그인 성공",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "로그인 메소드", description = "로그인 메소드입니다. 토큰이 발급됩니다.")
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public SuccessResponse login(
             @RequestBody @Valid UserLoginRequest request,
             BindingResult bindingResult,
@@ -51,13 +81,27 @@ public class UserController {
         validateRequest(bindingResult);
         return userService.login(request, response);
     }
-    
-    @GetMapping("/profile")
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "프로필 조회 성공",
+                    content = @Content(schema = @Schema(implementation = UserProfileResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "프로필 조회 메소드", description = "프로필 조회 메소드입니다.")
+    @GetMapping(value = "/profile", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public UserProfileResponse getProfile(Principal principal) {
         return userService.getProfile(principal.getName());
     }
 
-    @PutMapping("/profile")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "프로필 수정 성공",
+                    content = @Content(schema = @Schema(implementation = UserProfileResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "프로필 수정 메소드", description = "프로필 수정 메소드입니다.")
+    @PutMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public UserProfileUpdateResponse updateProfile(
             @Valid UserProfileUpdateRequest request,
             BindingResult bindingResult,
