@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 public record PostUpdateRequest(
 
         @Schema(description = "게시글 id")
+        @NotNull
         Long id,
 
         @Schema(description = "게시글 내용")
