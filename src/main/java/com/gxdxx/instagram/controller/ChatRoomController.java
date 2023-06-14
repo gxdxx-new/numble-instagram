@@ -1,6 +1,7 @@
 package com.gxdxx.instagram.controller;
 
 import com.gxdxx.instagram.dto.request.ChatRoomListRequest;
+import com.gxdxx.instagram.dto.response.ChatRoomResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.service.ChatRoomService;
 import jakarta.validation.Valid;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/chat-rooms")
@@ -22,7 +22,7 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     @GetMapping
-    public Map<String, Object> getChatRooms(
+    public ChatRoomResponse getChatRooms(
             @RequestBody @Valid ChatRoomListRequest request,
             BindingResult bindingResult,
             Principal principal
