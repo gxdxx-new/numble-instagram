@@ -1,9 +1,18 @@
 package com.gxdxx.instagram.dto.response;
 
-public record ErrorResponse(String message) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-    public static ErrorResponse of(String message) {
-        return new ErrorResponse(message);
+public record ErrorResponse(
+
+        @Schema(description = "에러 메시지")
+        @JsonProperty("error_message")
+        String errorMessage
+
+) {
+
+    public static ErrorResponse of(String errorMessage) {
+        return new ErrorResponse(errorMessage);
     }
 
 }

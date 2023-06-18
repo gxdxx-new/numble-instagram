@@ -3,10 +3,7 @@ package com.gxdxx.instagram.service;
 import com.gxdxx.instagram.dto.request.PostFeedRequest;
 import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.request.PostUpdateRequest;
-import com.gxdxx.instagram.dto.response.PostFeedResponse;
-import com.gxdxx.instagram.dto.response.PostRegisterResponse;
-import com.gxdxx.instagram.dto.response.PostUpdateResponse;
-import com.gxdxx.instagram.dto.response.SuccessResponse;
+import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.entity.Post;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.PostNotFoundException;
@@ -61,7 +58,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> getFeed(PostFeedRequest request, String requestingUserNickname) {
+    public FeedResponse getFeed(PostFeedRequest request, String requestingUserNickname) {
         User user = userRepository.findByNickname(requestingUserNickname)
                 .orElseThrow(UserNotFoundException::new);
         Long cursor = (request.cursor() == null)
@@ -69,11 +66,8 @@ public class PostService {
                 : request.cursor();
         List<PostFeedResponse> feeds = postRepository.getPostsByCursor(user.getId(), cursor, 5);
         Long nextCursor = !feeds.isEmpty() ? feeds.get(feeds.size() - 1).getPostId() : 0L;
-        Map<String, Object> response = new HashMap<>();
-        response.put("cursor", nextCursor);
-        response.put("posts", feeds);
 
-        return response;
+        return FeedResponse.of(nextCursor, feeds);
     }
 
 }

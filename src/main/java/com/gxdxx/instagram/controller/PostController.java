@@ -3,13 +3,20 @@ package com.gxdxx.instagram.controller;
 import com.gxdxx.instagram.dto.request.PostFeedRequest;
 import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.request.PostUpdateRequest;
-import com.gxdxx.instagram.dto.response.PostRegisterResponse;
-import com.gxdxx.instagram.dto.response.PostUpdateResponse;
-import com.gxdxx.instagram.dto.response.SuccessResponse;
+import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.service.PostService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +25,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 
+@Tag(name = "posts", description = "게시글 API")
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
 @RestController
@@ -25,7 +33,14 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "게시글 작성 성공",
+                    content = @Content(schema = @Schema(implementation = PostRegisterResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "게시글 작성 메소드", description = "게시글 작성 메소드입니다.")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public PostRegisterResponse registerPost(
             @Valid PostRegisterRequest request,
             BindingResult bindingResult,
@@ -36,7 +51,14 @@ public class PostController {
         return postService.registerPost(request, principal.getName());
     }
 
-    @PutMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "게시글 수정 성공",
+                    content = @Content(schema = @Schema(implementation = PostUpdateResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "게시글 수정 메소드", description = "게시글 수정 메소드입니다.")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public PostUpdateResponse updatePost(
             @Valid PostUpdateRequest request,
             BindingResult bindingResult,
@@ -47,16 +69,30 @@ public class PostController {
         return postService.updatePost(request, principal.getName());
     }
 
-    @DeleteMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "게시글 삭제 성공",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "게시글 삭제 메소드", description = "게시글 삭제 메소드입니다.")
+    @DeleteMapping(value = "/{id}", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public SuccessResponse deletePost(
-            @PathVariable("id") Long id,
+            @Parameter(name = "id", description = "게시글의 id", in = ParameterIn.PATH) @PathVariable("id") Long id,
             Principal principal
     ) {
         return postService.deletePost(id, principal.getName());
     }
 
-    @GetMapping("/{id}/feed")
-    public Map<String, Object> getFeed(
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "피드 조회 성공",
+                    content = @Content(schema = @Schema(implementation = FeedResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "피드 조회 메소드", description = "피드 조회 메소드입니다.")
+    @GetMapping(value = "/{id}/feed", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public FeedResponse getFeed(
             @RequestBody @Valid PostFeedRequest request,
             BindingResult bindingResult,
             Principal principal
