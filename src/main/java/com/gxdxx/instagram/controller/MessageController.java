@@ -31,7 +31,7 @@ public class MessageController {
     }
 
     @GetMapping("/{chatRoomId}")
-    public Map<String, Object> getMessages(
+    public MessageResponse getMessages(
             @RequestBody @Valid MessageListRequest request,
             BindingResult bindingResult,
             Principal principal

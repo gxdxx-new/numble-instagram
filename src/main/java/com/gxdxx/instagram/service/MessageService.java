@@ -3,6 +3,7 @@ package com.gxdxx.instagram.service;
 import com.gxdxx.instagram.dto.request.MessageListRequest;
 import com.gxdxx.instagram.dto.request.MessageSendRequest;
 import com.gxdxx.instagram.dto.response.MessageListResponse;
+import com.gxdxx.instagram.dto.response.MessageResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.ChatRoom;
 import com.gxdxx.instagram.entity.Message;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +66,7 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> getMessages(MessageListRequest request, String nickname) {
+    public MessageResponse getMessages(MessageListRequest request, String nickname) {
         User requestUser = getUserByNickname(nickname);
         ChatRoom chatRoom = chatRoomRepository.findById(request.chatRoomId())
                 .orElseThrow(ChatRoomNotFoundException::new);
@@ -79,7 +79,7 @@ public class MessageService {
         List<MessageListResponse> messages = messageRepository.getMessagesByCursor(requestUser.getId(), chatRoom.getId(), cursor, 5);
         Long nextCursor = messages.isEmpty() ? 0L : messages.get(messages.size() - 1).getMessageId();
 
-        return Map.of("cursor", nextCursor, "messages", messages);
+        return MessageResponse.of(nextCursor, messages);
     }
 
 }
