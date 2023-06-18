@@ -32,12 +32,12 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "채팅방 생성 성공",
+            @ApiResponse(responseCode = "201", description = "채팅방 조회 성공",
                     content = @Content(schema = @Schema(implementation = ChatRoomResponse.class))),
             @ApiResponse(responseCode = "400", description = "잘못된 요청",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @Operation(summary = "채팅방 생성 메소드", description = "채팅방 생성 메소드입니다.")
+    @Operation(summary = "채팅방 조회 메소드", description = "채팅방 조회 메소드입니다.")
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ChatRoomResponse getChatRooms(
             @RequestBody @Valid ChatRoomListRequest request,
