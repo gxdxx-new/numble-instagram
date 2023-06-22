@@ -22,16 +22,10 @@ public class SecurityConfig {
 
     private final TokenProvider tokenProvider;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     /**
      * 직접 정의한 필터(TokenAuthenticationFilter)에서 인증 작업을 진행하기 때문에
      * AuthenticationManager를 사용하지 않고 TokenProvider를 통해서 인증 후 SecurityContextHolder를 바로 사용
      */
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -50,7 +44,7 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .requestMatchers("/api/users/signup", "/api/users/login", "/api/token").permitAll()
                 .anyRequest().authenticated()
-                .and().addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // /api로 시작하는 url인 경우 인증 실패 시 401 Unauthorized를 반환하도록 예외 처리
         http.exceptionHandling()
@@ -59,6 +53,16 @@ public class SecurityConfig {
 
         return http.build();
 
+    }
+
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter(tokenProvider);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }
