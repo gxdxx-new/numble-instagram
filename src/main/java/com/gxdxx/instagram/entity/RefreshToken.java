@@ -1,8 +1,7 @@
 package com.gxdxx.instagram.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,25 +14,25 @@ public class RefreshToken extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
+    @Column(nullable = false)
+    private Long userId;
+
+    @NotNull
+    @Column(nullable = false)
     private String refreshToken;
 
-    @Size(min = 2, max = 20)
-    @NotBlank
-    @Column(nullable = false, length = 20)
-    private String nickname;
-
-    private RefreshToken(String token, String nickname) {
-        this.refreshToken = token;
-        this.nickname = nickname;
+    private RefreshToken(Long userId, String refreshToken) {
+        this.userId = userId;
+        this.refreshToken = refreshToken;
     }
 
-    public static RefreshToken of(String token, String nickname) {
-        return new RefreshToken(token, nickname);
+    public static RefreshToken of(Long userId, String refreshToken) {
+        return new RefreshToken(userId, refreshToken);
     }
 
-    public RefreshToken updateToken(String token) {
-        this.refreshToken = token;
+    public RefreshToken updateToken(String newRefreshToken) {
+        this.refreshToken = newRefreshToken;
         return this;
     }
 
