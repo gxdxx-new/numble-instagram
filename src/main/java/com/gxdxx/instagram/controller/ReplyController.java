@@ -4,7 +4,9 @@ import com.gxdxx.instagram.dto.request.ReplyRegisterRequest;
 import com.gxdxx.instagram.dto.request.ReplyUpdateRequest;
 import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.ReplyService;
+import com.gxdxx.instagram.service.reply.ReplyCreateService;
+import com.gxdxx.instagram.service.reply.ReplyDeleteService;
+import com.gxdxx.instagram.service.reply.ReplyUpdateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -27,7 +29,9 @@ import java.security.Principal;
 @RestController
 public class ReplyController {
 
-    private final ReplyService replyService;
+    private final ReplyCreateService replyCreateService;
+    private final ReplyUpdateService replyUpdateService;
+    private final ReplyDeleteService replyDeleteService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "답글 작성 성공",
@@ -37,13 +41,13 @@ public class ReplyController {
     })
     @Operation(summary = "답글 작성 메소드", description = "답글 작성 메소드입니다.")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ReplyRegisterResponse registerReply(
+    public ReplyRegisterResponse createReply(
             @RequestBody @Valid ReplyRegisterRequest request,
             BindingResult bindingResult,
             Principal principal
     ) {
         validateRequest(bindingResult);
-        return replyService.registerReply(request, principal.getName());
+        return replyCreateService.createReply(request, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -60,7 +64,7 @@ public class ReplyController {
             Principal principal
     ) {
         validateRequest(bindingResult);
-        return replyService.updateReply(request, principal.getName());
+        return replyUpdateService.updateReply(request, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -75,7 +79,7 @@ public class ReplyController {
             @Parameter(name = "id", description = "답글의 id", in = ParameterIn.PATH) @PathVariable("id") Long id,
             Principal principal
     ) {
-        return replyService.deleteReply(id, principal.getName());
+        return replyDeleteService.deleteReply(id, principal.getName());
     }
 
     private void validateRequest(BindingResult bindingResult) {
