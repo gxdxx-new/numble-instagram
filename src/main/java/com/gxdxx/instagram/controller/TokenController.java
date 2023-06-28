@@ -2,7 +2,7 @@ package com.gxdxx.instagram.controller;
 
 import com.gxdxx.instagram.dto.response.ErrorResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.service.TokenService;
+import com.gxdxx.instagram.service.token.AccessTokenCreateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TokenController {
 
-    private final TokenService tokenService;
+    private final AccessTokenCreateService accessTokenCreateService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "액세스 토큰 생성 성공",
@@ -36,7 +36,7 @@ public class TokenController {
             @CookieValue("refresh_token") Cookie cookie,
             HttpServletResponse response
     ) {
-        return tokenService.createNewAccessToken(cookie.getValue(), response);
+        return accessTokenCreateService.createAccessToken(cookie.getValue(), response);
     }
 
 }
