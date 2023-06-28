@@ -60,7 +60,7 @@ class FollowServiceTest {
         when(followRepository.save(softDeletedFollow)).thenReturn(softDeletedFollow);
 
         SuccessResponse response = followService.createFollow(request, follower.getNickname());
-        Assertions.assertEquals("200 SUCCESS", response.message());
+        Assertions.assertEquals("200 SUCCESS", response.successMessage());
     }
 
     @Test
@@ -76,7 +76,7 @@ class FollowServiceTest {
         when(followRepository.save(any())).thenReturn(newFollow);
 
         SuccessResponse response = followService.createFollow(request, follower.getNickname());
-        Assertions.assertEquals("200 SUCCESS", response.message());
+        Assertions.assertEquals("200 SUCCESS", response.successMessage());
     }
 
     @Test
@@ -125,7 +125,7 @@ class FollowServiceTest {
 
         SuccessResponse response = followService.deleteFollow(following.getId(), follower.getNickname());
 
-        Assertions.assertEquals("200 SUCCESS", response.message());
+        Assertions.assertEquals("200 SUCCESS", response.successMessage());
     }
 
     @Test
