@@ -6,7 +6,7 @@ import com.gxdxx.instagram.entity.Post;
 import com.gxdxx.instagram.exception.PostNotFoundException;
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.repository.PostRepository;
-import com.gxdxx.instagram.service.S3Uploader;
+import com.gxdxx.instagram.config.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

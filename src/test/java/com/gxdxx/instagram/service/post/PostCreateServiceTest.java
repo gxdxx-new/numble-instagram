@@ -7,7 +7,7 @@ import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.PostRepository;
 import com.gxdxx.instagram.repository.UserRepository;
-import com.gxdxx.instagram.service.S3Uploader;
+import com.gxdxx.instagram.config.s3.S3Uploader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
