@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.service;
+package com.gxdxx.instagram.service.user;
 
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.entity.UserDetailsImpl;

@@ -5,7 +5,7 @@ import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.UserService;
+import com.gxdxx.instagram.service.user.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -31,7 +31,11 @@ import java.security.Principal;
 @RestController
 public class UserController {
 
-    private final UserService userService;
+    private final UserCreateService userCreateService;
+    private final UserProfileQueryService userProfileQueryService;
+    private final UserProfileUpdateService userProfileUpdateService;
+    private final UserDeleteService userDeleteService;
+    private final UserLoginService userLoginService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "회원가입 성공",
@@ -41,13 +45,13 @@ public class UserController {
     })
     @Operation(summary = "회원가입 메소드", description = "회원가입 메소드입니다.")
     @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserSignUpResponse registerUser(
+    public UserSignUpResponse createUser(
             @Valid UserSignUpRequest request,
             BindingResult bindingResult
     ) {
         validateRequest(bindingResult);
         validateProfileImage(request.profileImage());
-        return userService.saveUser(request);
+        return userCreateService.createUser(request);
     }
 
     @ApiResponses(value = {
@@ -62,7 +66,7 @@ public class UserController {
             @Parameter(name = "id", description = "회원의 id", in = ParameterIn.PATH) @PathVariable("id") Long id,
             Principal principal
     ) {
-        return userService.deleteUser(id, principal.getName());
+        return userDeleteService.deleteUser(id, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -79,7 +83,7 @@ public class UserController {
             HttpServletResponse response
     ) {
         validateRequest(bindingResult);
-        return userService.login(request, response);
+        return userLoginService.login(request, response);
     }
 
     @ApiResponses(value = {
@@ -90,8 +94,8 @@ public class UserController {
     })
     @Operation(summary = "프로필 조회 메소드", description = "프로필 조회 메소드입니다.")
     @GetMapping(value = "/profile", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserProfileResponse getProfile(Principal principal) {
-        return userService.getProfile(principal.getName());
+    public UserProfileResponse findUserProfile(Principal principal) {
+        return userProfileQueryService.findUserProfile(principal.getName());
     }
 
     @ApiResponses(value = {
@@ -102,14 +106,14 @@ public class UserController {
     })
     @Operation(summary = "프로필 수정 메소드", description = "프로필 수정 메소드입니다.")
     @PutMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserProfileUpdateResponse updateProfile(
+    public UserProfileUpdateResponse updateUserProfile(
             @Valid UserProfileUpdateRequest request,
             BindingResult bindingResult,
             Principal principal
     ) {
         validateRequest(bindingResult);
         validateProfileImage(request.profileImage());
-        return userService.updateProfile(request, principal.getName());
+        return userProfileUpdateService.updateUserProfile(request, principal.getName());
     }
 
     private void validateRequest(BindingResult bindingResult) {
