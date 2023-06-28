@@ -4,7 +4,9 @@ import com.gxdxx.instagram.dto.request.CommentRegisterRequest;
 import com.gxdxx.instagram.dto.request.CommentUpdateRequest;
 import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.CommentService;
+import com.gxdxx.instagram.service.comment.CommentCreateService;
+import com.gxdxx.instagram.service.comment.CommentDeleteService;
+import com.gxdxx.instagram.service.comment.CommentUpdateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -27,8 +29,9 @@ import java.security.Principal;
 @RestController
 public class CommentController {
 
-    private final CommentService commentService;
-
+    private final CommentCreateService commentCreateService;
+    private final CommentUpdateService commentUpdateService;
+    private final CommentDeleteService commentDeleteService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "댓글 작성 성공",
@@ -38,13 +41,13 @@ public class CommentController {
     })
     @Operation(summary = "댓글 작성 메소드", description = "댓글 작성 메소드입니다.")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public CommentRegisterResponse registerComment(
+    public CommentRegisterResponse createComment(
             @RequestBody @Valid CommentRegisterRequest request,
             BindingResult bindingResult,
             Principal principal
     ) {
         validateRequest(bindingResult);
-        return commentService.registerComment(request, principal.getName());
+        return commentCreateService.createComment(request, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -61,7 +64,7 @@ public class CommentController {
             Principal principal
     ) {
         validateRequest(bindingResult);
-        return commentService.updateComment(request, principal.getName());
+        return commentUpdateService.updateComment(request, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -76,7 +79,7 @@ public class CommentController {
             @Parameter(name = "id", description = "댓글의 id", in = ParameterIn.PATH) @PathVariable("id") Long id,
             Principal principal
     ) {
-        return commentService.deleteComment(id, principal.getName());
+        return commentDeleteService.deleteComment(id, principal.getName());
     }
 
     private void validateRequest(BindingResult bindingResult) {
