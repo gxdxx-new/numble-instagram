@@ -4,7 +4,8 @@ import com.gxdxx.instagram.dto.request.FollowCreateRequest;
 import com.gxdxx.instagram.dto.response.ErrorResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.FollowService;
+import com.gxdxx.instagram.service.follow.FollowCreateService;
+import com.gxdxx.instagram.service.follow.FollowDeleteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -27,7 +28,8 @@ import java.security.Principal;
 @RestController
 public class FollowController {
 
-    private final FollowService followService;
+    private final FollowCreateService followCreateService;
+    private final FollowDeleteService followDeleteService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "팔로우 성공",
@@ -43,7 +45,7 @@ public class FollowController {
             Principal principal
     ) {
         validateRequest(bindingResult);
-        return followService.createFollow(request, principal.getName());
+        return followCreateService.createFollow(request, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -58,7 +60,7 @@ public class FollowController {
             @Parameter(name = "id", description = "게시글의 id", in = ParameterIn.PATH) @PathVariable("id") Long id,
             Principal principal
     ) {
-        return followService.deleteFollow(id, principal.getName());
+        return followDeleteService.deleteFollow(id, principal.getName());
     }
 
     private void validateRequest(BindingResult bindingResult) {
