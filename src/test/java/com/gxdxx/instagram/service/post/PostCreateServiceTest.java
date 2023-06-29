@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.service;
+package com.gxdxx.instagram.service.post;
 
 import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.response.PostRegisterResponse;
@@ -7,6 +7,7 @@ import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.PostRepository;
 import com.gxdxx.instagram.repository.UserRepository;
+import com.gxdxx.instagram.config.s3.S3Uploader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,17 +25,14 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PostServiceTest {
+public class PostCreateServiceTest {
 
     @InjectMocks
-    private PostService postService;
-
+    private PostCreateService postCreateService;
     @Mock
     private PostRepository postRepository;
-
     @Mock
     private UserRepository userRepository;
-
     @Mock
     private S3Uploader s3Uploader;
 
@@ -49,7 +46,7 @@ public class PostServiceTest {
         when(s3Uploader.upload(any(), anyString())).thenReturn(imageUrl);
         when(postRepository.save(any(Post.class))).thenReturn(Post.of(request.content(), imageUrl, user));
 
-        PostRegisterResponse response = postService.registerPost(request, user.getNickname());
+        PostRegisterResponse response = postCreateService.createPost(request, user.getNickname());
 
         assertEquals(request.content(), response.content());
         assertEquals(imageUrl, response.imageUrl());
@@ -62,7 +59,7 @@ public class PostServiceTest {
         User user = createUser();
         when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () -> postService.registerPost(request, user.getNickname()));
+        Assertions.assertThrows(UserNotFoundException.class, () -> postCreateService.createPost(request, user.getNickname()));
     }
 
     private User createUser() {

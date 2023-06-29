@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.config;
+package com.gxdxx.instagram.config.s3;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

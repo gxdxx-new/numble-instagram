@@ -1,11 +1,10 @@
-package com.gxdxx.instagram.service;
+package com.gxdxx.instagram.service.follow;
 
 import com.gxdxx.instagram.dto.request.FollowCreateRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.entity.Follow;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.FollowAlreadyExistsException;
-import com.gxdxx.instagram.exception.FollowNotFountException;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.FollowRepository;
@@ -14,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 @Service
-public class FollowService {
+public class FollowCreateService {
 
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
@@ -42,19 +41,6 @@ public class FollowService {
         follow.changeDeleted(false);
 
         followRepository.save(follow);
-        return SuccessResponse.of("200 SUCCESS");
-    }
-
-    public SuccessResponse deleteFollow(Long followingId, String followerNickname) {
-
-        User follower = userRepository.findByNickname(followerNickname)
-                .orElseThrow(UserNotFoundException::new);
-        User following = userRepository.findById(followingId)
-                .orElseThrow(UserNotFoundException::new);
-
-        Follow follow = followRepository.findByFollowerAndFollowing(follower, following)
-                .orElseThrow(FollowNotFountException::new);
-        followRepository.delete(follow);
         return SuccessResponse.of("200 SUCCESS");
     }
 

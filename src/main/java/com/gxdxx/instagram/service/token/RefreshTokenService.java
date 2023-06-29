@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.service;
+package com.gxdxx.instagram.service.token;
 
 import com.gxdxx.instagram.entity.RefreshToken;
 import com.gxdxx.instagram.exception.RefreshTokenNotFoundException;

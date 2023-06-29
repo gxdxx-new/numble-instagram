@@ -5,7 +5,10 @@ import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.request.PostUpdateRequest;
 import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.PostService;
+import com.gxdxx.instagram.service.post.PostCreateService;
+import com.gxdxx.instagram.service.post.PostDeleteService;
+import com.gxdxx.instagram.service.post.PostFeedQueryService;
+import com.gxdxx.instagram.service.post.PostUpdateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -21,9 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.security.Principal;
-import java.util.Map;
 
 @Tag(name = "posts", description = "게시글 API")
 @RequiredArgsConstructor
@@ -31,7 +32,10 @@ import java.util.Map;
 @RestController
 public class PostController {
 
-    private final PostService postService;
+    private final PostCreateService postCreateService;
+    private final PostUpdateService postUpdateService;
+    private final PostDeleteService postDeleteService;
+    private final PostFeedQueryService postFeedQueryService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "게시글 작성 성공",
@@ -41,14 +45,14 @@ public class PostController {
     })
     @Operation(summary = "게시글 작성 메소드", description = "게시글 작성 메소드입니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PostRegisterResponse registerPost(
+    public PostRegisterResponse createPost(
             @Valid PostRegisterRequest request,
             BindingResult bindingResult,
             Principal principal
     ) {
         validateRequest(bindingResult);
         validatePostImage(request.image());
-        return postService.registerPost(request, principal.getName());
+        return postCreateService.createPost(request, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -66,7 +70,7 @@ public class PostController {
     ) {
         validateRequest(bindingResult);
         validatePostImage(request.image());
-        return postService.updatePost(request, principal.getName());
+        return postUpdateService.updatePost(request, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -81,7 +85,7 @@ public class PostController {
             @Parameter(name = "id", description = "게시글의 id", in = ParameterIn.PATH) @PathVariable("id") Long id,
             Principal principal
     ) {
-        return postService.deletePost(id, principal.getName());
+        return postDeleteService.deletePost(id, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -92,13 +96,13 @@ public class PostController {
     })
     @Operation(summary = "피드 조회 메소드", description = "피드 조회 메소드입니다.")
     @GetMapping(value = "/{id}/feed", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public FeedResponse getFeed(
+    public FeedResponse findPostFeed(
             @RequestBody @Valid PostFeedRequest request,
             BindingResult bindingResult,
             Principal principal
     ) {
         validateRequest(bindingResult);
-        return postService.getFeed(request, principal.getName());
+        return postFeedQueryService.findPostFeed(request, principal.getName());
     }
 
     private void validateRequest(BindingResult bindingResult) {

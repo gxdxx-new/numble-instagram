@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.service;
+package com.gxdxx.instagram.service.chatroom;
 
 import com.gxdxx.instagram.dto.request.ChatRoomListRequest;
 import com.gxdxx.instagram.dto.response.ChatRoomListResponse;
@@ -16,13 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class ChatRoomService {
+public class ChatRoomQueryService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public ChatRoomResponse getChatRooms(ChatRoomListRequest request, String nickname) {
+    public ChatRoomResponse findChatRooms(ChatRoomListRequest request, String nickname) {
         User user = userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
         Long cursor = (request.cursor() == null)

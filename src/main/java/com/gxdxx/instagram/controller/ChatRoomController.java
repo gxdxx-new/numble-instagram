@@ -2,10 +2,9 @@ package com.gxdxx.instagram.controller;
 
 import com.gxdxx.instagram.dto.request.ChatRoomListRequest;
 import com.gxdxx.instagram.dto.response.ChatRoomResponse;
-import com.gxdxx.instagram.dto.response.CommentRegisterResponse;
 import com.gxdxx.instagram.dto.response.ErrorResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.ChatRoomService;
+import com.gxdxx.instagram.service.chatroom.ChatRoomQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,7 +28,7 @@ import java.security.Principal;
 @RestController
 public class ChatRoomController {
 
-    private final ChatRoomService chatRoomService;
+    private final ChatRoomQueryService chatRoomQueryService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "채팅방 조회 성공",
@@ -45,7 +44,7 @@ public class ChatRoomController {
             Principal principal
     ) {
         validateRequest(bindingResult);
-        return chatRoomService.getChatRooms(request, principal.getName());
+        return chatRoomQueryService.findChatRooms(request, principal.getName());
     }
 
     private void validateRequest(BindingResult bindingResult) {

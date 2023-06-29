@@ -2,12 +2,12 @@ package com.gxdxx.instagram.controller;
 
 import com.gxdxx.instagram.dto.request.MessageListRequest;
 import com.gxdxx.instagram.dto.request.MessageSendRequest;
-import com.gxdxx.instagram.dto.response.ChatRoomResponse;
 import com.gxdxx.instagram.dto.response.ErrorResponse;
 import com.gxdxx.instagram.dto.response.MessageResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.MessageService;
+import com.gxdxx.instagram.service.message.MessageCreateService;
+import com.gxdxx.instagram.service.message.MessageQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +21,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Map;
 
 @Tag(name = "messages", description = "메시지 API")
 @RequiredArgsConstructor
@@ -29,7 +28,8 @@ import java.util.Map;
 @RestController
 public class MessageController {
 
-    private final MessageService messageService;
+    private final MessageCreateService messageCreateService;
+    private final MessageQueryService messageQueryService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "메시지 전송 성공",
@@ -39,13 +39,13 @@ public class MessageController {
     })
     @Operation(summary = "메시지 전송 메소드", description = "메시지 전송 메소드입니다.")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public SuccessResponse sendMessage(
+    public SuccessResponse createMessage(
             @RequestBody @Valid MessageSendRequest request,
             BindingResult bindingResult,
             Principal principal
     ) {
         validateRequest(bindingResult);
-        return messageService.sendMessage(request, principal.getName());
+        return messageCreateService.sendMessage(request, principal.getName());
     }
 
     @ApiResponses(value = {
@@ -56,13 +56,13 @@ public class MessageController {
     })
     @Operation(summary = "메시지 조회 메소드", description = "메시지 조회 메소드입니다.")
     @GetMapping(value = "/{chat-room-id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public MessageResponse getMessages(
+    public MessageResponse findMessages(
             @RequestBody @Valid MessageListRequest request,
             BindingResult bindingResult,
             Principal principal
     ) {
         validateRequest(bindingResult);
-        return messageService.getMessages(request, principal.getName());
+        return messageQueryService.findMessages(request, principal.getName());
     }
 
     private void validateRequest(BindingResult bindingResult) {
