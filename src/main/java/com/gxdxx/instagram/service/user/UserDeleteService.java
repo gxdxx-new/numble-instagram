@@ -22,13 +22,13 @@ public class UserDeleteService {
     private final PasswordEncoder passwordEncoder;
 
     public SuccessResponse deleteUser(String password, String nickname) {
-        User deleteUser = getUserByNickname(nickname);
+        User deleteUser = findUserByNickname(nickname);
         checkPasswordMatches(password, deleteUser.getPassword());
         deleteUserData(deleteUser);
         return SuccessResponse.of("회원탈퇴를 성공했습니다.");
     }
 
-    private User getUserByNickname(String nickname) {
+    private User findUserByNickname(String nickname) {
         return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
     }
