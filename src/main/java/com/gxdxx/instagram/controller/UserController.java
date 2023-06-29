@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.controller;
 
+import com.gxdxx.instagram.dto.request.UserDeleteRequest;
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
@@ -63,10 +64,12 @@ public class UserController {
     @Operation(summary = "회원탈퇴 메소드", description = "회원탈퇴 메소드입니다.")
     @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public SuccessResponse deleteUser(
-            @Parameter(name = "id", description = "회원의 id", in = ParameterIn.PATH) @PathVariable("id") Long id,
+            @Valid UserDeleteRequest request,
+            BindingResult bindingResult,
             Principal principal
     ) {
-        return userDeleteService.deleteUser(id, principal.getName());
+        validateRequest(bindingResult);
+        return userDeleteService.deleteUser(request.password(), principal.getName());
     }
 
     @ApiResponses(value = {
