@@ -21,11 +21,17 @@ public class UserProfileUpdateService {
     private final S3Uploader s3Uploader;
 
     public UserProfileUpdateResponse updateUserProfile(UserProfileUpdateRequest request, String nickname) {
-        checkNicknameDuplication(request.nickname());
+        checkNicknameEquality(request.nickname(), nickname);
         User savedUser = findUserByNickname(nickname);
         String newProfileImageUrl = uploadProfileImage(request.profileImage());
         updateProfile(savedUser, request.nickname(), newProfileImageUrl);
         return createUserProfileUpdateResponse(savedUser);
+    }
+
+    private void checkNicknameEquality(String newNickname, String savedNickname) {
+        if (!newNickname.equals(savedNickname)) {
+            checkNicknameDuplication(newNickname);
+        }
     }
 
     private void checkNicknameDuplication(String newNickname) {

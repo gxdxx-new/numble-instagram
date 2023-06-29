@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserProfileUpdateServiceTest {
@@ -34,48 +34,80 @@ public class UserProfileUpdateServiceTest {
     private S3Uploader s3Uploader;
 
     @Test
-    @DisplayName("[프로필 수정] - 성공")
-    void updateProfile_shouldSucceed() {
-        User user = createUser();
-        UserProfileUpdateRequest request = createUserProfileUpdateRequest();
-        String updateProfileImageUrl = "updateProfileImageUrl";
-        when(userRepository.findByNickname(request.nickname())).thenReturn(Optional.empty());
-        when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.of(user));
-        when(s3Uploader.upload(any(), anyString())).thenReturn(updateProfileImageUrl);
+    @DisplayName("[프로필 수정] - 성공 (기존 닉네임과 같은 경우)")
+    void updateUserProfile_WithSameNickname_ShouldSucceed() {
+        String newProfileImageUrl = "newProfileImageUrl";
+        User savedUser = createSavedUser();
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest(savedUser.getNickname());
+        when(userRepository.findByNickname(savedUser.getNickname())).thenReturn(Optional.of(savedUser));
+        when(s3Uploader.upload(any(), anyString())).thenReturn(newProfileImageUrl);
 
-        UserProfileUpdateResponse response = userProfileUpdateService.updateUserProfile(request, user.getNickname());
+        UserProfileUpdateResponse response = userProfileUpdateService.updateUserProfile(request, savedUser.getNickname());
 
         assertEquals(request.nickname(), response.nickname());
-        assertEquals(updateProfileImageUrl, response.profileImageUrl());
+        assertEquals(newProfileImageUrl, response.profileImageUrl());
+    }
+
+    @Test
+    @DisplayName("[프로필 수정] - 성공 (기존 닉네임과 다른 경우)")
+    void updateUserProfile_WithDifferentNickname_ShouldSucceed() {
+        String newNickname = "newNickname";
+        String newProfileImageUrl = "newProfileImageUrl";
+        User savedUser = createSavedUser();
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest(newNickname);
+        when(userRepository.findByNickname(request.nickname())).thenReturn(Optional.empty());
+        when(userRepository.findByNickname(savedUser.getNickname())).thenReturn(Optional.of(savedUser));
+        when(s3Uploader.upload(any(), anyString())).thenReturn(newProfileImageUrl);
+
+        UserProfileUpdateResponse response = userProfileUpdateService.updateUserProfile(request, savedUser.getNickname());
+
+        assertEquals(request.nickname(), response.nickname());
+        assertEquals(newProfileImageUrl, response.profileImageUrl());
     }
 
     @Test
     @DisplayName("[프로필 수정] - 실패 (이미 존재하는 닉네임)")
-    void updateProfile_withExistingNickname_shouldThrowException() {
-        User user = createUser();
-        UserProfileUpdateRequest request = createUserProfileUpdateRequest();
-        when(userRepository.findByNickname(request.nickname())).thenReturn(Optional.of(user));
+    void updateUserProfile_withExistingNickname_shouldThrowException() {
+        String newNickname = "newNickname";
+        User duplicatedUser = createDuplicatedUser();
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest(newNickname);
+        when(userRepository.findByNickname(request.nickname())).thenReturn(Optional.of(duplicatedUser));
 
-        Assertions.assertThrows(NicknameAlreadyExistsException.class, () -> userProfileUpdateService.updateUserProfile(request, user.getNickname()));
+        Assertions.assertThrows(NicknameAlreadyExistsException.class, () -> userProfileUpdateService.updateUserProfile(request, duplicatedUser.getNickname()));
     }
 
     @Test
-    @DisplayName("[프로필 수정] - 실패 (존재하지 않는 유저)")
-    void updateProfile_withNonExistingUser_shouldThrowUserNotFoundException() {
-        User user = createUser();
-        UserProfileUpdateRequest request = createUserProfileUpdateRequest();
+    @DisplayName("[프로필 수정] - 실패 (존재하지 않는 유저 && 기존 닉네임과 같은 경우)")
+    void updateUserProfile_withNonExistingUser_withSameNickname_shouldThrowUserNotFoundException() {
+        User savedUser = createSavedUser();
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest(savedUser.getNickname());
+        when(userRepository.findByNickname(savedUser.getNickname())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(UserNotFoundException.class, () -> userProfileUpdateService.updateUserProfile(request, savedUser.getNickname()));
+    }
+
+    @Test
+    @DisplayName("[프로필 수정] - 실패 (존재하지 않는 유저 && 기존 닉네임과 다른 경우)")
+    void updateUserProfile_withNonExistingUser_withDifferentNickname_shouldThrowUserNotFoundException() {
+        String newNickname = "newNickname";
+        User user = createSavedUser();
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest(newNickname);
         when(userRepository.findByNickname(request.nickname())).thenReturn(Optional.empty());
         when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.empty());
 
         Assertions.assertThrows(UserNotFoundException.class, () -> userProfileUpdateService.updateUserProfile(request, user.getNickname()));
     }
 
-    private User createUser() {
-        return User.of("nickname", "encodedPassword", "profileImageUrl");
+    private User createSavedUser() {
+        return User.of("savedNickname", "encodedPassword", "profileImageUrl");
     }
 
-    private UserProfileUpdateRequest createUserProfileUpdateRequest() {
-        String updateNickname = "updateNickname";
+    private User createDuplicatedUser() {
+        return User.of("duplicatedNickname", "encodedPassword", "profileImageUrl");
+    }
+
+    private UserProfileUpdateRequest createUserProfileUpdateRequest(String nickname) {
+        String updateNickname = nickname;
         MockMultipartFile mockFile = getMockMultipartFile();
         return new UserProfileUpdateRequest(updateNickname, mockFile);
     }
