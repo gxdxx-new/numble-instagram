@@ -28,36 +28,50 @@ public class UserLoginService {
     private final TokenProvider tokenProvider;
 
     public SuccessResponse login(UserLoginRequest request, HttpServletResponse response) {
-        // 아이디 검사
-        User user = userRepository.findByNickname(request.nickname())
-                .orElseThrow(() -> new UserNotFoundException());
+        User savedUser = findUserByNickname(request.nickname());
+        checkPasswordMatches(request.password(), savedUser.getPassword());
+        String newAccessToken = createAccessToken(savedUser);
+        String newRefreshToken = createRefreshToken(savedUser);
+        updateOrCreateRefreshToken(savedUser.getId(), newRefreshToken);
+        setAccessTokenHeader(response, newAccessToken);
+        addRefreshTokenCookie(response, newRefreshToken);
+        return new SuccessResponse("토큰이 발급되었습니다.");
+    }
 
-        // 비밀번호 검사
-        if(!passwordEncoder.matches(request.password(), user.getPassword())) {
+    private User findUserByNickname(String nickname) {
+        return userRepository.findByNickname(nickname)
+                .orElseThrow(() -> new UserNotFoundException());
+    }
+
+    private void checkPasswordMatches(String password, String storedPassword) {
+        if (!passwordEncoder.matches(password, storedPassword)) {
             throw new PasswordNotMatchException();
         }
+    }
 
-        // 아이디 정보로 Token 생성
-        String newAccessToken = tokenProvider.createToken(user, TokenProvider.ACCESS_TOKEN);
-        String newRefreshToken = tokenProvider.createToken(user, TokenProvider.REFRESH_TOKEN);
+    private String createAccessToken(User user) {
+        return tokenProvider.createToken(user, TokenProvider.ACCESS_TOKEN);
+    }
 
-        // Refresh 토큰 있는지 확인
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUserId(user.getId());
+    private String createRefreshToken(User user) {
+        return tokenProvider.createToken(user, TokenProvider.REFRESH_TOKEN);
+    }
 
-        // 있다면 새 토큰으로 업데이트
-        // 없다면 새로 만들고 DB 저장
+    private void updateOrCreateRefreshToken(Long userId, String newRefreshToken) {
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUserId(userId);
         if (refreshToken.isPresent()) {
             refreshToken.get().updateToken(newRefreshToken);
-        } else {
-            refreshTokenRepository.save(RefreshToken.of(user.getId(), newRefreshToken));
+            return;
         }
+        refreshTokenRepository.save(RefreshToken.of(userId, newRefreshToken));
+    }
 
-        // response 헤더에 Access Token 넣음
-        tokenProvider.setHeader(response, newAccessToken);
-        // cookie에 Refresh Token 넣음
-        tokenProvider.addCookie(response, newRefreshToken);
+    private void setAccessTokenHeader(HttpServletResponse response, String accessToken) {
+        tokenProvider.setHeader(response, accessToken);
+    }
 
-        return new SuccessResponse("토큰이 발급되었습니다.");
+    private void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        tokenProvider.addCookie(response, refreshToken);
     }
 
 }

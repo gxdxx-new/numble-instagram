@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Transactional
 @RequiredArgsConstructor
@@ -21,14 +22,25 @@ public class UserCreateService {
     private final PasswordEncoder passwordEncoder;
 
     public UserSignUpResponse createUser(UserSignUpRequest request) {
-        userRepository.findByNickname(request.nickname()).ifPresent(user -> {
+        checkNicknameDuplication(request.nickname());
+        String profileImageUrl = uploadProfileImage(request.profileImage());
+        User savedUser = saveUser(request.nickname(), request.password(), profileImageUrl);
+        return UserSignUpResponse.of(savedUser);
+    }
+
+    private void checkNicknameDuplication(String nickname) {
+        if (userRepository.findByNickname(nickname).isPresent()) {
             throw new NicknameAlreadyExistsException();
-        });
+        }
+    }
 
-        String profileImageUrl = s3Uploader.upload(request.profileImage(), "images");
+    private String uploadProfileImage(MultipartFile image) {
+        return s3Uploader.upload(image, "images");
+    }
 
-        User saveUser = User.of(request.nickname(), passwordEncoder.encode(request.password()), profileImageUrl);
-        return UserSignUpResponse.of(userRepository.save(saveUser));
+    private User saveUser(String nickname, String password, String profileImageUrl) {
+        String encodedPassword = passwordEncoder.encode(password);
+        return userRepository.save(User.of(nickname, encodedPassword, profileImageUrl));
     }
 
 }

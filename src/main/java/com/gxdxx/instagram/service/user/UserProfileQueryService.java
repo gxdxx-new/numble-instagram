@@ -19,15 +19,27 @@ public class UserProfileQueryService {
 
     @Transactional(readOnly = true)
     public UserProfileResponse findUserProfile(String nickname) {
-        User user = getUserFromNickname(nickname);
-        Long followerCount = followRepository.countByFollowing(user);
-        Long followingCount = followRepository.countByFollower(user);
-        return UserProfileResponse.of(user.getNickname(), user.getProfileImageUrl(), followerCount, followingCount);
+        User user = findUserByNickname(nickname);
+        Long followerCount = getFollowerCount(user);
+        Long followingCount = getFollowingCount(user);
+        return createProfileResponse(user, followerCount, followingCount);
     }
 
-    private User getUserFromNickname(String nickname) {
+    private User findUserByNickname(String nickname) {
         return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    private Long getFollowerCount(User user) {
+        return followRepository.countByFollowing(user);
+    }
+
+    private Long getFollowingCount(User user) {
+        return followRepository.countByFollower(user);
+    }
+
+    private UserProfileResponse createProfileResponse(User user, Long followerCount, Long followingCount) {
+        return UserProfileResponse.of(user.getNickname(), user.getProfileImageUrl(), followerCount, followingCount);
     }
 
 }
