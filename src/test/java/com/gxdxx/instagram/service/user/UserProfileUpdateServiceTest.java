@@ -3,6 +3,7 @@ package com.gxdxx.instagram.service.user;
 import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.UserRepository;
 import com.gxdxx.instagram.config.s3.S3Uploader;
@@ -38,6 +39,7 @@ public class UserProfileUpdateServiceTest {
         User user = createUser();
         UserProfileUpdateRequest request = createUserProfileUpdateRequest();
         String updateProfileImageUrl = "updateProfileImageUrl";
+        when(userRepository.findByNickname(request.nickname())).thenReturn(Optional.empty());
         when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.of(user));
         when(s3Uploader.upload(any(), anyString())).thenReturn(updateProfileImageUrl);
 
@@ -48,10 +50,21 @@ public class UserProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("[프로필 수정] - 실패 (이미 존재하는 닉네임)")
+    void updateProfile_withExistingNickname_shouldThrowException() {
+        User user = createUser();
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest();
+        when(userRepository.findByNickname(request.nickname())).thenReturn(Optional.of(user));
+
+        Assertions.assertThrows(NicknameAlreadyExistsException.class, () -> userProfileUpdateService.updateUserProfile(request, user.getNickname()));
+    }
+
+    @Test
     @DisplayName("[프로필 수정] - 실패 (존재하지 않는 유저)")
     void updateProfile_withNonExistingUser_shouldThrowUserNotFoundException() {
         User user = createUser();
         UserProfileUpdateRequest request = createUserProfileUpdateRequest();
+        when(userRepository.findByNickname(request.nickname())).thenReturn(Optional.empty());
         when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.empty());
 
         Assertions.assertThrows(UserNotFoundException.class, () -> userProfileUpdateService.updateUserProfile(request, user.getNickname()));
@@ -62,8 +75,8 @@ public class UserProfileUpdateServiceTest {
     }
 
     private UserProfileUpdateRequest createUserProfileUpdateRequest() {
-        MockMultipartFile mockFile = getMockMultipartFile();
         String updateNickname = "updateNickname";
+        MockMultipartFile mockFile = getMockMultipartFile();
         return new UserProfileUpdateRequest(updateNickname, mockFile);
     }
 

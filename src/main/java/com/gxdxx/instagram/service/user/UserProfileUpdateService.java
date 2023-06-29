@@ -3,6 +3,7 @@ package com.gxdxx.instagram.service.user;
 import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.UserRepository;
 import com.gxdxx.instagram.config.s3.S3Uploader;
@@ -19,6 +20,9 @@ public class UserProfileUpdateService {
     private final S3Uploader s3Uploader;
 
     public UserProfileUpdateResponse updateUserProfile(UserProfileUpdateRequest request, String nickname) {
+        if (userRepository.findByNickname(request.nickname()).isPresent()) {
+            throw new NicknameAlreadyExistsException();
+        }
         User user = getUserFromNickname(nickname);
 
         String profileImageUrl =  s3Uploader.upload(request.profileImage(), "images");
