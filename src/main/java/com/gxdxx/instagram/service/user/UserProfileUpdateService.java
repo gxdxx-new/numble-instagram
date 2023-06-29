@@ -10,6 +10,7 @@ import com.gxdxx.instagram.config.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Transactional
 @RequiredArgsConstructor
@@ -20,20 +21,34 @@ public class UserProfileUpdateService {
     private final S3Uploader s3Uploader;
 
     public UserProfileUpdateResponse updateUserProfile(UserProfileUpdateRequest request, String nickname) {
-        if (userRepository.findByNickname(request.nickname()).isPresent()) {
-            throw new NicknameAlreadyExistsException();
-        }
-        User user = getUserFromNickname(nickname);
-
-        String profileImageUrl =  s3Uploader.upload(request.profileImage(), "images");
-
-        user.updateProfile(request.nickname(), profileImageUrl);
-        return UserProfileUpdateResponse.of(user.getId(), user.getNickname(), user.getProfileImageUrl());
+        checkNicknameDuplication(request.nickname());
+        User savedUser = findUserByNickname(nickname);
+        String newProfileImageUrl = uploadProfileImage(request.profileImage());
+        updateProfile(savedUser, request.nickname(), newProfileImageUrl);
+        return createUserProfileUpdateResponse(savedUser);
     }
 
-    private User getUserFromNickname(String nickname) {
+    private void checkNicknameDuplication(String newNickname) {
+        if (userRepository.findByNickname(newNickname).isPresent()) {
+            throw new NicknameAlreadyExistsException();
+        }
+    }
+
+    private User findUserByNickname(String nickname) {
         return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    private String uploadProfileImage(MultipartFile image) {
+        return s3Uploader.upload(image, "images");
+    }
+
+    private void updateProfile(User user, String newNickname, String newProfileImageUrl) {
+        user.updateProfile(newNickname, newProfileImageUrl);
+    }
+
+    private UserProfileUpdateResponse createUserProfileUpdateResponse(User savedUser) {
+        return UserProfileUpdateResponse.of(savedUser.getId(), savedUser.getNickname(), savedUser.getProfileImageUrl());
     }
 
 }
