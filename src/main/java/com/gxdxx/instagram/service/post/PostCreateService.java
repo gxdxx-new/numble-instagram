@@ -11,6 +11,7 @@ import com.gxdxx.instagram.config.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Transactional
 @RequiredArgsConstructor
@@ -21,12 +22,28 @@ public class PostCreateService {
     private final UserRepository userRepository;
     private final S3Uploader s3Uploader;
 
-    public PostRegisterResponse createPost(PostRegisterRequest request, String requestingUserNickname) {
-        User registeringUser = userRepository.findByNickname(requestingUserNickname)
+    public PostRegisterResponse createPost(PostRegisterRequest request, String nickname) {
+        User userToCreatePost = findUserByNickname(nickname);
+        String imageUrl = uploadImage(request.image());
+        Post postToCreate = createPost(request.content(), imageUrl, userToCreatePost);
+        return PostRegisterResponse.of(savePost(postToCreate));
+    }
+
+    private User findUserByNickname(String nickname) {
+        return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
-        String imageUrl = s3Uploader.upload(request.image(), "images");
-        Post registeringPost = Post.of(request.content(), imageUrl, registeringUser);
-        return PostRegisterResponse.of(postRepository.save(registeringPost));
+    }
+
+    private String uploadImage(MultipartFile image) {
+        return s3Uploader.upload(image, "images");
+    }
+
+    private Post createPost(String content, String imageUrl, User user) {
+        return Post.of(content, imageUrl, user);
+    }
+
+    private Post savePost(Post post) {
+        return postRepository.save(post);
     }
 
 }
