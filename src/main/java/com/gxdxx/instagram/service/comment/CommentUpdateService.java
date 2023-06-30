@@ -17,14 +17,23 @@ public class CommentUpdateService {
 
     private final CommentRepository commentRepository;
 
-    public CommentUpdateResponse updateComment(CommentUpdateRequest request, String requestingUserNickname) {
-        Comment updatingComment = commentRepository.findById(request.id())
+    public CommentUpdateResponse updateComment(CommentUpdateRequest request, String nickname) {
+        Comment commentToUpdate = findCommentById(request.id());
+        checkCommentWriterMatches(commentToUpdate, nickname);
+        commentToUpdate.update(request.content());
+        return CommentUpdateResponse.of(commentToUpdate);
+    }
+
+    public Comment findCommentById(Long commentId) {
+        return commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
-        if (!updatingComment.getUser().getNickname().equals(requestingUserNickname)) {
+    }
+
+    private void checkCommentWriterMatches(Comment commentToUpdate, String requestedUserNickname) {
+        String commentWriterNickname = commentToUpdate.getUser().getNickname();
+        if (!commentWriterNickname.equals(requestedUserNickname)) {
             throw new UnauthorizedAccessException();
         }
-        updatingComment.update(request.content());
-        return CommentUpdateResponse.of(updatingComment);
     }
 
 }

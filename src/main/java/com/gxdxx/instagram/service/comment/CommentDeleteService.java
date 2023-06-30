@@ -16,14 +16,27 @@ public class CommentDeleteService {
 
     private final CommentRepository commentRepository;
 
-    public SuccessResponse deleteComment(Long commentId, String requestingUserNickname) {
-        Comment deletingComment = commentRepository.findById(commentId)
+    public SuccessResponse deleteComment(Long commentId, String nickname) {
+        Comment commentToDelete = findCommentById(commentId);
+        checkCommentWriterMatches(commentToDelete, nickname);
+        deleteCommentData(commentToDelete);
+        return SuccessResponse.of("200 SUCCESS");
+    }
+
+    public Comment findCommentById(Long commentId) {
+        return commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
-        if (!deletingComment.getUser().getNickname().equals(requestingUserNickname)) {
+    }
+
+    private void checkCommentWriterMatches(Comment commentToDelete, String requestedUserNickname) {
+        String commentWriterNickname = commentToDelete.getUser().getNickname();
+        if (!commentWriterNickname.equals(requestedUserNickname)) {
             throw new UnauthorizedAccessException();
         }
-        commentRepository.delete(deletingComment);
-        return SuccessResponse.of("200 SUCCESS");
+    }
+
+    private void deleteCommentData(Comment comment) {
+        commentRepository.delete(comment);
     }
 
 }
