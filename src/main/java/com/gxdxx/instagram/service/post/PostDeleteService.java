@@ -16,14 +16,27 @@ public class PostDeleteService {
 
     private final PostRepository postRepository;
 
-    public SuccessResponse deletePost(Long postId, String requestingUserNickname) {
-        Post deletingPost = postRepository.findById(postId)
+    public SuccessResponse deletePost(Long postId, String nickname) {
+        Post postToDelete = findPostById(postId);
+        checkPostWriterMatches(postToDelete, nickname);
+        deletePostData(postToDelete);
+        return SuccessResponse.of("200 SUCCESS");
+    }
+
+    private Post findPostById(Long postId) {
+        return postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-        if (!deletingPost.getUser().getNickname().equals(requestingUserNickname)) {
+    }
+
+    private void checkPostWriterMatches(Post postToDelete, String requestedUserNickname) {
+        String postWriterNickname = postToDelete.getUser().getNickname();
+        if (!postWriterNickname.equals(requestedUserNickname)) {
             throw new UnauthorizedAccessException();
         }
-        postRepository.delete(deletingPost);
-        return SuccessResponse.of("200 SUCCESS");
+    }
+
+    private void deletePostData(Post post) {
+        postRepository.delete(post);
     }
 
 }
