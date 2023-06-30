@@ -28,11 +28,11 @@ public class UserLoginService {
     private final TokenProvider tokenProvider;
 
     public SuccessResponse login(UserLoginRequest request, HttpServletResponse response) {
-        User savedUser = findUserByNickname(request.nickname());
-        checkPasswordMatches(request.password(), savedUser.getPassword());
-        String newAccessToken = createAccessToken(savedUser);
-        String newRefreshToken = createRefreshToken(savedUser);
-        updateOrCreateRefreshToken(savedUser.getId(), newRefreshToken);
+        User userToLogin = findUserByNickname(request.nickname());
+        checkPasswordMatches(request.password(), userToLogin.getPassword());
+        String newAccessToken = createAccessToken(userToLogin);
+        String newRefreshToken = createRefreshToken(userToLogin);
+        updateOrCreateRefreshToken(userToLogin.getId(), newRefreshToken);
         setAccessTokenHeader(response, newAccessToken);
         addRefreshTokenCookie(response, newRefreshToken);
         return new SuccessResponse("토큰이 발급되었습니다.");

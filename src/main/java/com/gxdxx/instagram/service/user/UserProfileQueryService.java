@@ -19,10 +19,10 @@ public class UserProfileQueryService {
 
     @Transactional(readOnly = true)
     public UserProfileResponse findUserProfile(String nickname) {
-        User user = findUserByNickname(nickname);
-        Long followerCount = getFollowerCount(user);
-        Long followingCount = getFollowingCount(user);
-        return createProfileResponse(user, followerCount, followingCount);
+        User userToViewProfile = findUserByNickname(nickname);
+        Long followerCount = getFollowerCount(userToViewProfile);
+        Long followingCount = getFollowingCount(userToViewProfile);
+        return createProfileResponse(userToViewProfile, followerCount, followingCount);
     }
 
     private User findUserByNickname(String nickname) {

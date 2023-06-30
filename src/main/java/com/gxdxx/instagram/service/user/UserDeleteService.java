@@ -22,9 +22,9 @@ public class UserDeleteService {
     private final PasswordEncoder passwordEncoder;
 
     public SuccessResponse deleteUser(String password, String nickname) {
-        User deleteUser = findUserByNickname(nickname);
-        checkPasswordMatches(password, deleteUser.getPassword());
-        deleteUserData(deleteUser);
+        User userToDelete = findUserByNickname(nickname);
+        checkPasswordMatches(password, userToDelete.getPassword());
+        deleteUserData(userToDelete);
         return SuccessResponse.of("회원탈퇴를 성공했습니다.");
     }
 
