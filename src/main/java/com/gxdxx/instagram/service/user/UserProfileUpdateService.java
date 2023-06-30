@@ -22,10 +22,10 @@ public class UserProfileUpdateService {
 
     public UserProfileUpdateResponse updateUserProfile(UserProfileUpdateRequest request, String nickname) {
         checkNicknameEquality(request.nickname(), nickname);
-        User savedUser = findUserByNickname(nickname);
+        User userToUpdate = findUserByNickname(nickname);
         String newProfileImageUrl = uploadProfileImage(request.profileImage());
-        updateProfile(savedUser, request.nickname(), newProfileImageUrl);
-        return createUserProfileUpdateResponse(savedUser);
+        updateProfile(userToUpdate, request.nickname(), newProfileImageUrl);
+        return createUserProfileUpdateResponse(userToUpdate);
     }
 
     private void checkNicknameEquality(String newNickname, String savedNickname) {
@@ -53,8 +53,8 @@ public class UserProfileUpdateService {
         user.updateProfile(newNickname, newProfileImageUrl);
     }
 
-    private UserProfileUpdateResponse createUserProfileUpdateResponse(User savedUser) {
-        return UserProfileUpdateResponse.of(savedUser.getId(), savedUser.getNickname(), savedUser.getProfileImageUrl());
+    private UserProfileUpdateResponse createUserProfileUpdateResponse(User user) {
+        return UserProfileUpdateResponse.of(user.getId(), user.getNickname(), user.getProfileImageUrl());
     }
 
 }
