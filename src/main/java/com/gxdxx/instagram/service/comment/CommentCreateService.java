@@ -23,13 +23,26 @@ public class CommentCreateService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public CommentRegisterResponse createComment(CommentRegisterRequest request, String requestingUserNickname) {
-        User registeringUser = userRepository.findByNickname(requestingUserNickname)
+    public CommentRegisterResponse createComment(CommentRegisterRequest request, String nickname) {
+        User userToCreateComment = findUserByNickname(nickname);
+        Post commentablePost = findPostById(request.postId());
+        Comment createdComment = createComment(request, userToCreateComment, commentablePost);
+        return CommentRegisterResponse.of(createdComment);
+    }
+
+    public User findUserByNickname(String nickname) {
+        return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
-        Post postForComment = postRepository.findById(request.postId())
+    }
+
+    public Post findPostById(Long postId) {
+        return postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-        Comment registeringComment = Comment.of(request.content(), registeringUser, postForComment);
-        return CommentRegisterResponse.of(commentRepository.save(registeringComment));
+    }
+
+    public Comment createComment(CommentRegisterRequest request, User user, Post post) {
+        Comment commentToCreate = Comment.of(request.content(), user, post);
+        return commentRepository.save(commentToCreate);
     }
 
 }
