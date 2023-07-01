@@ -26,34 +26,34 @@ public class MessageCreateService {
     private final UserRepository userRepository;
 
     public SuccessResponse sendMessage(MessageSendRequest request, String nickname) {
-        User sendUser = getUserByNickname(nickname);
-        User receiveUser = getUserById(request.userId());
-        validateUsers(sendUser, receiveUser);
-        ChatRoom chatRoom = getOrCreateChatRoom(sendUser, receiveUser);
+        User sendUser = findUserByNickname(nickname);
+        User receiveUser = findUserById(request.userId());
+        checkSendMessageToSelf(sendUser, receiveUser);
+        ChatRoom chatRoom = findOrElseCreateChatRoom(sendUser, receiveUser);
         LocalDateTime now = LocalDateTime.now();
-        chatRoom.updateLastMessage(request.content(), now);
-        Message message = Message.of(request.content(), chatRoom, sendUser, receiveUser, now);
-        messageRepository.save(message);
+        chatRoom.updateLastMessage(request.content(), LocalDateTime.now());
+        Message messageToSend = Message.of(request.content(), chatRoom, sendUser, receiveUser, now);
+        messageRepository.save(messageToSend);
         return SuccessResponse.of("200 SUCCESS");
     }
 
-    private User getUserByNickname(String nickname) {
+    private User findUserByNickname(String nickname) {
         return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    private User getUserById(Long userId) {
+    private User findUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    private void validateUsers(User sendUser, User receiveUser) {
+    private void checkSendMessageToSelf(User sendUser, User receiveUser) {
         if (sendUser.equals(receiveUser)) {
             throw new InvalidRequestException();
         }
     }
 
-    private ChatRoom getOrCreateChatRoom(User sendUser, User receiveUser) {
+    private ChatRoom findOrElseCreateChatRoom(User sendUser, User receiveUser) {
         return chatRoomRepository.findByUserIds(sendUser.getId(), receiveUser.getId())
                 .orElseGet(() -> chatRoomRepository.save(ChatRoom.of(sendUser, receiveUser)));
     }
