@@ -38,7 +38,10 @@ public class PostFeedQueryService {
     }
 
     private Long determineCursor(Long requestCursor) {
-        return requestCursor != null ? requestCursor : findMaxPostIdOrElseDefaultCursor();
+        if (requestCursor != null) {
+            return requestCursor;
+        }
+        return findMaxPostIdOrElseDefaultCursor();
     }
 
     private Long findMaxPostIdOrElseDefaultCursor() {
