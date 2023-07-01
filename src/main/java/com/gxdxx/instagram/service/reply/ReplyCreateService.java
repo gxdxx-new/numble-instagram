@@ -23,13 +23,29 @@ public class ReplyCreateService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    public ReplyRegisterResponse createReply(ReplyRegisterRequest request, String requestingUserNickname) {
-        User registeringUser = userRepository.findByNickname(requestingUserNickname)
+    public ReplyRegisterResponse createReply(ReplyRegisterRequest request, String nickname) {
+        User userToCreateReply = findUserByNickname(nickname);
+        Comment commentToCreate = findCommentById(request.commentId());
+        Reply replyToCreate = createReply(request.content(), userToCreateReply, commentToCreate);
+        return ReplyRegisterResponse.of(saveReply(replyToCreate));
+    }
+
+    private User findUserByNickname(String nickname) {
+        return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
-        Comment registeringComment = commentRepository.findById(request.commentId())
+    }
+
+    private Comment findCommentById(Long commentId) {
+        return commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
-        Reply registeringReply = Reply.of(request.content(), registeringUser, registeringComment);
-        return ReplyRegisterResponse.of(replyRepository.save(registeringReply));
+    }
+
+    private Reply createReply(String content, User user, Comment comment) {
+        return Reply.of(content, user, comment);
+    }
+
+    private Reply saveReply(Reply reply) {
+        return replyRepository.save(reply);
     }
 
 }

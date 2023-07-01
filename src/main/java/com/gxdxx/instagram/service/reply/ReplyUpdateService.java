@@ -17,14 +17,23 @@ public class ReplyUpdateService {
 
     private final ReplyRepository replyRepository;
 
-    public ReplyUpdateResponse updateReply(ReplyUpdateRequest request, String requestingUserNickname) {
-        Reply updatingReply = replyRepository.findById(request.id())
+    public ReplyUpdateResponse updateReply(ReplyUpdateRequest request, String nickname) {
+        Reply replyToUpdate = findReplyById(request.id());
+        checkReplyWriterMatches(replyToUpdate, nickname);
+        replyToUpdate.update(request.content());
+        return ReplyUpdateResponse.of(replyToUpdate);
+    }
+
+    public Reply findReplyById(Long replyId) {
+        return replyRepository.findById(replyId)
                 .orElseThrow(ReplyNotFoundException::new);
-        if (!updatingReply.getUser().getNickname().equals(requestingUserNickname)) {
+    }
+
+    private void checkReplyWriterMatches(Reply replyToUpdate, String requestedUserNickname) {
+        String replyWriterNickname = replyToUpdate.getUser().getNickname();
+        if (!replyWriterNickname.equals(requestedUserNickname)) {
             throw new UnauthorizedAccessException();
         }
-        updatingReply.update(request.content());
-        return ReplyUpdateResponse.of(updatingReply);
     }
 
 }

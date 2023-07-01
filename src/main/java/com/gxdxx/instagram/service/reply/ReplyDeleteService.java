@@ -16,14 +16,27 @@ public class ReplyDeleteService {
 
     private final ReplyRepository replyRepository;
 
-    public SuccessResponse deleteReply(Long replyId, String requestingUserNickname) {
-        Reply deletingReply = replyRepository.findById(replyId)
+    public SuccessResponse deleteReply(Long replyId, String nickname) {
+        Reply replyToDelete = findReplyById(replyId);
+        checkReplyWriterMatches(replyToDelete, nickname);
+        deleteReplyData(replyToDelete);
+        return SuccessResponse.of("200 SUCCESS");
+    }
+
+    public Reply findReplyById(Long replyId) {
+        return replyRepository.findById(replyId)
                 .orElseThrow(ReplyNotFoundException::new);
-        if (!deletingReply.getUser().getNickname().equals(requestingUserNickname)) {
+    }
+
+    private void checkReplyWriterMatches(Reply replyToDelete, String requestedUserNickname) {
+        String replyWriterNickname = replyToDelete.getUser().getNickname();
+        if (!replyWriterNickname.equals(requestedUserNickname)) {
             throw new UnauthorizedAccessException();
         }
-        replyRepository.delete(deletingReply);
-        return SuccessResponse.of("200 SUCCESS");
+    }
+
+    private void deleteReplyData(Reply reply) {
+        replyRepository.delete(reply);
     }
 
 }
