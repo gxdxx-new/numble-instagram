@@ -20,16 +20,26 @@ public class FollowDeleteService {
     private final UserRepository userRepository;
 
     public SuccessResponse deleteFollow(Long followingId, String followerNickname) {
-
-        User follower = userRepository.findByNickname(followerNickname)
-                .orElseThrow(UserNotFoundException::new);
-        User following = userRepository.findById(followingId)
-                .orElseThrow(UserNotFoundException::new);
-
-        Follow follow = followRepository.findByFollowerAndFollowing(follower, following)
-                .orElseThrow(FollowNotFountException::new);
+        User follower = findUserByNickname(followerNickname);
+        User following = findUserById(followingId);
+        Follow follow = findFollowByFollowerAndFollowing(follower, following);
         followRepository.delete(follow);
         return SuccessResponse.of("200 SUCCESS");
+    }
+
+    private User findUserByNickname(String nickname) {
+        return userRepository.findByNickname(nickname)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private Follow findFollowByFollowerAndFollowing(User follower, User following) {
+        return followRepository.findByFollowerAndFollowing(follower, following)
+                .orElseThrow(FollowNotFountException::new);
     }
 
 }
