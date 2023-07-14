@@ -1,6 +1,7 @@
 package com.gxdxx.instagram.config;
 
 import com.gxdxx.instagram.config.jwt.TokenProvider;
+import com.gxdxx.instagram.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private final TokenProvider tokenProvider;
+    private final RedisService redisService;
 
     /**
      * 직접 정의한 필터(TokenAuthenticationFilter)에서 인증 작업을 진행하기 때문에
@@ -57,7 +59,7 @@ public class SecurityConfig {
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
-        return new TokenAuthenticationFilter(tokenProvider);
+        return new TokenAuthenticationFilter(tokenProvider, redisService);
     }
 
     @Bean
