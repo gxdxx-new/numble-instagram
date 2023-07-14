@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.controller;
 
+import com.gxdxx.instagram.config.jwt.TokenProvider;
 import com.gxdxx.instagram.dto.request.UserDeleteRequest;
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,7 @@ public class UserController {
     private final UserProfileUpdateService userProfileUpdateService;
     private final UserDeleteService userDeleteService;
     private final UserLoginService userLoginService;
+    private final UserLogoutService userLogoutService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "회원가입 성공",
@@ -87,6 +90,22 @@ public class UserController {
     ) {
         validateRequest(bindingResult);
         return userLoginService.login(request, response);
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "로그아웃 성공",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @Operation(summary = "로그아웃 메소드", description = "로그아웃 메소드입니다.")
+    @PostMapping(value = "/logout", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public SuccessResponse logout(
+            @CookieValue(TokenProvider.REFRESH_TOKEN) Cookie cookie,
+            @RequestHeader(TokenProvider.HEADER_AUTHORIZATION) String authorizationHeader,
+            Principal principal
+    ) {
+        return userLogoutService.logout(cookie.getValue(), authorizationHeader, principal.getName());
     }
 
     @ApiResponses(value = {
