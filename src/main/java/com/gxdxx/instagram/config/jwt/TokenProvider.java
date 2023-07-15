@@ -31,20 +31,32 @@ public class TokenProvider {
     public static final String TOKEN_PREFIX = "Bearer ";
 
     // 토큰 생성 메서드
-    public String createToken(User user, String type) {
+    public String createAccessToken(User user) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + (type.equals(ACCESS_TOKEN) ? ACCESS_TIME : REFRESH_TIME));
-        String subject = type.equals(ACCESS_TOKEN) ? user.getNickname() : REFRESH_TOKEN;
+        Date expiration = new Date(now.getTime() + ACCESS_TIME);
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)   // 헤더 typ: jwt
                 .setIssuer(jwtProperties.getIssuer())   // 내용 iss: yml 파일에서 설정한 값
                 .setIssuedAt(now)   // 내용 iat: 현재 시간
-                .setExpiration(expiry)  // 내용 exp: 만료일자
-                .setSubject(subject)    // 내용 sub: 토큰 제목
+                .setExpiration(expiration)  // 내용 exp: 만료일자
+                .setSubject(user.getNickname())    // 내용 sub: 토큰 제목
                 .claim("id", user.getId())  // 클레임 id: 유저 id, 비공개 클레임(공개되면 안되는 클레임)
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())   // 서명: 비밀값과 함께 해시값을 HS256 방식으로 암호화
                 .compact();
+    }
+
+    public RefreshTokenDto createRefreshToken() {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + REFRESH_TIME);
+
+        String refreshToken =  Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)   // 헤더 typ: jwt
+                .setExpiration(expiration)  // 내용 exp: 만료일자
+                .setSubject(REFRESH_TOKEN)    // 내용 sub: 토큰 제목
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())   // 서명: 비밀값과 함께 해시값을 HS256 방식으로 암호화
+                .compact();
+        return new RefreshTokenDto(refreshToken, expiration.getTime());
     }
 
     // JWT 토큰 유효성 검증 메서드
@@ -73,10 +85,17 @@ public class TokenProvider {
 
     // 토큰의 sub에 refresh_token이 담겨있을 경우, 인증 실패
     public boolean isAccessToken(String token) {
-        if (getSub(token).equals(ACCESS_TOKEN)) {
-            return true;
+        if (getSub(token).equals(REFRESH_TOKEN)) {
+            return false;
         }
-        return false;
+        return true;
+    }
+
+    public String getAccessToken(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith(TokenProvider.TOKEN_PREFIX)) {
+            return authorizationHeader.substring(TokenProvider.TOKEN_PREFIX.length());
+        }
+        return null;
     }
 
     // 토큰 기반으로 sub를 가져오는 메서드
@@ -89,6 +108,11 @@ public class TokenProvider {
     public Long getUserId(String token) {
         Claims claims = getClaims(token);
         return claims.get("id", Long.class);
+    }
+
+    public long getExpiration(String token) {
+        Claims claims = getClaims(token);
+        return claims.getExpiration().getTime();
     }
 
     // 비밀값으로 토큰을 복호화한 뒤 클레임을 가져오는 메서드

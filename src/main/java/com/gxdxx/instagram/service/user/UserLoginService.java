@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.service.user;
 
+import com.gxdxx.instagram.config.jwt.RefreshTokenDto;
 import com.gxdxx.instagram.config.jwt.TokenProvider;
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
@@ -9,13 +10,17 @@ import com.gxdxx.instagram.exception.PasswordNotMatchException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.RefreshTokenRepository;
 import com.gxdxx.instagram.repository.UserRepository;
+import com.gxdxx.instagram.service.redis.RedisService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
+
+import static com.gxdxx.instagram.service.redis.RedisService.REFRESH_TOKEN_KEY_PREFIX;
 
 @Transactional
 @RequiredArgsConstructor
@@ -26,15 +31,16 @@ public class UserLoginService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final RedisService redisService;
 
     public SuccessResponse login(UserLoginRequest request, HttpServletResponse response) {
         User userToLogin = findUserByNickname(request.nickname());
         checkPasswordMatches(request.password(), userToLogin.getPassword());
         String newAccessToken = createAccessToken(userToLogin);
-        String newRefreshToken = createRefreshToken(userToLogin);
-        updateOrCreateRefreshToken(userToLogin.getId(), newRefreshToken);
+        RefreshTokenDto newRefreshToken = createRefreshToken();
+        saveRefreshTokenInRedis(userToLogin.getId(), newRefreshToken.refreshToken(), newRefreshToken.expiration());
         setAccessTokenHeader(response, newAccessToken);
-        addRefreshTokenCookie(response, newRefreshToken);
+        addRefreshTokenCookie(response, newRefreshToken.refreshToken());
         return new SuccessResponse("토큰이 발급되었습니다.");
     }
 
@@ -50,20 +56,19 @@ public class UserLoginService {
     }
 
     private String createAccessToken(User user) {
-        return tokenProvider.createToken(user, TokenProvider.ACCESS_TOKEN);
+        return tokenProvider.createAccessToken(user);
     }
 
-    private String createRefreshToken(User user) {
-        return tokenProvider.createToken(user, TokenProvider.REFRESH_TOKEN);
+    private RefreshTokenDto createRefreshToken() {
+        return tokenProvider.createRefreshToken();
     }
 
-    private void updateOrCreateRefreshToken(Long userId, String newRefreshToken) {
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUserId(userId);
-        if (refreshToken.isPresent()) {
-            refreshToken.get().updateToken(newRefreshToken);
-            return;
-        }
-        refreshTokenRepository.save(RefreshToken.of(userId, newRefreshToken));
+    private void saveRefreshTokenInRedis(Long userId, String refreshToken, long expiration) {
+        redisService.setValues(
+                REFRESH_TOKEN_KEY_PREFIX + userId,
+                refreshToken,
+                expiration - new Date().getTime()
+        );
     }
 
     private void setAccessTokenHeader(HttpServletResponse response, String accessToken) {
