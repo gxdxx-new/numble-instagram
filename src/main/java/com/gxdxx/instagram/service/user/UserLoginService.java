@@ -4,11 +4,9 @@ import com.gxdxx.instagram.config.jwt.RefreshTokenDto;
 import com.gxdxx.instagram.config.jwt.TokenProvider;
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.RefreshToken;
 import com.gxdxx.instagram.entity.User;
 import com.gxdxx.instagram.exception.PasswordNotMatchException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
-import com.gxdxx.instagram.repository.RefreshTokenRepository;
 import com.gxdxx.instagram.repository.UserRepository;
 import com.gxdxx.instagram.service.redis.RedisService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.Optional;
 
 import static com.gxdxx.instagram.service.redis.RedisService.REFRESH_TOKEN_KEY_PREFIX;
 

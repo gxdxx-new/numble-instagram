@@ -74,11 +74,6 @@ public class RestControllerExceptionAdvice {
         return new ErrorResponse("문제가 발생했습니다. 관리자에게 문의해주세요.");
     }
 
-    @ExceptionHandler(RefreshTokenNotFoundException.class)
-    public ErrorResponse refreshTokenNotFoundException(RefreshTokenNotFoundException ex) {
-        return new ErrorResponse("존재하지 않는 Refresh Token입니다.");
-    }
-
     @ExceptionHandler(RefreshTokenInvalidException.class)
     public ErrorResponse refreshTokenInvalidException(RefreshTokenInvalidException ex) {
         return new ErrorResponse("유효하지 않은 Refresh Token입니다.");
