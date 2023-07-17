@@ -2,8 +2,8 @@ package com.gxdxx.instagram.service.follow;
 
 import com.gxdxx.instagram.dto.request.FollowCreateRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.Follow;
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.follow.domain.Follow;
+import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.FollowAlreadyExistsException;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.exception.UserNotFoundException;

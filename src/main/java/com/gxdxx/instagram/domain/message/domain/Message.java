@@ -1,5 +1,8 @@
-package com.gxdxx.instagram.entity;
+package com.gxdxx.instagram.domain.message.domain;
 
+import com.gxdxx.instagram.domain.chatroom.domain.ChatRoom;
+import com.gxdxx.instagram.domain.user.domain.User;
+import com.gxdxx.instagram.domain.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

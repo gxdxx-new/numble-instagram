@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.entity;
+package com.gxdxx.instagram.domain.user.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,5 +1,6 @@
-package com.gxdxx.instagram.entity;
+package com.gxdxx.instagram.domain.user.domain;
 
+import com.gxdxx.instagram.domain.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AccessLevel;

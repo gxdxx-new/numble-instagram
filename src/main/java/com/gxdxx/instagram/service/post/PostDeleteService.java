@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.service.post;
 
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.Post;
+import com.gxdxx.instagram.domain.post.domain.Post;
 import com.gxdxx.instagram.exception.PostNotFoundException;
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.repository.PostRepository;

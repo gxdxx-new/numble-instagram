@@ -1,5 +1,8 @@
-package com.gxdxx.instagram.entity;
+package com.gxdxx.instagram.domain.reply.domain;
 
+import com.gxdxx.instagram.domain.comment.domain.Comment;
+import com.gxdxx.instagram.domain.user.domain.User;
+import com.gxdxx.instagram.domain.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,10 +19,10 @@ import java.util.Objects;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE comment SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE reply SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @Entity
-public class Comment extends BaseEntity {
+public class Reply extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,17 +42,17 @@ public class Comment extends BaseEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    @JoinColumn(name = "comment_id", nullable = false)
+    private Comment comment;
 
-    private Comment(String content, User user, Post post) {
+    private Reply(String content, User user, Comment comment) {
         this.content = content;
         this.user = user;
-        this.post = post;
+        this.comment = comment;
     }
 
-    public static Comment of(String content, User user, Post post) {
-        return new Comment(content, user, post);
+    public static Reply of(String content, User user, Comment comment) {
+        return new Reply(content, user, comment);
     }
 
     public void update(String content) {
@@ -59,8 +62,8 @@ public class Comment extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Comment comment)) return false;
-        return id != null && id.equals(comment.id);
+        if (!(o instanceof Reply reply)) return false;
+        return id != null && id.equals(reply.id);
     }
 
     @Override

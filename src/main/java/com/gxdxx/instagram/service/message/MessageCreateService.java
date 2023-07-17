@@ -2,9 +2,9 @@ package com.gxdxx.instagram.service.message;
 
 import com.gxdxx.instagram.dto.request.MessageSendRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.ChatRoom;
-import com.gxdxx.instagram.entity.Message;
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.chatroom.domain.ChatRoom;
+import com.gxdxx.instagram.domain.message.domain.Message;
+import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.InvalidRequestException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.ChatRoomRepository;

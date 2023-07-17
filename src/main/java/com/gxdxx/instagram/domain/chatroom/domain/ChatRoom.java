@@ -1,6 +1,7 @@
-package com.gxdxx.instagram.entity;
+package com.gxdxx.instagram.domain.chatroom.domain;
 
-import com.gxdxx.instagram.exception.UnauthorizedAccessException;
+import com.gxdxx.instagram.domain.user.domain.User;
+import com.gxdxx.instagram.domain.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

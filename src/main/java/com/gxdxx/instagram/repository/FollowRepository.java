@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.repository;
 
-import com.gxdxx.instagram.entity.Follow;
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.follow.domain.Follow;
+import com.gxdxx.instagram.domain.user.domain.User;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.JpaRepository;
 

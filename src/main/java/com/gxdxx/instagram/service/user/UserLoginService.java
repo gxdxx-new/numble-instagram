@@ -4,7 +4,7 @@ import com.gxdxx.instagram.config.jwt.RefreshTokenDto;
 import com.gxdxx.instagram.config.jwt.TokenProvider;
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.PasswordNotMatchException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.UserRepository;

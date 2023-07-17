@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gxdxx.instagram.entity.Post;
+import com.gxdxx.instagram.domain.post.domain.Post;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record PostUpdateResponse(

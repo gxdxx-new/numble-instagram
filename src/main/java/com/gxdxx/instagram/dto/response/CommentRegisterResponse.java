@@ -1,6 +1,6 @@
 package com.gxdxx.instagram.dto.response;
 
-import com.gxdxx.instagram.entity.Comment;
+import com.gxdxx.instagram.domain.comment.domain.Comment;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record CommentRegisterResponse(

@@ -3,7 +3,7 @@ package com.gxdxx.instagram.service.chatroom;
 import com.gxdxx.instagram.dto.request.ChatRoomListRequest;
 import com.gxdxx.instagram.dto.response.ChatRoomListResponse;
 import com.gxdxx.instagram.dto.response.ChatRoomResponse;
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.ChatRoomRepository;
 import com.gxdxx.instagram.repository.UserRepository;

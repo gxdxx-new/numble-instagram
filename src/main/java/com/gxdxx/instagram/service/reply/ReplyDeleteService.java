@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.service.reply;
 
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.Reply;
+import com.gxdxx.instagram.domain.reply.domain.Reply;
 import com.gxdxx.instagram.exception.ReplyNotFoundException;
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.repository.ReplyRepository;

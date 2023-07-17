@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.service.user;
 
-import com.gxdxx.instagram.entity.User;
-import com.gxdxx.instagram.entity.UserDetailsImpl;
+import com.gxdxx.instagram.domain.user.domain.User;
+import com.gxdxx.instagram.domain.user.domain.UserDetailsImpl;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

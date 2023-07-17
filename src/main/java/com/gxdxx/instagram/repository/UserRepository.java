@@ -1,6 +1,6 @@
 package com.gxdxx.instagram.repository;
 
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -2,7 +2,7 @@ package com.gxdxx.instagram.service.user;
 
 import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.UserRepository;

@@ -2,9 +2,9 @@ package com.gxdxx.instagram.service.reply;
 
 import com.gxdxx.instagram.dto.request.ReplyRegisterRequest;
 import com.gxdxx.instagram.dto.response.ReplyRegisterResponse;
-import com.gxdxx.instagram.entity.Comment;
-import com.gxdxx.instagram.entity.Reply;
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.comment.domain.Comment;
+import com.gxdxx.instagram.domain.reply.domain.Reply;
+import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.CommentNotFoundException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.CommentRepository;

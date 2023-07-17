@@ -1,6 +1,6 @@
 package com.gxdxx.instagram.repository;
 
-import com.gxdxx.instagram.entity.ChatRoom;
+import com.gxdxx.instagram.domain.chatroom.domain.ChatRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

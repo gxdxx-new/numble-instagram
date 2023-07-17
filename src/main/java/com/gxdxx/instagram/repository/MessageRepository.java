@@ -1,6 +1,6 @@
 package com.gxdxx.instagram.repository;
 
-import com.gxdxx.instagram.entity.Message;
+import com.gxdxx.instagram.domain.message.domain.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

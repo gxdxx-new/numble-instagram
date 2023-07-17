@@ -1,8 +1,8 @@
 package com.gxdxx.instagram.service.follow;
 
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.Follow;
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.follow.domain.Follow;
+import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.FollowNotFountException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.FollowRepository;

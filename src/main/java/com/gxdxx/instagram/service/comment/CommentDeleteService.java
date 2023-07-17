@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.service.comment;
 
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.Comment;
+import com.gxdxx.instagram.domain.comment.domain.Comment;
 import com.gxdxx.instagram.exception.CommentNotFoundException;
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.repository.CommentRepository;

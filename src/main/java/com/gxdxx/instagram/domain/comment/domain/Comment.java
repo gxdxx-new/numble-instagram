@@ -1,5 +1,8 @@
-package com.gxdxx.instagram.entity;
+package com.gxdxx.instagram.domain.comment.domain;
 
+import com.gxdxx.instagram.domain.user.domain.User;
+import com.gxdxx.instagram.domain.BaseEntity;
+import com.gxdxx.instagram.domain.post.domain.Post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,10 +19,10 @@ import java.util.Objects;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE post SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE comment SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @Entity
-public class Post extends BaseEntity {
+public class Comment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +33,6 @@ public class Post extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String content;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String imageUrl;
-
     private boolean deleted = Boolean.FALSE;
 
     @NotNull
@@ -41,26 +40,30 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private Post(String content, String imageUrl, User user) {
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
+
+    private Comment(String content, User user, Post post) {
         this.content = content;
-        this.imageUrl = imageUrl;
         this.user = user;
+        this.post = post;
     }
 
-    public static Post of(String content, String imageUrl, User user) {
-        return new Post(content, imageUrl, user);
+    public static Comment of(String content, User user, Post post) {
+        return new Comment(content, user, post);
     }
 
-    public void update(String content, String imageUrl) {
+    public void update(String content) {
         this.content = content;
-        this.imageUrl = imageUrl;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Post post)) return false;
-        return id != null && id.equals(post.id);
+        if (!(o instanceof Comment comment)) return false;
+        return id != null && id.equals(comment.id);
     }
 
     @Override

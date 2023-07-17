@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.entity;
+package com.gxdxx.instagram.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

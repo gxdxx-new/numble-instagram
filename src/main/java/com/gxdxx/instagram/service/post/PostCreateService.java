@@ -2,8 +2,8 @@ package com.gxdxx.instagram.service.post;
 
 import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.response.PostRegisterResponse;
-import com.gxdxx.instagram.entity.Post;
-import com.gxdxx.instagram.entity.User;
+import com.gxdxx.instagram.domain.post.domain.Post;
+import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.UserNotFoundException;
 import com.gxdxx.instagram.repository.PostRepository;
 import com.gxdxx.instagram.repository.UserRepository;
