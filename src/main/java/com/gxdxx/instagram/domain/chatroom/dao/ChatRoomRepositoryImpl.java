@@ -1,7 +1,6 @@
 package com.gxdxx.instagram.domain.chatroom.dao;
 
-import com.gxdxx.instagram.domain.chatroom.dao.ChatRoomRepositoryCustom;
-import com.gxdxx.instagram.dto.response.ChatRoomListResponse;
+import com.gxdxx.instagram.domain.chatroom.dto.response.ChatRoomListResponse;
 import com.gxdxx.instagram.dto.response.QChatRoomListResponse;
 import com.gxdxx.instagram.entity.QChatRoom;
 import com.gxdxx.instagram.entity.QUser;

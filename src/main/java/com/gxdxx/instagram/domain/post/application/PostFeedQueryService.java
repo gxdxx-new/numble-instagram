@@ -1,8 +1,8 @@
 package com.gxdxx.instagram.domain.post.application;
 
-import com.gxdxx.instagram.dto.request.PostFeedRequest;
-import com.gxdxx.instagram.dto.response.FeedResponse;
-import com.gxdxx.instagram.dto.response.PostFeedResponse;
+import com.gxdxx.instagram.domain.post.dto.request.PostFeedRequest;
+import com.gxdxx.instagram.domain.post.dto.response.FeedResponse;
+import com.gxdxx.instagram.domain.post.dto.response.PostFeedResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
 import com.gxdxx.instagram.domain.post.dao.PostRepository;

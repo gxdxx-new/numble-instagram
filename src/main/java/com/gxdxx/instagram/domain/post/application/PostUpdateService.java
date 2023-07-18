@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.domain.post.application;
 
-import com.gxdxx.instagram.dto.request.PostUpdateRequest;
-import com.gxdxx.instagram.dto.response.PostUpdateResponse;
+import com.gxdxx.instagram.domain.post.dto.request.PostUpdateRequest;
+import com.gxdxx.instagram.domain.post.dto.response.PostUpdateResponse;
 import com.gxdxx.instagram.domain.post.domain.Post;
 import com.gxdxx.instagram.domain.post.exception.PostNotFoundException;
 import com.gxdxx.instagram.global.auth.UnauthorizedAccessException;

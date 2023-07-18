@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.domain.post.application;
 
-import com.gxdxx.instagram.dto.request.PostRegisterRequest;
-import com.gxdxx.instagram.dto.response.PostRegisterResponse;
+import com.gxdxx.instagram.domain.post.dto.request.PostRegisterRequest;
+import com.gxdxx.instagram.domain.post.dto.response.PostRegisterResponse;
 import com.gxdxx.instagram.domain.post.domain.Post;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;

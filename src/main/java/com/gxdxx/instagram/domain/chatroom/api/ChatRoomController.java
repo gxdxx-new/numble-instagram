@@ -1,8 +1,8 @@
 package com.gxdxx.instagram.domain.chatroom.api;
 
-import com.gxdxx.instagram.dto.request.ChatRoomListRequest;
-import com.gxdxx.instagram.dto.response.ChatRoomResponse;
-import com.gxdxx.instagram.dto.response.ErrorResponse;
+import com.gxdxx.instagram.domain.chatroom.dto.request.ChatRoomListRequest;
+import com.gxdxx.instagram.domain.chatroom.dto.response.ChatRoomResponse;
+import com.gxdxx.instagram.global.dto.response.ErrorResponse;
 import com.gxdxx.instagram.global.error.InvalidRequestException;
 import com.gxdxx.instagram.domain.chatroom.application.ChatRoomQueryService;
 import io.swagger.v3.oas.annotations.Operation;

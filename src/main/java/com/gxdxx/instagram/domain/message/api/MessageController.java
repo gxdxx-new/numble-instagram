@@ -1,10 +1,10 @@
 package com.gxdxx.instagram.domain.message.api;
 
-import com.gxdxx.instagram.dto.request.MessageListRequest;
-import com.gxdxx.instagram.dto.request.MessageSendRequest;
-import com.gxdxx.instagram.dto.response.ErrorResponse;
-import com.gxdxx.instagram.dto.response.MessageResponse;
-import com.gxdxx.instagram.dto.response.SuccessResponse;
+import com.gxdxx.instagram.domain.message.dto.request.MessageListRequest;
+import com.gxdxx.instagram.domain.message.dto.request.MessageSendRequest;
+import com.gxdxx.instagram.global.dto.response.ErrorResponse;
+import com.gxdxx.instagram.domain.message.dto.response.MessageResponse;
+import com.gxdxx.instagram.global.dto.response.SuccessResponse;
 import com.gxdxx.instagram.global.error.InvalidRequestException;
 import com.gxdxx.instagram.domain.message.application.MessageCreateService;
 import com.gxdxx.instagram.domain.message.application.MessageQueryService;

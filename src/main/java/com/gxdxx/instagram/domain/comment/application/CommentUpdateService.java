@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.domain.comment.application;
 
-import com.gxdxx.instagram.dto.request.CommentUpdateRequest;
-import com.gxdxx.instagram.dto.response.CommentUpdateResponse;
+import com.gxdxx.instagram.domain.comment.dto.request.CommentUpdateRequest;
+import com.gxdxx.instagram.domain.comment.dto.response.CommentUpdateResponse;
 import com.gxdxx.instagram.domain.comment.domain.Comment;
 import com.gxdxx.instagram.domain.comment.exception.CommentNotFoundException;
 import com.gxdxx.instagram.global.auth.UnauthorizedAccessException;

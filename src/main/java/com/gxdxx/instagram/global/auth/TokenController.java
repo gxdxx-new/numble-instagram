@@ -1,10 +1,8 @@
 package com.gxdxx.instagram.global.auth;
 
 import com.gxdxx.instagram.config.jwt.TokenProvider;
-import com.gxdxx.instagram.dto.request.AccessTokenCreateRequest;
-import com.gxdxx.instagram.dto.response.ErrorResponse;
-import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.global.auth.AccessTokenCreateService;
+import com.gxdxx.instagram.global.dto.response.ErrorResponse;
+import com.gxdxx.instagram.global.dto.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

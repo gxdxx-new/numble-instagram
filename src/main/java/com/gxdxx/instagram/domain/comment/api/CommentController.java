@@ -1,8 +1,12 @@
 package com.gxdxx.instagram.domain.comment.api;
 
-import com.gxdxx.instagram.dto.request.CommentRegisterRequest;
-import com.gxdxx.instagram.dto.request.CommentUpdateRequest;
+import com.gxdxx.instagram.domain.comment.dto.request.CommentRegisterRequest;
+import com.gxdxx.instagram.domain.comment.dto.request.CommentUpdateRequest;
+import com.gxdxx.instagram.domain.comment.dto.response.CommentRegisterResponse;
+import com.gxdxx.instagram.domain.comment.dto.response.CommentUpdateResponse;
 import com.gxdxx.instagram.dto.response.*;
+import com.gxdxx.instagram.global.dto.response.ErrorResponse;
+import com.gxdxx.instagram.global.dto.response.SuccessResponse;
 import com.gxdxx.instagram.global.error.InvalidRequestException;
 import com.gxdxx.instagram.domain.comment.application.CommentCreateService;
 import com.gxdxx.instagram.domain.comment.application.CommentDeleteService;

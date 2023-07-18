@@ -1,8 +1,8 @@
 package com.gxdxx.instagram.domain.chatroom.application;
 
-import com.gxdxx.instagram.dto.request.ChatRoomListRequest;
-import com.gxdxx.instagram.dto.response.ChatRoomListResponse;
-import com.gxdxx.instagram.dto.response.ChatRoomResponse;
+import com.gxdxx.instagram.domain.chatroom.dto.request.ChatRoomListRequest;
+import com.gxdxx.instagram.domain.chatroom.dto.response.ChatRoomListResponse;
+import com.gxdxx.instagram.domain.chatroom.dto.response.ChatRoomResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
 import com.gxdxx.instagram.domain.chatroom.dao.ChatRoomRepository;

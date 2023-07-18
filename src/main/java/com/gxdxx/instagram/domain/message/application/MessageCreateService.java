@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.domain.message.application;
 
-import com.gxdxx.instagram.dto.request.MessageSendRequest;
-import com.gxdxx.instagram.dto.response.SuccessResponse;
+import com.gxdxx.instagram.domain.message.dto.request.MessageSendRequest;
+import com.gxdxx.instagram.global.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.chatroom.domain.ChatRoom;
 import com.gxdxx.instagram.domain.message.domain.Message;
 import com.gxdxx.instagram.domain.user.domain.User;

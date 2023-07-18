@@ -1,7 +1,6 @@
 package com.gxdxx.instagram.domain.message.dao;
 
-import com.gxdxx.instagram.domain.message.dao.MessageRepositoryCustom;
-import com.gxdxx.instagram.dto.response.MessageListResponse;
+import com.gxdxx.instagram.domain.message.dto.response.MessageListResponse;
 import com.gxdxx.instagram.dto.response.QMessageListResponse;
 import com.gxdxx.instagram.entity.QMessage;
 import com.gxdxx.instagram.entity.QUser;

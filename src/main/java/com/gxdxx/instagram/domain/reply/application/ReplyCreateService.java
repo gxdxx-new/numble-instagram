@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.domain.reply.application;
 
-import com.gxdxx.instagram.dto.request.ReplyRegisterRequest;
-import com.gxdxx.instagram.dto.response.ReplyRegisterResponse;
+import com.gxdxx.instagram.domain.reply.dto.request.ReplyRegisterRequest;
+import com.gxdxx.instagram.domain.reply.dto.response.ReplyRegisterResponse;
 import com.gxdxx.instagram.domain.comment.domain.Comment;
 import com.gxdxx.instagram.domain.reply.domain.Reply;
 import com.gxdxx.instagram.domain.user.domain.User;

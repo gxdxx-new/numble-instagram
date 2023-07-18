@@ -1,6 +1,6 @@
 package com.gxdxx.instagram.domain.user.application;
 
-import com.gxdxx.instagram.dto.response.UserProfileResponse;
+import com.gxdxx.instagram.domain.user.dto.response.UserProfileResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
 import com.gxdxx.instagram.domain.follow.dao.FollowRepository;

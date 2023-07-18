@@ -9,7 +9,7 @@ import com.gxdxx.instagram.domain.reply.exception.ReplyNotFoundException;
 import com.gxdxx.instagram.domain.user.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.domain.user.exception.PasswordNotMatchException;
 import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
-import com.gxdxx.instagram.dto.response.ErrorResponse;
+import com.gxdxx.instagram.global.dto.response.ErrorResponse;
 import com.gxdxx.instagram.global.auth.RefreshTokenInvalidException;
 import com.gxdxx.instagram.global.auth.UnauthorizedAccessException;
 import com.gxdxx.instagram.global.error.FileProcessingException;
