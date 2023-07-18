@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.controller;
+package com.gxdxx.instagram.domain.reply.api;
 
 import com.gxdxx.instagram.dto.request.ReplyRegisterRequest;
 import com.gxdxx.instagram.dto.request.ReplyUpdateRequest;

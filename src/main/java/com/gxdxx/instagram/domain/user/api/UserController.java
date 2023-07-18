@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.controller;
+package com.gxdxx.instagram.domain.user.api;
 
 import com.gxdxx.instagram.config.jwt.TokenProvider;
 import com.gxdxx.instagram.domain.user.application.*;

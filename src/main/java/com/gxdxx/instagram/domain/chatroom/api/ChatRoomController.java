@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.controller;
+package com.gxdxx.instagram.domain.chatroom.api;
 
 import com.gxdxx.instagram.dto.request.ChatRoomListRequest;
 import com.gxdxx.instagram.dto.response.ChatRoomResponse;

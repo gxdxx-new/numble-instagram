@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.controller;
+package com.gxdxx.instagram.domain.comment.api;
 
 import com.gxdxx.instagram.dto.request.CommentRegisterRequest;
 import com.gxdxx.instagram.dto.request.CommentUpdateRequest;

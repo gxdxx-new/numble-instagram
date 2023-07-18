@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.controller;
+package com.gxdxx.instagram.global.auth;
 
 import com.gxdxx.instagram.config.jwt.TokenProvider;
 import com.gxdxx.instagram.dto.request.AccessTokenCreateRequest;
