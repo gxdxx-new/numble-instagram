@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.repository;
+package com.gxdxx.instagram.domain.chatroom.dao;
 
 import com.gxdxx.instagram.dto.response.ChatRoomListResponse;
 

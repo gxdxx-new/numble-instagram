@@ -5,7 +5,7 @@ import com.gxdxx.instagram.dto.response.PostUpdateResponse;
 import com.gxdxx.instagram.domain.post.domain.Post;
 import com.gxdxx.instagram.exception.PostNotFoundException;
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
-import com.gxdxx.instagram.repository.PostRepository;
+import com.gxdxx.instagram.domain.post.dao.PostRepository;
 import com.gxdxx.instagram.config.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

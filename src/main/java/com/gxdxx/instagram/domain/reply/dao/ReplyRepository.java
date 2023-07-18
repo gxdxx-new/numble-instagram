@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.repository;
+package com.gxdxx.instagram.domain.reply.dao;
 
 import com.gxdxx.instagram.domain.reply.domain.Reply;
 import org.springframework.data.jpa.repository.JpaRepository;

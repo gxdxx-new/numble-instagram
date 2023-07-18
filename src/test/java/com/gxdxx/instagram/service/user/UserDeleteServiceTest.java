@@ -4,7 +4,7 @@ import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.PasswordNotMatchException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
-import com.gxdxx.instagram.repository.UserRepository;
+import com.gxdxx.instagram.domain.user.dao.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

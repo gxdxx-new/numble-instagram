@@ -1,5 +1,6 @@
-package com.gxdxx.instagram.repository;
+package com.gxdxx.instagram.domain.post.dao;
 
+import com.gxdxx.instagram.domain.post.dao.PostRepositoryCustom;
 import com.gxdxx.instagram.dto.response.PostFeedResponse;
 import com.gxdxx.instagram.dto.response.QPostFeedResponse;
 import com.gxdxx.instagram.entity.*;

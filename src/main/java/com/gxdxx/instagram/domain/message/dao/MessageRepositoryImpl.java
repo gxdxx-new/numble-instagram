@@ -1,13 +1,10 @@
-package com.gxdxx.instagram.repository;
+package com.gxdxx.instagram.domain.message.dao;
 
+import com.gxdxx.instagram.domain.message.dao.MessageRepositoryCustom;
 import com.gxdxx.instagram.dto.response.MessageListResponse;
-import com.gxdxx.instagram.dto.response.QChatRoomListResponse;
 import com.gxdxx.instagram.dto.response.QMessageListResponse;
-import com.gxdxx.instagram.entity.QChatRoom;
 import com.gxdxx.instagram.entity.QMessage;
 import com.gxdxx.instagram.entity.QUser;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

@@ -5,7 +5,7 @@ import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.RefreshTokenInvalidException;
 import com.gxdxx.instagram.exception.UserNotFoundException;
-import com.gxdxx.instagram.repository.UserRepository;
+import com.gxdxx.instagram.domain.user.dao.UserRepository;
 import com.gxdxx.instagram.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -3,7 +3,7 @@ package com.gxdxx.instagram.service.user;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.domain.user.domain.UserDetailsImpl;
 import com.gxdxx.instagram.exception.UserNotFoundException;
-import com.gxdxx.instagram.repository.UserRepository;
+import com.gxdxx.instagram.domain.user.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

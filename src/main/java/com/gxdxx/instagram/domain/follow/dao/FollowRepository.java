@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.repository;
+package com.gxdxx.instagram.domain.follow.dao;
 
 import com.gxdxx.instagram.domain.follow.domain.Follow;
 import com.gxdxx.instagram.domain.user.domain.User;

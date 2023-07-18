@@ -4,7 +4,7 @@ import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.post.domain.Post;
 import com.gxdxx.instagram.exception.PostNotFoundException;
 import com.gxdxx.instagram.exception.UnauthorizedAccessException;
-import com.gxdxx.instagram.repository.PostRepository;
+import com.gxdxx.instagram.domain.post.dao.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
