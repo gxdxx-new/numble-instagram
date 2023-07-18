@@ -1,6 +1,6 @@
 package com.gxdxx.instagram.global.config.security;
 
-import com.gxdxx.instagram.global.auth.TokenAuthenticationFilter;
+import com.gxdxx.instagram.global.auth.filter.TokenAuthenticationFilter;
 import com.gxdxx.instagram.global.config.jwt.TokenProvider;
 import com.gxdxx.instagram.global.redis.RedisService;
 import lombok.RequiredArgsConstructor;

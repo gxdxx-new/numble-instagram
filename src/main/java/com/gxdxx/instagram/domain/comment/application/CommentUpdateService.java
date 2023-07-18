@@ -4,7 +4,7 @@ import com.gxdxx.instagram.domain.comment.dto.request.CommentUpdateRequest;
 import com.gxdxx.instagram.domain.comment.dto.response.CommentUpdateResponse;
 import com.gxdxx.instagram.domain.comment.domain.Comment;
 import com.gxdxx.instagram.domain.comment.exception.CommentNotFoundException;
-import com.gxdxx.instagram.global.auth.UnauthorizedAccessException;
+import com.gxdxx.instagram.global.auth.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.domain.comment.dao.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

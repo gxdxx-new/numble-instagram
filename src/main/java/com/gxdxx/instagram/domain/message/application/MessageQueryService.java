@@ -6,7 +6,7 @@ import com.gxdxx.instagram.domain.message.dto.response.MessageResponse;
 import com.gxdxx.instagram.domain.chatroom.domain.ChatRoom;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.domain.chatroom.exception.ChatRoomNotFoundException;
-import com.gxdxx.instagram.global.auth.UnauthorizedAccessException;
+import com.gxdxx.instagram.global.auth.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
 import com.gxdxx.instagram.domain.chatroom.dao.ChatRoomRepository;
 import com.gxdxx.instagram.domain.message.dao.MessageRepository;

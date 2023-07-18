@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.global.auth;
+package com.gxdxx.instagram.global.auth.filter;
 
 import com.gxdxx.instagram.global.config.jwt.TokenProvider;
 import com.gxdxx.instagram.global.redis.RedisService;

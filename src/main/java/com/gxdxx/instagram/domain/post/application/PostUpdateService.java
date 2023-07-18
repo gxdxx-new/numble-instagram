@@ -4,7 +4,7 @@ import com.gxdxx.instagram.domain.post.dto.request.PostUpdateRequest;
 import com.gxdxx.instagram.domain.post.dto.response.PostUpdateResponse;
 import com.gxdxx.instagram.domain.post.domain.Post;
 import com.gxdxx.instagram.domain.post.exception.PostNotFoundException;
-import com.gxdxx.instagram.global.auth.UnauthorizedAccessException;
+import com.gxdxx.instagram.global.auth.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.domain.post.dao.PostRepository;
 import com.gxdxx.instagram.global.config.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.gxdxx.instagram.global.redis;
 
-import com.gxdxx.instagram.global.auth.RefreshTokenInvalidException;
+import com.gxdxx.instagram.global.auth.exception.RefreshTokenInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;

@@ -1,5 +1,7 @@
-package com.gxdxx.instagram.global.auth;
+package com.gxdxx.instagram.global.auth.api;
 
+import com.gxdxx.instagram.global.auth.application.AccessTokenCreateService;
+import com.gxdxx.instagram.global.auth.dto.AccessTokenCreateRequest;
 import com.gxdxx.instagram.global.config.jwt.TokenProvider;
 import com.gxdxx.instagram.global.common.dto.response.ErrorResponse;
 import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
