@@ -1,15 +1,13 @@
 package com.gxdxx.instagram.service.follow;
 
-import com.gxdxx.instagram.dto.request.FollowCreateRequest;
-import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.Follow;
-import com.gxdxx.instagram.entity.User;
-import com.gxdxx.instagram.exception.FollowAlreadyExistsException;
-import com.gxdxx.instagram.exception.FollowNotFountException;
-import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.exception.UserNotFoundException;
-import com.gxdxx.instagram.repository.FollowRepository;
-import com.gxdxx.instagram.repository.UserRepository;
+import com.gxdxx.instagram.domain.follow.application.FollowDeleteService;
+import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
+import com.gxdxx.instagram.domain.follow.domain.Follow;
+import com.gxdxx.instagram.domain.user.domain.User;
+import com.gxdxx.instagram.domain.follow.exception.FollowNotFountException;
+import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
+import com.gxdxx.instagram.domain.follow.dao.FollowRepository;
+import com.gxdxx.instagram.domain.user.dao.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

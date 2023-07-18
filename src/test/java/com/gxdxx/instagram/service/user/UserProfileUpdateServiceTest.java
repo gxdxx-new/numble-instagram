@@ -1,12 +1,13 @@
 package com.gxdxx.instagram.service.user;
 
-import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
-import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
-import com.gxdxx.instagram.entity.User;
-import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
-import com.gxdxx.instagram.exception.UserNotFoundException;
-import com.gxdxx.instagram.repository.UserRepository;
-import com.gxdxx.instagram.config.s3.S3Uploader;
+import com.gxdxx.instagram.domain.user.application.UserProfileUpdateService;
+import com.gxdxx.instagram.domain.user.dto.request.UserProfileUpdateRequest;
+import com.gxdxx.instagram.domain.user.dto.response.UserProfileUpdateResponse;
+import com.gxdxx.instagram.domain.user.domain.User;
+import com.gxdxx.instagram.domain.user.exception.NicknameAlreadyExistsException;
+import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
+import com.gxdxx.instagram.domain.user.dao.UserRepository;
+import com.gxdxx.instagram.global.config.s3.S3Uploader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

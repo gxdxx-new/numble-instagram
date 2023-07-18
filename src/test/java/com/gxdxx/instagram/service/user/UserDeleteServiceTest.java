@@ -1,11 +1,11 @@
 package com.gxdxx.instagram.service.user;
 
-import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.entity.User;
-import com.gxdxx.instagram.exception.PasswordNotMatchException;
-import com.gxdxx.instagram.exception.UnauthorizedAccessException;
-import com.gxdxx.instagram.exception.UserNotFoundException;
-import com.gxdxx.instagram.repository.UserRepository;
+import com.gxdxx.instagram.domain.user.application.UserDeleteService;
+import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
+import com.gxdxx.instagram.domain.user.domain.User;
+import com.gxdxx.instagram.domain.user.exception.PasswordNotMatchException;
+import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
+import com.gxdxx.instagram.domain.user.dao.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

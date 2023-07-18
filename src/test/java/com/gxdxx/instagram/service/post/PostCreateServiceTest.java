@@ -1,13 +1,14 @@
 package com.gxdxx.instagram.service.post;
 
-import com.gxdxx.instagram.dto.request.PostRegisterRequest;
-import com.gxdxx.instagram.dto.response.PostRegisterResponse;
-import com.gxdxx.instagram.entity.Post;
-import com.gxdxx.instagram.entity.User;
-import com.gxdxx.instagram.exception.UserNotFoundException;
-import com.gxdxx.instagram.repository.PostRepository;
-import com.gxdxx.instagram.repository.UserRepository;
-import com.gxdxx.instagram.config.s3.S3Uploader;
+import com.gxdxx.instagram.domain.post.application.PostCreateService;
+import com.gxdxx.instagram.domain.post.dto.request.PostRegisterRequest;
+import com.gxdxx.instagram.domain.post.dto.response.PostRegisterResponse;
+import com.gxdxx.instagram.domain.post.domain.Post;
+import com.gxdxx.instagram.domain.user.domain.User;
+import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
+import com.gxdxx.instagram.domain.post.dao.PostRepository;
+import com.gxdxx.instagram.domain.user.dao.UserRepository;
+import com.gxdxx.instagram.global.config.s3.S3Uploader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
