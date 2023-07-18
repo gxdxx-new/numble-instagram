@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.config.s3;
+package com.gxdxx.instagram.global.config.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.domain.follow.application;
 
 import com.gxdxx.instagram.domain.follow.dto.request.FollowCreateRequest;
-import com.gxdxx.instagram.global.dto.response.SuccessResponse;
+import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.follow.domain.Follow;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.domain.follow.exception.FollowAlreadyExistsException;

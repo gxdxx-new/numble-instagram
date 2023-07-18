@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.global.dto.response;
+package com.gxdxx.instagram.global.common.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;

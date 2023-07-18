@@ -1,6 +1,6 @@
-package com.gxdxx.instagram.config;
+package com.gxdxx.instagram.global.auth;
 
-import com.gxdxx.instagram.config.jwt.TokenProvider;
+import com.gxdxx.instagram.global.config.jwt.TokenProvider;
 import com.gxdxx.instagram.global.redis.RedisService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

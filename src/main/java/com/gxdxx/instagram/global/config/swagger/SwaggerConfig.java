@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.config;
+package com.gxdxx.instagram.global.config.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

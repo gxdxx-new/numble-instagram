@@ -1,8 +1,8 @@
 package com.gxdxx.instagram.global.auth;
 
-import com.gxdxx.instagram.config.jwt.TokenProvider;
-import com.gxdxx.instagram.global.dto.response.ErrorResponse;
-import com.gxdxx.instagram.global.dto.response.SuccessResponse;
+import com.gxdxx.instagram.global.config.jwt.TokenProvider;
+import com.gxdxx.instagram.global.common.dto.response.ErrorResponse;
+import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import static com.gxdxx.instagram.config.jwt.TokenProvider.REFRESH_TOKEN;
+import static com.gxdxx.instagram.global.config.jwt.TokenProvider.REFRESH_TOKEN;
 
 @Tag(name = "tokens", description = "토큰 API")
 @RequiredArgsConstructor

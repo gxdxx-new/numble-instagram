@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.config.redis;
+package com.gxdxx.instagram.global.config.redis;
 
 import lombok.Getter;
 import lombok.Setter;

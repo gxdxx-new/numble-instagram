@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.config;
+package com.gxdxx.instagram.global.config.audit;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

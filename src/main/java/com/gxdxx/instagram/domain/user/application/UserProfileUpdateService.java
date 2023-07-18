@@ -6,7 +6,7 @@ import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.domain.user.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
 import com.gxdxx.instagram.domain.user.dao.UserRepository;
-import com.gxdxx.instagram.config.s3.S3Uploader;
+import com.gxdxx.instagram.global.config.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

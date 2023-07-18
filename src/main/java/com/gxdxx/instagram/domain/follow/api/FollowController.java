@@ -1,8 +1,8 @@
 package com.gxdxx.instagram.domain.follow.api;
 
 import com.gxdxx.instagram.domain.follow.dto.request.FollowCreateRequest;
-import com.gxdxx.instagram.global.dto.response.ErrorResponse;
-import com.gxdxx.instagram.global.dto.response.SuccessResponse;
+import com.gxdxx.instagram.global.common.dto.response.ErrorResponse;
+import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
 import com.gxdxx.instagram.global.error.InvalidRequestException;
 import com.gxdxx.instagram.domain.follow.application.FollowCreateService;
 import com.gxdxx.instagram.domain.follow.application.FollowDeleteService;

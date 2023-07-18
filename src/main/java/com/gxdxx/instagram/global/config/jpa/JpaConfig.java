@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.config;
+package com.gxdxx.instagram.global.config.jpa;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

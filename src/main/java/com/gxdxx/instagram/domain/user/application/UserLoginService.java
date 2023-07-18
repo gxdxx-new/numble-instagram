@@ -1,9 +1,9 @@
 package com.gxdxx.instagram.domain.user.application;
 
-import com.gxdxx.instagram.config.jwt.RefreshTokenDto;
-import com.gxdxx.instagram.config.jwt.TokenProvider;
+import com.gxdxx.instagram.global.config.jwt.RefreshTokenDto;
+import com.gxdxx.instagram.global.config.jwt.TokenProvider;
 import com.gxdxx.instagram.domain.user.dto.request.UserLoginRequest;
-import com.gxdxx.instagram.global.dto.response.SuccessResponse;
+import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.domain.user.exception.PasswordNotMatchException;
 import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;

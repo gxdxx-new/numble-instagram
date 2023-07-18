@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.config.jwt;
+package com.gxdxx.instagram.global.config.jwt;
 
 import lombok.Getter;
 import lombok.Setter;

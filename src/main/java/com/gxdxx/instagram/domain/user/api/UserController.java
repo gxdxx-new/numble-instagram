@@ -1,6 +1,6 @@
 package com.gxdxx.instagram.domain.user.api;
 
-import com.gxdxx.instagram.config.jwt.TokenProvider;
+import com.gxdxx.instagram.global.config.jwt.TokenProvider;
 import com.gxdxx.instagram.domain.user.application.*;
 import com.gxdxx.instagram.domain.user.dto.request.UserDeleteRequest;
 import com.gxdxx.instagram.domain.user.dto.request.UserLoginRequest;
@@ -9,8 +9,8 @@ import com.gxdxx.instagram.domain.user.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.domain.user.dto.response.UserProfileResponse;
 import com.gxdxx.instagram.domain.user.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.domain.user.dto.response.UserSignUpResponse;
-import com.gxdxx.instagram.global.dto.response.ErrorResponse;
-import com.gxdxx.instagram.global.dto.response.SuccessResponse;
+import com.gxdxx.instagram.global.common.dto.response.ErrorResponse;
+import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
 import com.gxdxx.instagram.global.error.InvalidRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

@@ -1,6 +1,7 @@
-package com.gxdxx.instagram.config;
+package com.gxdxx.instagram.global.config.security;
 
-import com.gxdxx.instagram.config.jwt.TokenProvider;
+import com.gxdxx.instagram.global.auth.TokenAuthenticationFilter;
+import com.gxdxx.instagram.global.config.jwt.TokenProvider;
 import com.gxdxx.instagram.global.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
