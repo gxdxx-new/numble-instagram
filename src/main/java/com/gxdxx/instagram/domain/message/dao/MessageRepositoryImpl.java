@@ -1,9 +1,9 @@
 package com.gxdxx.instagram.domain.message.dao;
 
 import com.gxdxx.instagram.domain.message.dto.response.MessageListResponse;
-import com.gxdxx.instagram.dto.response.QMessageListResponse;
-import com.gxdxx.instagram.entity.QMessage;
-import com.gxdxx.instagram.entity.QUser;
+import com.gxdxx.instagram.domain.message.dto.response.QMessageListResponse;
+import com.gxdxx.instagram.domain.message.domain.QMessage;
+import com.gxdxx.instagram.domain.user.domain.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

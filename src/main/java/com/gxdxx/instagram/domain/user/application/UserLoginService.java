@@ -25,7 +25,6 @@ import static com.gxdxx.instagram.global.redis.RedisService.REFRESH_TOKEN_KEY_PR
 public class UserLoginService {
 
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RedisService redisService;

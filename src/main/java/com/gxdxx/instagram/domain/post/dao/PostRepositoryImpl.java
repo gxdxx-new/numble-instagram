@@ -1,8 +1,10 @@
 package com.gxdxx.instagram.domain.post.dao;
 
 import com.gxdxx.instagram.domain.post.dto.response.PostFeedResponse;
-import com.gxdxx.instagram.dto.response.QPostFeedResponse;
-import com.gxdxx.instagram.entity.*;
+import com.gxdxx.instagram.domain.post.dto.response.QPostFeedResponse;
+import com.gxdxx.instagram.domain.post.domain.QPost;
+import com.gxdxx.instagram.domain.user.domain.QUser;
+import com.gxdxx.instagram.domain.follow.domain.QFollow;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

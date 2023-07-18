@@ -9,7 +9,6 @@ import com.gxdxx.instagram.domain.user.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.domain.user.dto.response.UserProfileResponse;
 import com.gxdxx.instagram.domain.user.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.domain.user.dto.response.UserSignUpResponse;
-import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.global.dto.response.ErrorResponse;
 import com.gxdxx.instagram.global.dto.response.SuccessResponse;
 import com.gxdxx.instagram.global.error.InvalidRequestException;

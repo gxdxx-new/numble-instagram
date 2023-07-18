@@ -4,7 +4,6 @@ import com.gxdxx.instagram.domain.reply.dto.request.ReplyRegisterRequest;
 import com.gxdxx.instagram.domain.reply.dto.request.ReplyUpdateRequest;
 import com.gxdxx.instagram.domain.reply.dto.response.ReplyRegisterResponse;
 import com.gxdxx.instagram.domain.reply.dto.response.ReplyUpdateResponse;
-import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.global.dto.response.ErrorResponse;
 import com.gxdxx.instagram.global.dto.response.SuccessResponse;
 import com.gxdxx.instagram.global.error.InvalidRequestException;

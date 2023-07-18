@@ -1,9 +1,9 @@
 package com.gxdxx.instagram.domain.chatroom.dao;
 
 import com.gxdxx.instagram.domain.chatroom.dto.response.ChatRoomListResponse;
-import com.gxdxx.instagram.dto.response.QChatRoomListResponse;
-import com.gxdxx.instagram.entity.QChatRoom;
-import com.gxdxx.instagram.entity.QUser;
+import com.gxdxx.instagram.domain.chatroom.dto.response.QChatRoomListResponse;
+import com.gxdxx.instagram.domain.chatroom.domain.QChatRoom;
+import com.gxdxx.instagram.domain.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;

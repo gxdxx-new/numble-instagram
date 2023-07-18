@@ -6,7 +6,6 @@ import com.gxdxx.instagram.domain.post.dto.request.PostUpdateRequest;
 import com.gxdxx.instagram.domain.post.dto.response.FeedResponse;
 import com.gxdxx.instagram.domain.post.dto.response.PostRegisterResponse;
 import com.gxdxx.instagram.domain.post.dto.response.PostUpdateResponse;
-import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.global.dto.response.ErrorResponse;
 import com.gxdxx.instagram.global.dto.response.SuccessResponse;
 import com.gxdxx.instagram.global.error.InvalidRequestException;
