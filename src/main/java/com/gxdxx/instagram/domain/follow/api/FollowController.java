@@ -3,7 +3,7 @@ package com.gxdxx.instagram.domain.follow.api;
 import com.gxdxx.instagram.dto.request.FollowCreateRequest;
 import com.gxdxx.instagram.dto.response.ErrorResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.exception.InvalidRequestException;
+import com.gxdxx.instagram.global.error.InvalidRequestException;
 import com.gxdxx.instagram.domain.follow.application.FollowCreateService;
 import com.gxdxx.instagram.domain.follow.application.FollowDeleteService;
 import io.swagger.v3.oas.annotations.Operation;

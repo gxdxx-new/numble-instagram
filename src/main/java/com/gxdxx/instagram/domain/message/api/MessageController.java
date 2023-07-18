@@ -5,7 +5,7 @@ import com.gxdxx.instagram.dto.request.MessageSendRequest;
 import com.gxdxx.instagram.dto.response.ErrorResponse;
 import com.gxdxx.instagram.dto.response.MessageResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.exception.InvalidRequestException;
+import com.gxdxx.instagram.global.error.InvalidRequestException;
 import com.gxdxx.instagram.domain.message.application.MessageCreateService;
 import com.gxdxx.instagram.domain.message.application.MessageQueryService;
 import io.swagger.v3.oas.annotations.Operation;

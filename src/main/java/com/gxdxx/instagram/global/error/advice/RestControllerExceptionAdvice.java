@@ -1,7 +1,19 @@
-package com.gxdxx.instagram.advice;
+package com.gxdxx.instagram.global.error.advice;
 
+import com.gxdxx.instagram.domain.chatroom.exception.ChatRoomNotFoundException;
+import com.gxdxx.instagram.domain.comment.exception.CommentNotFoundException;
+import com.gxdxx.instagram.domain.follow.exception.FollowAlreadyExistsException;
+import com.gxdxx.instagram.domain.follow.exception.FollowNotFountException;
+import com.gxdxx.instagram.domain.post.exception.PostNotFoundException;
+import com.gxdxx.instagram.domain.reply.exception.ReplyNotFoundException;
+import com.gxdxx.instagram.domain.user.exception.NicknameAlreadyExistsException;
+import com.gxdxx.instagram.domain.user.exception.PasswordNotMatchException;
+import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
 import com.gxdxx.instagram.dto.response.ErrorResponse;
-import com.gxdxx.instagram.exception.*;
+import com.gxdxx.instagram.global.auth.RefreshTokenInvalidException;
+import com.gxdxx.instagram.global.auth.UnauthorizedAccessException;
+import com.gxdxx.instagram.global.error.FileProcessingException;
+import com.gxdxx.instagram.global.error.InvalidRequestException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

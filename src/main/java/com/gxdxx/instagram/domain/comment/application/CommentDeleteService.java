@@ -2,8 +2,8 @@ package com.gxdxx.instagram.domain.comment.application;
 
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.comment.domain.Comment;
-import com.gxdxx.instagram.exception.CommentNotFoundException;
-import com.gxdxx.instagram.exception.UnauthorizedAccessException;
+import com.gxdxx.instagram.domain.comment.exception.CommentNotFoundException;
+import com.gxdxx.instagram.global.auth.UnauthorizedAccessException;
 import com.gxdxx.instagram.domain.comment.dao.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

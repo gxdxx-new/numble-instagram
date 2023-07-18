@@ -2,8 +2,8 @@ package com.gxdxx.instagram.domain.post.application;
 
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.post.domain.Post;
-import com.gxdxx.instagram.exception.PostNotFoundException;
-import com.gxdxx.instagram.exception.UnauthorizedAccessException;
+import com.gxdxx.instagram.domain.post.exception.PostNotFoundException;
+import com.gxdxx.instagram.global.auth.UnauthorizedAccessException;
 import com.gxdxx.instagram.domain.post.dao.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

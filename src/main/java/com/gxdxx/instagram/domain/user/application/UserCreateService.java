@@ -3,7 +3,7 @@ package com.gxdxx.instagram.domain.user.application;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
-import com.gxdxx.instagram.exception.NicknameAlreadyExistsException;
+import com.gxdxx.instagram.domain.user.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.domain.user.dao.UserRepository;
 import com.gxdxx.instagram.config.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;

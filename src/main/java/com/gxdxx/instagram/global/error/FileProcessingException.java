@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.exception;
+package com.gxdxx.instagram.global.error;
 
 public class FileProcessingException extends RuntimeException {
 }

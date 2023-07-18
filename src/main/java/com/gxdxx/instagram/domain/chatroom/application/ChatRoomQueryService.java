@@ -4,7 +4,7 @@ import com.gxdxx.instagram.dto.request.ChatRoomListRequest;
 import com.gxdxx.instagram.dto.response.ChatRoomListResponse;
 import com.gxdxx.instagram.dto.response.ChatRoomResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
-import com.gxdxx.instagram.exception.UserNotFoundException;
+import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
 import com.gxdxx.instagram.domain.chatroom.dao.ChatRoomRepository;
 import com.gxdxx.instagram.domain.user.dao.UserRepository;
 import lombok.RequiredArgsConstructor;

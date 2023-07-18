@@ -7,7 +7,7 @@ import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.*;
-import com.gxdxx.instagram.exception.InvalidRequestException;
+import com.gxdxx.instagram.global.error.InvalidRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

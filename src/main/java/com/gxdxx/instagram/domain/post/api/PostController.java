@@ -4,7 +4,7 @@ import com.gxdxx.instagram.dto.request.PostFeedRequest;
 import com.gxdxx.instagram.dto.request.PostRegisterRequest;
 import com.gxdxx.instagram.dto.request.PostUpdateRequest;
 import com.gxdxx.instagram.dto.response.*;
-import com.gxdxx.instagram.exception.InvalidRequestException;
+import com.gxdxx.instagram.global.error.InvalidRequestException;
 import com.gxdxx.instagram.domain.post.application.PostCreateService;
 import com.gxdxx.instagram.domain.post.application.PostDeleteService;
 import com.gxdxx.instagram.domain.post.application.PostFeedQueryService;

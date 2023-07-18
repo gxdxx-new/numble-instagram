@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.exception;
+package com.gxdxx.instagram.domain.reply.exception;
 
 public class ReplyNotFoundException extends RuntimeException {
 }
