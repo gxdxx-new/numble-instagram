@@ -4,7 +4,7 @@ import com.gxdxx.instagram.dto.request.ChatRoomListRequest;
 import com.gxdxx.instagram.dto.response.ChatRoomResponse;
 import com.gxdxx.instagram.dto.response.ErrorResponse;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.chatroom.ChatRoomQueryService;
+import com.gxdxx.instagram.domain.chatroom.application.ChatRoomQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

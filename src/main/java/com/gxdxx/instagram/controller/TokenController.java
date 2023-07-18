@@ -4,7 +4,7 @@ import com.gxdxx.instagram.config.jwt.TokenProvider;
 import com.gxdxx.instagram.dto.request.AccessTokenCreateRequest;
 import com.gxdxx.instagram.dto.response.ErrorResponse;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
-import com.gxdxx.instagram.service.token.AccessTokenCreateService;
+import com.gxdxx.instagram.global.auth.AccessTokenCreateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

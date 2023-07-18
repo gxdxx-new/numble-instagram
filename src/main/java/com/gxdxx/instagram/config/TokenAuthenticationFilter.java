@@ -1,7 +1,7 @@
 package com.gxdxx.instagram.config;
 
 import com.gxdxx.instagram.config.jwt.TokenProvider;
-import com.gxdxx.instagram.service.redis.RedisService;
+import com.gxdxx.instagram.global.redis.RedisService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

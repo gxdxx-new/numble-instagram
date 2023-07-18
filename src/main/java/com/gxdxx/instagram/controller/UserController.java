@@ -1,16 +1,14 @@
 package com.gxdxx.instagram.controller;
 
 import com.gxdxx.instagram.config.jwt.TokenProvider;
+import com.gxdxx.instagram.domain.user.application.*;
 import com.gxdxx.instagram.dto.request.UserDeleteRequest;
 import com.gxdxx.instagram.dto.request.UserLoginRequest;
 import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.*;
 import com.gxdxx.instagram.exception.InvalidRequestException;
-import com.gxdxx.instagram.service.user.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

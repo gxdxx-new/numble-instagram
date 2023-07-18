@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.service.user;
 
+import com.gxdxx.instagram.domain.user.application.UserDeleteService;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.exception.PasswordNotMatchException;

@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.service.user;
 
+import com.gxdxx.instagram.domain.user.application.UserProfileUpdateService;
 import com.gxdxx.instagram.dto.request.UserProfileUpdateRequest;
 import com.gxdxx.instagram.dto.response.UserProfileUpdateResponse;
 import com.gxdxx.instagram.domain.user.domain.User;

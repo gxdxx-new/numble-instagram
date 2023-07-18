@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.service.follow;
 
+import com.gxdxx.instagram.domain.follow.application.FollowDeleteService;
 import com.gxdxx.instagram.dto.response.SuccessResponse;
 import com.gxdxx.instagram.domain.follow.domain.Follow;
 import com.gxdxx.instagram.domain.user.domain.User;

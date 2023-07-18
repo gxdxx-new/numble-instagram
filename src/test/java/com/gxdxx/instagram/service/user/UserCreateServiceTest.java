@@ -1,5 +1,6 @@
 package com.gxdxx.instagram.service.user;
 
+import com.gxdxx.instagram.domain.user.application.UserCreateService;
 import com.gxdxx.instagram.dto.request.UserSignUpRequest;
 import com.gxdxx.instagram.dto.response.UserSignUpResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
