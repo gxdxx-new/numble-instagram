@@ -1,5 +1,7 @@
 application.yml
 
+jacoco
+
 HELP.md
 .gradle
 build/
