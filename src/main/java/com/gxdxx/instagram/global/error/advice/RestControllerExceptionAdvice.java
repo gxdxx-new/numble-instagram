@@ -8,6 +8,7 @@ import com.gxdxx.instagram.domain.post.exception.PostNotFoundException;
 import com.gxdxx.instagram.domain.reply.exception.ReplyNotFoundException;
 import com.gxdxx.instagram.domain.user.exception.NicknameAlreadyExistsException;
 import com.gxdxx.instagram.domain.user.exception.PasswordNotMatchException;
+import com.gxdxx.instagram.domain.user.exception.RoleNotFoundException;
 import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
 import com.gxdxx.instagram.global.common.dto.response.ErrorResponse;
 import com.gxdxx.instagram.global.auth.exception.RefreshTokenInvalidException;
@@ -89,6 +90,11 @@ public class RestControllerExceptionAdvice {
     @ExceptionHandler(RefreshTokenInvalidException.class)
     public ErrorResponse refreshTokenInvalidException(RefreshTokenInvalidException ex) {
         return new ErrorResponse("유효하지 않은 Refresh Token입니다.");
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ErrorResponse roleNotFoundException(RoleNotFoundException ex) {
+        return new ErrorResponse("존재하지 않는 role입니다.");
     }
 
 }
