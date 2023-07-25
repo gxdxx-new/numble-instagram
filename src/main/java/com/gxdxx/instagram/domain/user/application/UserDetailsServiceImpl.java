@@ -19,10 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // 사용자 닉네임으로 사용자의 정보를 가져오는 메서드
     @Override
     public UserDetails loadUserByUsername(String nickname) {
-        User user = userRepository.findByNickname(nickname).orElseThrow(
-                () -> new UserNotFoundException()
-        );
-
+        User user = userRepository.findByNicknameWithRoles(nickname)
+                .orElseThrow(UserNotFoundException::new);
         return UserDetailsImpl.of(user);
     }
 
