@@ -20,6 +20,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final RedisService redisService;
 
     // Access Token 값이 담긴 Authorization 헤더값을 가져온 뒤 Access Token이 유효하면 인증 정보를 설정해줌
+    // UsernamePasswordAuthenticationFilter 이전에 실행된다.
+    // TokenAuthenticationFilter을 통과하면 UsernamePasswordAuthenticationFilter 이후의 필터는 통과한 것으로 본다는 뜻이다.
+    // = Username + Password를 통한 인증을 Jwt를 통해 수행한다는 것
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -33,7 +36,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String token = tokenProvider.getAccessToken(authorizationHeader);
         // 가져온 토큰이 유효한지 확인하고, 유효할 때는 시큐리티 컨텍스트에 인증 정보를 설정
         // 이후 컨텍스트 홀더에서 getAuthentication() 메서드를 사용해 인증 정보를 가져오면 회원 객체가 반환됨
-        if (tokenProvider.validateToken(token) && tokenProvider.isAccessToken(token) && redisService.getValues(token).isEmpty()) {
+        if (tokenProvider.validateToken(token) && tokenProvider.isAccessToken(token) && !redisService.keyExists(token)) {
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

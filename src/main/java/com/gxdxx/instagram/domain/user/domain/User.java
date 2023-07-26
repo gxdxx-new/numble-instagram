@@ -10,7 +10,10 @@ import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @ToString
@@ -38,6 +41,12 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String profileImageUrl;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UserRole> userRoles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UserAuthority> userAuthorities = new HashSet<>();
+
     private boolean deleted = Boolean.FALSE;
 
     private User(String nickname, String password, String profileImageUrl) {
@@ -53,6 +62,31 @@ public class User extends BaseEntity {
     public void updateProfile(String nickname, String profileImageUrl) {
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public void addUserRole(Role role) {
+        UserRole userRole = UserRole.of(this, role);
+        this.userRoles.add(userRole);
+        role.getUserRoles().add(userRole);
+    }
+
+    public void removeUserRole(Role role) {
+        for (Iterator<UserRole> iterator = userRoles.iterator(); iterator.hasNext();) {
+            UserRole userRole = iterator.next();
+            if (userRole.getUser().equals(this) && userRole.getRole().equals(role)) {
+                iterator.remove();
+                userRole.getRole().getUserRoles().remove(userRole);
+                userRole.setUserAndRoleNull();
+            }
+        }
+    }
+
+    public Set<String> getRoleNames() {
+        Set<String> roleNames = new HashSet<>();
+        for (UserRole userRole : userRoles) {
+            roleNames.add(userRole.getRole().getName());
+        }
+        return roleNames;
     }
 
     @Override

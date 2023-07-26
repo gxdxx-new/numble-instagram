@@ -4,12 +4,11 @@ import com.gxdxx.instagram.global.auth.exception.RefreshTokenInvalidException;
 import com.gxdxx.instagram.global.auth.dto.AccessTokenCreateRequest;
 import com.gxdxx.instagram.global.config.jwt.TokenProvider;
 import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
-import com.gxdxx.instagram.domain.user.domain.User;
-import com.gxdxx.instagram.domain.user.exception.UserNotFoundException;
-import com.gxdxx.instagram.domain.user.dao.UserRepository;
 import com.gxdxx.instagram.global.redis.RedisService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,6 @@ import static com.gxdxx.instagram.global.redis.RedisService.ACCESS_TOKEN_BLACKLI
 public class AccessTokenCreateService {
 
     private final TokenProvider tokenProvider;
-    private final UserRepository userRepository;
     private final RedisService redisService;
 
     // 전달받은 RefeshToken으로 토큰 유효성 검사를 진행하고, 유효한 토큰일 때 Refresh Token으로 사용자 id를 찾음
@@ -31,12 +29,11 @@ public class AccessTokenCreateService {
         validateRefreshToken(refreshToken);
         Long userId = request.userId();
         redisService.checkRefreshToken(userId, refreshToken);
-        User userToCreateAccessToken = findUserById(userId);
         // AT가 만료되지 않은 상태에서 AT 재발급 요청을 할 경우 이전 AT를 black list에 추가
         String accessToken = removePrefixFromAccessToken(authorizationHeader);
         validateAndAddAccessTokenToBlacklist(accessToken);
         // 새로운 Access Token 생성
-        String newAccessToken = createAccessToken(userToCreateAccessToken);
+        String newAccessToken = createAccessToken(SecurityContextHolder.getContext().getAuthentication());
         // 헤더에 Access Token 추가
         addAccessTokenToHeader(response, newAccessToken);
         return SuccessResponse.of("200 SUCCESS");
@@ -46,11 +43,6 @@ public class AccessTokenCreateService {
         if (!tokenProvider.validateToken(refreshToken)) {
             throw new RefreshTokenInvalidException();
         }
-    }
-
-    private  User findUserById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
     }
 
     private String removePrefixFromAccessToken(String authorizationHeader) {
@@ -71,8 +63,8 @@ public class AccessTokenCreateService {
         );
     }
 
-    private String createAccessToken(User user) {
-        return tokenProvider.createAccessToken(user);
+    private String createAccessToken(Authentication authentication) {
+        return tokenProvider.createAccessToken(authentication);
     }
 
     private void addAccessTokenToHeader(HttpServletResponse response, String accessToken) {

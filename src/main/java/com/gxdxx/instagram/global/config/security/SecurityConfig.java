@@ -46,8 +46,11 @@ public class SecurityConfig {
          */
         http.authorizeRequests()
                 .requestMatchers("/api/users/signup", "/api/users/login", "/api/token").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/**").hasRole("USER")
                 .anyRequest().authenticated()
-                .and().addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .and()
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);  // tokenAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
 
         // /api로 시작하는 url인 경우 인증 실패 시 401 Unauthorized를 반환하도록 예외 처리
         http.exceptionHandling()

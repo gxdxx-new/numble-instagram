@@ -9,7 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 // UserDetails: 스프링 시큐리티에서 사용자의 인증 정보를 담아두는 인터페이스
 @Setter
@@ -27,7 +28,16 @@ public class UserDetailsImpl implements UserDetails {
     // 권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        // 데이터베이스에서 사용자의 역할 정보를 조회하여 authorities에 추가
+        for (UserRole userRole : user.getUserRoles()) {// <- N+1 문제
+            authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName()));
+        }
+        return authorities;
+    }
+
+    public Long getUserId() {
+        return this.user.getId();
     }
 
     // 사용자의 닉네임을 반환
