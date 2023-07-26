@@ -27,8 +27,15 @@ public class RedisService {
     }
 
     public String getValues(String key) {
+        if (!keyExists(key)) {
+            return null;
+        }
         ValueOperations<String, String> values = redisTemplate.opsForValue();
         return values.get(key);
+    }
+
+    public boolean keyExists(String key) {
+        return redisTemplate.hasKey(key);
     }
 
     public void deleteValues(String key) {
