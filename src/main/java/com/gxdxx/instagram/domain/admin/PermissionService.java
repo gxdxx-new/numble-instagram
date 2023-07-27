@@ -18,18 +18,20 @@ public class PermissionService {
     private final UserRepository userRepository;
 
     public boolean hasPermission(String permission) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // 사용자의 인증 정보를 통해 사용자 정보를 가져옴
-        User user = userRepository.findByNicknameWithAuthorities(authentication.getName())
-                .orElseThrow(UserNotFoundException::new);
+        User user = findUserByAuthentication();
+        return hasAuthority(user, permission);
+    }
 
-        // 사용자가 해당 권한을 가지고 있는지 확인
-        for (UserAuthority userAuthority : user.getUserAuthorities()) {
-            if (userAuthority.getAuthority().getName().equals(permission)) {
-                return true;
-            }
-        }
-        return false;
+    private User findUserByAuthentication() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByNicknameWithAuthorities(authentication.getName())
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private boolean hasAuthority(User user, String permission) {
+        return user.getUserAuthorities()
+                .stream()
+                .anyMatch(userAuthority -> userAuthority.getAuthority().getName().equals(permission));
     }
 
 }
