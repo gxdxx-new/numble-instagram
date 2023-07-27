@@ -26,7 +26,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @RequestMapping("/api/chat-rooms")
 @RestController
-public class ChatRoomController {
+public class ChatRoomQueryController {
 
     private final ChatRoomQueryService chatRoomQueryService;
 
