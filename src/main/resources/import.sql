@@ -6,6 +6,7 @@ insert into role(id, name, description) values (2, 'ROLE_USER', '사용자');
 
 insert into user_role(id, user_id, role_id) values (1, 1, 1);
 insert into user_role(id, user_id, role_id) values (2, 1, 2);
+insert into user_role(id, user_id, role_id) values (3, 2, 2);
 
 insert into authority(id, name, description) values (1, 'READ_USER', '사용자 조회');
 insert into authority(id, name, description) values (2, 'WRITE_USER', '사용자 쓰기');
