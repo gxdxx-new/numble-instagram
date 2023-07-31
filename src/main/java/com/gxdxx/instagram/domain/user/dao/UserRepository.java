@@ -1,6 +1,5 @@
 package com.gxdxx.instagram.domain.user.dao;
 
-import com.gxdxx.instagram.domain.admin.dto.response.AdminUserListResponse;
 import com.gxdxx.instagram.domain.admin.dto.response.AdminUserQueryResponse;
 import com.gxdxx.instagram.domain.user.domain.User;
 import org.springframework.data.domain.Page;
@@ -25,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.nickname = :nickname")
     Optional<User> findByNicknameWithAuthorities(@Param("nickname") String nickname);
 
-    @Query("SELECT new com.gxdxx.instagram.domain.admin.dto.response.AdminUserListResponse(u.id, u.nickname, u.profileImageUrl, u.deleted, u.createdAt, r.name) " +
+    @Query("SELECT new com.gxdxx.instagram.domain.admin.dto.response.AdminUserQueryResponse(u.id, u.nickname, u.profileImageUrl, u.deleted, u.createdAt, r.name) " +
             "FROM User u " +
             "JOIN u.userRoles ur " +
             "JOIN ur.role r " +
