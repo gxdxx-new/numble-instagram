@@ -24,13 +24,13 @@ public class UserCreateService {
     private final RoleRepository roleRepository;
     private final S3Uploader s3Uploader;
     private final PasswordEncoder passwordEncoder;
-    private final String roleName = "ROLE_USER";
+    private static final String ROLE_NAME = "ROLE_USER";
 
     public UserSignUpResponse createUser(UserSignUpRequest request) {
         checkNicknameDuplication(request.nickname());
         String profileImageUrl = uploadProfileImage(request.profileImage());
         User savedUser = saveUser(request.nickname(), request.password(), profileImageUrl);
-        Role role = findRoleByName(roleName);
+        Role role = findRoleByName(ROLE_NAME);
         savedUser.addUserRole(role);
         return UserSignUpResponse.of(savedUser);
     }
