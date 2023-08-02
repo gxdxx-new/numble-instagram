@@ -88,6 +88,26 @@ public class UserCreateServiceTest {
         assertThrows(NicknameAlreadyExistsException.class, () -> userCreateService.createUser(request));
     }
 
+    @Test
+    @DisplayName("[회원가입] - 실패 (존재하지 않는 역할)")
+    void saveUser_withNonExistingRole_shouldThrowException() {
+        // given
+        UserSignUpRequest request = createUserSignUpRequest(NICKNAME, PASSWORD);
+
+        when(userRepository.findByNickname(request.nickname()))
+                .thenReturn(Optional.empty());
+        when(s3Uploader.upload(request.profileImage(), DIR_NAME))
+                .thenReturn(STORED_FILE_URL);
+        when(passwordEncoder.encode(request.password()))
+                .thenReturn(ENCODED_PASSWORD);
+        when(userRepository.save(any(User.class)))
+                .thenReturn(User.of(request.nickname(), ENCODED_PASSWORD, STORED_FILE_URL));
+        when(roleRepository.findByName(ROLE_NAME)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThrows(RoleNotFoundException.class, () -> userCreateService.createUser(request));
+    }
+
     private UserSignUpRequest createUserSignUpRequest(String nickname, String password) {
         MockMultipartFile mockFile = getMockMultipartFile();
         return new UserSignUpRequest(nickname, password, mockFile);
