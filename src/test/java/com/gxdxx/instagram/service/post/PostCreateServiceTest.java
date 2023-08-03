@@ -37,40 +37,52 @@ public class PostCreateServiceTest {
     @Mock
     private S3Uploader s3Uploader;
 
+    private static final String NICKNAME = "nickname";
+    private static final String ENCODED_PASSWORD = "encodedPassword";
+    private static final String PROFILE_IMAGE_URL = "profileImageUrl";
+    private static final String IMAGE_URL = "imageUrl";
+    private static final String CONTENT = "content";
+    private static final String DIR_NAME = "images";
+
     @Test
     @DisplayName("[게시물 등록] - 성공")
     void registerPost_withValidRequest_shouldSucceed() {
+        // given
         PostRegisterRequest request = createPostRegisterRequest();
         User user = createUser();
-        String imageUrl = "imageUrl";
-        when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.of(user));
-        when(s3Uploader.upload(any(), anyString())).thenReturn(imageUrl);
-        when(postRepository.save(any(Post.class))).thenReturn(Post.of(request.content(), imageUrl, user));
 
+        when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.of(user));
+        when(s3Uploader.upload(request.image(), DIR_NAME)).thenReturn(IMAGE_URL);
+        when(postRepository.save(any(Post.class))).thenReturn(Post.of(request.content(), IMAGE_URL, user));
+
+        // when
         PostRegisterResponse response = postCreateService.createPost(request, user.getNickname());
 
+        // then
         assertEquals(request.content(), response.content());
-        assertEquals(imageUrl, response.imageUrl());
+        assertEquals(IMAGE_URL, response.imageUrl());
     }
 
     @Test
     @DisplayName("[게시물 등록] - 실패 (존재하지 않는 유저)")
     void registerPost_withNonExistingUser_shouldThrowUserNotFoundException() {
+        // given
         PostRegisterRequest request = createPostRegisterRequest();
         User user = createUser();
+
         when(userRepository.findByNickname(user.getNickname())).thenReturn(Optional.empty());
 
+        // when & then
         Assertions.assertThrows(UserNotFoundException.class, () -> postCreateService.createPost(request, user.getNickname()));
     }
 
     private User createUser() {
-        return User.of("nickname", "encodedPassword", "profileImageUrl");
+        return User.of(NICKNAME, ENCODED_PASSWORD, PROFILE_IMAGE_URL);
     }
 
     private PostRegisterRequest createPostRegisterRequest() {
         MockMultipartFile mockFile = getMockMultipartFile();
-        String content = "content";
-        return new PostRegisterRequest(content, mockFile);
+        return new PostRegisterRequest(CONTENT, mockFile);
     }
 
     private MockMultipartFile getMockMultipartFile() {
