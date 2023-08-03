@@ -35,6 +35,14 @@ public class FollowDeleteServiceTest {
     private User follower;
     private User following;
 
+    private static final String FOLLOWER = "Follower";
+    private static final String FOLLOWING = "Following";
+    private static final String PASSWORD = "password";
+    private static final String FOLLOWER_PROFILE_IMAGE_URL = "follower@example.com";
+    private static final String FOLLOWING_PROFILE_IMAGE_URL = "following@example.com";
+    private static final String NON_EXISTING_NICKNAME = "nonExistingNickname";
+    private static final String SUCCESS_MESSAGE = "200 SUCCESS";
+
     @BeforeEach
     public void setUp() {
         follower = User.of("Follower", "password", "follower@example.com");
@@ -44,37 +52,49 @@ public class FollowDeleteServiceTest {
     @Test
     @DisplayName("[팔로우 취소] - 성공")
     public void deleteFollow_shouldSucceed() {
+        // given
         Follow follow = Follow.createFollow(follower, following);
 
-        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
-        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
-        when(followRepository.findByFollowerAndFollowing(follower, following)).thenReturn(Optional.of(follow));
+        when(userRepository.findByNickname(follower.getNickname()))
+                .thenReturn(Optional.of(follower));
+        when(userRepository.findById(following.getId()))
+                .thenReturn(Optional.of(following));
+        when(followRepository.findByFollowerAndFollowing(follower, following))
+                .thenReturn(Optional.of(follow));
         doNothing().when(followRepository).delete(follow);
 
+        // when
         SuccessResponse response = followDeleteService.deleteFollow(following.getId(), follower.getNickname());
 
-        Assertions.assertEquals("200 SUCCESS", response.successMessage());
+        // then
+        Assertions.assertEquals(SUCCESS_MESSAGE, response.successMessage());
     }
 
     @Test
     @DisplayName("[팔로우 취소] - 실패 (존재하지 않는 팔로우 관계)")
     public void deleteFollow_withNonExistingFollow_shouldThrowFollowNotFoundException() {
+        // given
+        when(userRepository.findByNickname(follower.getNickname()))
+                .thenReturn(Optional.of(follower));
+        when(userRepository.findById(following.getId()))
+                .thenReturn(Optional.of(following));
+        when(followRepository.findByFollowerAndFollowing(follower, following))
+                .thenReturn(Optional.empty());
 
-        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
-        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
-        when(followRepository.findByFollowerAndFollowing(follower, following)).thenReturn(Optional.empty());
-
-        Assertions.assertThrows(FollowNotFountException.class, () -> followDeleteService.deleteFollow(following.getId(), follower.getNickname()));
+        // when & then
+        Assertions.assertThrows(FollowNotFountException.class,
+                () -> followDeleteService.deleteFollow(following.getId(), follower.getNickname()));
     }
 
     @Test
     @DisplayName("[팔로우 취소] - 실패 (요청자 닉네임에 해당하는 유저가 존재하지 않는 경우)")
     public void deleteFollow_withNonExistingUser_shouldThrowUserNotFoundException() {
-        String nonExistingNickname = "non-existing-nickname";
+        // given
+        when(userRepository.findByNickname(NON_EXISTING_NICKNAME)).thenReturn(Optional.empty());
 
-        when(userRepository.findByNickname(nonExistingNickname)).thenReturn(Optional.empty());
-
-        Assertions.assertThrows(UserNotFoundException.class, () -> followDeleteService.deleteFollow(following.getId(), nonExistingNickname));
+        // when & then
+        Assertions.assertThrows(UserNotFoundException.class,
+                () -> followDeleteService.deleteFollow(following.getId(), NON_EXISTING_NICKNAME));
     }
 
 }

@@ -36,77 +36,117 @@ public class FollowCreateServiceTest {
     private User follower;
     private User following;
 
+    private static final String FOLLOWER = "Follower";
+    private static final String FOLLOWING = "Following";
+    private static final String PASSWORD = "password";
+    private static final String FOLLOWER_PROFILE_IMAGE_URL = "follower@example.com";
+    private static final String FOLLOWING_PROFILE_IMAGE_URL = "following@example.com";
+    private static final String NON_EXISTING_NICKNAME = "nonExistingNickname";
+    private static final String SUCCESS_MESSAGE = "200 SUCCESS";
+
+
     @BeforeEach
     public void setUp() {
-        follower = User.of("Follower", "password", "follower@example.com");
-        following = User.of("Following", "password", "following@example.com");
+        follower = User.of(FOLLOWER, PASSWORD, FOLLOWER_PROFILE_IMAGE_URL);
+        following = User.of(FOLLOWING, PASSWORD, FOLLOWING_PROFILE_IMAGE_URL);
     }
 
     @Test
     @DisplayName("[팔로우] - 성공 (soft delete되었던 팔로우)")
     public void createFollow_withSoftDeletedFollow_shouldSucceed() {
+        // given
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
         Follow softDeletedFollow = Follow.createFollow(follower, following);
         softDeletedFollow.changeDeleted(true);
 
-        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
-        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
-        when(followRepository.existsByFollowerAndFollowing(follower, following)).thenReturn(false);
-        when(followRepository.findByFollowerAndFollowingAndDeleted(follower, following, true)).thenReturn(Optional.of(softDeletedFollow));
-        when(followRepository.save(softDeletedFollow)).thenReturn(softDeletedFollow);
+        when(userRepository.findByNickname(follower.getNickname()))
+                .thenReturn(Optional.of(follower));
+        when(userRepository.findById(request.userId()))
+                .thenReturn(Optional.of(following));
+        when(followRepository.existsByFollowerAndFollowing(follower, following))
+                .thenReturn(false);
+        when(followRepository.findByFollowerAndFollowingAndDeleted(follower, following, true))
+                .thenReturn(Optional.of(softDeletedFollow));
+        when(followRepository.save(softDeletedFollow))
+                .thenReturn(softDeletedFollow);
 
+        // when
         SuccessResponse response = followCreateService.createFollow(request, follower.getNickname());
-        Assertions.assertEquals("200 SUCCESS", response.successMessage());
+
+        // then
+        Assertions.assertEquals(SUCCESS_MESSAGE, response.successMessage());
     }
 
     @Test
     @DisplayName("[팔로우] - 성공 (soft delete되었던 적 없는 팔로우)")
     public void createFollow_withoutSoftDeletedFollow_shouldSucceed() {
+        // given
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
         Follow newFollow = Follow.createFollow(follower, following);
 
-        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
-        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
-        when(followRepository.existsByFollowerAndFollowing(follower, following)).thenReturn(false);
-        when(followRepository.findByFollowerAndFollowingAndDeleted(follower, following, true)).thenReturn(Optional.empty());
-        when(followRepository.save(any())).thenReturn(newFollow);
+        when(userRepository.findByNickname(follower.getNickname()))
+                .thenReturn(Optional.of(follower));
+        when(userRepository.findById(request.userId()))
+                .thenReturn(Optional.of(following));
+        when(followRepository.existsByFollowerAndFollowing(follower, following))
+                .thenReturn(false);
+        when(followRepository.findByFollowerAndFollowingAndDeleted(follower, following, true))
+                .thenReturn(Optional.empty());
+        when(followRepository.save(any()))
+                .thenReturn(newFollow);
 
+        // when
         SuccessResponse response = followCreateService.createFollow(request, follower.getNickname());
-        Assertions.assertEquals("200 SUCCESS", response.successMessage());
+
+        // then
+        Assertions.assertEquals(SUCCESS_MESSAGE, response.successMessage());
     }
 
     @Test
     @DisplayName("[팔로우] - 실패 (요청자와 팔로우할 유저가 같을 경우)")
     public void createFollow_withSameUser_shouldThrowInvalidRequestException() {
-        FollowCreateRequest request = new FollowCreateRequest(follower.getId());
+        // given
+        FollowCreateRequest request = new FollowCreateRequest(following.getId());
 
-        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
-        when(userRepository.findById(follower.getId())).thenReturn(Optional.of(follower));
+        when(userRepository.findByNickname(follower.getNickname()))
+                .thenReturn(Optional.of(follower));
+        when(userRepository.findById(request.userId()))
+                .thenReturn(Optional.of(follower));
 
-        Assertions.assertThrows(InvalidRequestException.class, () -> followCreateService.createFollow(request, follower.getNickname()));
+        // when & then
+        Assertions.assertThrows(InvalidRequestException.class,
+                () -> followCreateService.createFollow(request, follower.getNickname()));
     }
 
     @Test
     @DisplayName("[팔로우] - 실패 (이미 존재하는 팔로우 관계일 경우)")
     public void createFollow_withAlreadyExistsFollow_shouldThrowFollowAlreadyExistsException() {
+        // given
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
 
-        when(userRepository.findByNickname(follower.getNickname())).thenReturn(Optional.of(follower));
-        when(userRepository.findById(following.getId())).thenReturn(Optional.of(following));
-        when(followRepository.existsByFollowerAndFollowing(follower, following)).thenReturn(true);
+        when(userRepository.findByNickname(follower.getNickname()))
+                .thenReturn(Optional.of(follower));
+        when(userRepository.findById(following.getId()))
+                .thenReturn(Optional.of(following));
+        when(followRepository.existsByFollowerAndFollowing(follower, following))
+                .thenReturn(true);
 
-        Assertions.assertThrows(FollowAlreadyExistsException.class, () -> followCreateService.createFollow(request, follower.getNickname()));
+        // when & then
+        Assertions.assertThrows(FollowAlreadyExistsException.class,
+                () -> followCreateService.createFollow(request, follower.getNickname()));
     }
 
     @Test
     @DisplayName("[팔로우] - 실패 (요청자 닉네임에 해당하는 유저가 존재하지 않는 경우)")
     public void createFollow_withFollowerNotFound_shouldThrowUserNotFoundException() {
-        String nonExistingNickname = "non-existing-nickname";
+        // given
         FollowCreateRequest request = new FollowCreateRequest(following.getId());
 
-        when(userRepository.findByNickname(nonExistingNickname)).thenReturn(Optional.empty());
+        when(userRepository.findByNickname(NON_EXISTING_NICKNAME)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () -> followCreateService.createFollow(request, nonExistingNickname));
+        // when & then
+        Assertions.assertThrows(UserNotFoundException.class,
+                () -> followCreateService.createFollow(request, NON_EXISTING_NICKNAME));
     }
 
 }
