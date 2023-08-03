@@ -96,7 +96,7 @@ public class UserProfileUpdateServiceTest {
     @DisplayName("[프로필 수정] - 실패 (존재하지 않는 유저 && 기존 닉네임과 같은 경우)")
     void updateUserProfile_withNonExistingUser_withSameNickname_shouldThrowUserNotFoundException() {
         // given
-        UserProfileUpdateRequest request = createUserProfileUpdateRequest(NEW_NICKNAME, getMockMultipartFile());
+        UserProfileUpdateRequest request = createUserProfileUpdateRequest(NICKNAME, getMockMultipartFile());
         User savedUser = createSavedUser();
 
         when(userRepository.findByNickname(savedUser.getNickname())).thenReturn(Optional.empty());
