@@ -2,6 +2,8 @@ application.yml
 
 jacoco
 
+**/*.log
+
 HELP.md
 .gradle
 build/
