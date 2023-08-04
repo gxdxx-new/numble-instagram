@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.service.post;
+package com.gxdxx.instagram.domain.post.application;
 
 import com.gxdxx.instagram.domain.post.application.PostCreateService;
 import com.gxdxx.instagram.domain.post.dto.request.PostRegisterRequest;
