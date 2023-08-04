@@ -1,4 +1,4 @@
-package com.gxdxx.instagram.service.follow;
+package com.gxdxx.instagram.domain.follow.application;
 
 import com.gxdxx.instagram.domain.follow.application.FollowCreateService;
 import com.gxdxx.instagram.domain.follow.dto.request.FollowCreateRequest;
