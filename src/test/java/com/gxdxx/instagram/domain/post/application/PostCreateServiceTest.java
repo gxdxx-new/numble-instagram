@@ -45,7 +45,7 @@ public class PostCreateServiceTest {
     private static final String DIR_NAME = "images";
 
     @Test
-    @DisplayName("[게시물 등록] - 성공")
+    @DisplayName("[게시글 등록] - 성공")
     void registerPost_withValidRequest_shouldSucceed() {
         // given
         PostRegisterRequest request = createPostRegisterRequest();
@@ -64,7 +64,7 @@ public class PostCreateServiceTest {
     }
 
     @Test
-    @DisplayName("[게시물 등록] - 실패 (존재하지 않는 유저)")
+    @DisplayName("[게시글 등록] - 실패 (존재하지 않는 유저)")
     void registerPost_withNonExistingUser_shouldThrowUserNotFoundException() {
         // given
         PostRegisterRequest request = createPostRegisterRequest();
