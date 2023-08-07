@@ -37,7 +37,7 @@ class PostDeleteServiceTest {
 
 
     @Test
-    @DisplayName("[게시물 삭제] - 성공")
+    @DisplayName("[게시글 삭제] - 성공")
     void deletePost_withValidRequest_shouldSucceed() {
         // given
         Post deletePost = createPost();
@@ -52,7 +52,7 @@ class PostDeleteServiceTest {
     }
 
     @Test
-    @DisplayName("[게시물 삭제] - 실패 (존재하지 않는 게시글)")
+    @DisplayName("[게시글 삭제] - 실패 (존재하지 않는 게시글)")
     void deletePost_PostNotFoundException() {
         // given
         when(postRepository.findById(POST_ID)).thenReturn(Optional.empty());
@@ -62,7 +62,7 @@ class PostDeleteServiceTest {
     }
 
     @Test
-    @DisplayName("[게시물 삭제] - 실패 (게시글 작성자와 요청자가 다른 경우)")
+    @DisplayName("[게시글 삭제] - 실패 (게시글 작성자와 요청자가 다른 경우)")
     void deletePost_UnauthorizedAccessException() {
         // given
         Post deletePost = createPost();
