@@ -41,7 +41,7 @@ class CommentDeleteServiceTest {
 
     @Test
     @DisplayName("[댓글 삭제] - 성공")
-    void createComment_withValidRequest_shouldSucceed() {
+    void deleteComment_withValidRequest_shouldSucceed() {
         // given
         User user = createUser(CORRECT_NICKNAME);
         Post post = createPost(user);
@@ -60,7 +60,7 @@ class CommentDeleteServiceTest {
 
     @Test
     @DisplayName("[댓글 삭제] - 실패 (존재하지 않는 댓글)")
-    void createComment_withNonExistingComment_shouldThrowCommentNotFoundException() {
+    void deleteComment_withNonExistingComment_shouldThrowCommentNotFoundException() {
         // given
         when(commentRepository.findById(COMMENT_ID)).thenReturn(Optional.empty());
 
@@ -70,7 +70,7 @@ class CommentDeleteServiceTest {
 
     @Test
     @DisplayName("[댓글 삭제] - 실패 (요청자와 댓글 작성자 불일치)")
-    void createComment_withNotMatchCommentWriter_shouldThrowUnauthorizedAccessException() {
+    void deleteComment_withNotMatchCommentWriter_shouldThrowUnauthorizedAccessException() {
         // given
         User user = createUser(CORRECT_NICKNAME);
         Post post = createPost(user);
