@@ -1,9 +1,10 @@
-package com.gxdxx.instagram.domain.comment.application;
+package com.gxdxx.instagram.domain.reply.application;
 
-import com.gxdxx.instagram.domain.comment.dao.CommentRepository;
 import com.gxdxx.instagram.domain.comment.domain.Comment;
-import com.gxdxx.instagram.domain.comment.exception.CommentNotFoundException;
 import com.gxdxx.instagram.domain.post.domain.Post;
+import com.gxdxx.instagram.domain.reply.dao.ReplyRepository;
+import com.gxdxx.instagram.domain.reply.domain.Reply;
+import com.gxdxx.instagram.domain.reply.exception.ReplyNotFoundException;
 import com.gxdxx.instagram.domain.user.domain.User;
 import com.gxdxx.instagram.global.auth.exception.UnauthorizedAccessException;
 import com.gxdxx.instagram.global.common.dto.response.SuccessResponse;
@@ -22,12 +23,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CommentDeleteServiceTest {
+class ReplyDeleteServiceTest {
 
     @InjectMocks
-    private CommentDeleteService commentDeleteService;
+    private ReplyDeleteService replyDeleteService;
     @Mock
-    private CommentRepository commentRepository;
+    private ReplyRepository replyRepository;
 
     private static final String CORRECT_NICKNAME = "correctNickname";
     private static final String INCORRECT_NICKNAME = "incorrectNickname";
@@ -35,51 +36,54 @@ class CommentDeleteServiceTest {
     private static final String PROFILE_IMAGE_URL = "profileImageUrl";
     private static final String POST_CONTENT = "postContent";
     private static final String POST_IMAGE_URL = "postImageUrl";
-    private static final Long COMMENT_ID = 1L;
     private static final String COMMENT_CONTENT = "commentContent";
+    private static final Long REPLY_ID = 1L;
+    private static final String REPLY_CONTENT = "replyContent";
     private static final String SUCCESS_MESSAGE = "200 SUCCESS";
 
     @Test
-    @DisplayName("[댓글 삭제] - 성공")
-    void deleteComment_withValidRequest_shouldSucceed() {
+    @DisplayName("[답글 삭제] - 성공")
+    void deleteReply_withValidRequest_shouldSucceed() {
         // given
         User user = createUser(CORRECT_NICKNAME);
         Post post = createPost(user);
         Comment comment = createComment(user, post);
+        Reply reply = createReply(user, comment);
 
-        when(commentRepository.findById(COMMENT_ID)).thenReturn(Optional.of(comment));
+        when(replyRepository.findById(REPLY_ID)).thenReturn(Optional.of(reply));
 
         // when
-        SuccessResponse response = commentDeleteService.deleteComment(COMMENT_ID, CORRECT_NICKNAME);
+        SuccessResponse response = replyDeleteService.deleteReply(REPLY_ID, CORRECT_NICKNAME);
 
         // then
         assertEquals(SUCCESS_MESSAGE, response.successMessage());
 
-        verify(commentRepository).delete(comment);
+        verify(replyRepository).delete(reply);
     }
 
     @Test
-    @DisplayName("[댓글 삭제] - 실패 (존재하지 않는 댓글)")
-    void deleteComment_withNonExistingComment_shouldThrowCommentNotFoundException() {
+    @DisplayName("[답글 삭제] - 실패 (존재하지 않는 답글)")
+    void deleteReply_withNonExistingReply_shouldThrowReplyNotFoundException() {
         // given
-        when(commentRepository.findById(COMMENT_ID)).thenReturn(Optional.empty());
+        when(replyRepository.findById(REPLY_ID)).thenReturn(Optional.empty());
 
         // when & then
-        Assertions.assertThrows(CommentNotFoundException.class, () -> commentDeleteService.deleteComment(COMMENT_ID, CORRECT_NICKNAME));
+        Assertions.assertThrows(ReplyNotFoundException.class, () -> replyDeleteService.deleteReply(REPLY_ID, CORRECT_NICKNAME));
     }
 
     @Test
-    @DisplayName("[댓글 삭제] - 실패 (요청자와 댓글 작성자 불일치)")
-    void deleteComment_withNotMatchCommentWriter_shouldThrowUnauthorizedAccessException() {
+    @DisplayName("[답글 삭제] - 실패 (요청자와 답글 작성자 불일치)")
+    void deleteReply_withNotMatchReplyWriter_shouldThrowUnauthorizedAccessException() {
         // given
         User user = createUser(CORRECT_NICKNAME);
         Post post = createPost(user);
         Comment comment = createComment(user, post);
+        Reply reply = createReply(user, comment);
 
-        when(commentRepository.findById(COMMENT_ID)).thenReturn(Optional.of(comment));
+        when(replyRepository.findById(REPLY_ID)).thenReturn(Optional.of(reply));
 
         // when & then
-        Assertions.assertThrows(UnauthorizedAccessException.class, () -> commentDeleteService.deleteComment(COMMENT_ID, INCORRECT_NICKNAME));
+        Assertions.assertThrows(UnauthorizedAccessException.class, () -> replyDeleteService.deleteReply(REPLY_ID, INCORRECT_NICKNAME));
     }
 
     private User createUser(String nickname) {
@@ -92,6 +96,10 @@ class CommentDeleteServiceTest {
 
     private Comment createComment(User user, Post post) {
         return Comment.of(COMMENT_CONTENT, user, post);
+    }
+
+    private Reply createReply(User user, Comment comment) {
+        return Reply.of(REPLY_CONTENT, user, comment);
     }
 
 }

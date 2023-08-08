@@ -40,7 +40,7 @@ class CommentUpdateServiceTest {
 
     @Test
     @DisplayName("[댓글 수정] - 성공")
-    void createComment_withValidRequest_shouldSucceed() {
+    void updateComment_withValidRequest_shouldSucceed() {
         // given
         CommentUpdateRequest request = createCommentUpdateRequest();
         User user = createUser(CORRECT_NICKNAME);
@@ -58,7 +58,7 @@ class CommentUpdateServiceTest {
 
     @Test
     @DisplayName("[댓글 수정] - 실패 (존재하지 않는 댓글)")
-    void createComment_withNonExistingComment_shouldThrowCommentNotFoundException() {
+    void updateComment_withNonExistingComment_shouldThrowCommentNotFoundException() {
         // given
         CommentUpdateRequest request = createCommentUpdateRequest();
 
@@ -70,7 +70,7 @@ class CommentUpdateServiceTest {
 
     @Test
     @DisplayName("[댓글 수정] - 실패 (요청자와 댓글 작성자 불일치)")
-    void createComment_withNotMatchCommentWriter_shouldThrowUnauthorizedAccessException() {
+    void updateComment_withNotMatchCommentWriter_shouldThrowUnauthorizedAccessException() {
         // given
         CommentUpdateRequest request = createCommentUpdateRequest();
         User user = createUser(CORRECT_NICKNAME);
