@@ -126,11 +126,11 @@ jacocoTestCoverageVerification {
                 minimum = 0.00
             }
 
-            // 빈 줄을 제외한 코드의 라인수를 최대 0라인으로 제한
+            // 빈 줄을 제외한 코드의 라인수를 최대 200라인으로 제한
             limit {
                 counter = 'LINE'
                 value = 'TOTALCOUNT'
-                maximum = 0
+                maximum = 200
             }
 
             excludes = [
