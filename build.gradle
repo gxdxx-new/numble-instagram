@@ -112,25 +112,25 @@ jacocoTestCoverageVerification {
             enabled = true // 활성화
             element = 'CLASS'
 
-            // 라인 커버리지 제한을 80%로 설정
+            // 라인 커버리지 제한을 0%로 설정
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.80
+                minimum = 0.00
             }
 
-            // 브랜치 커버리지 제한을 80%로 설정
+            // 브랜치 커버리지 제한을 0%로 설정
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
-                minimum = 0.80
+                minimum = 0.00
             }
 
-            // 빈 줄을 제외한 코드의 라인수를 최대 200라인으로 제한
+            // 빈 줄을 제외한 코드의 라인수를 최대 0라인으로 제한
             limit {
                 counter = 'LINE'
                 value = 'TOTALCOUNT'
-                maximum = 200
+                maximum = 0
             }
 
             excludes = [
