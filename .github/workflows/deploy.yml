@@ -46,8 +46,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: aws-v5-beanstalk # 애플리케이션 이름
-          environment_name: Aws-v5-beanstalk-env # 환경 이름
+          application_name: aws-v5-beanstalk
+          environment_name: Aws-v5-beanstalk-env
           version_label: aws-v5-${{steps.current-time.outputs.formattedTime}}
           region: us-east-2
           deployment_package: deploy/deploy.zip
