@@ -35,3 +35,16 @@ logging:
 jwt:
   issuer: ${jwt.issuer}
   secret_key: ${jwt.secret.key}
+
+# S3
+cloud:
+  aws:
+    credentials:
+      accessKey: ${iam.access.key}
+      secretKey: ${iam.secret.key}
+    s3:
+      bucket: elasticbeanstalk-ap-northeast-2-909580344470
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
