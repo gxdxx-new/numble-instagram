@@ -46,9 +46,9 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: aws-v5-beanstalk
-          environment_name: Aws-v5-beanstalk-env
+          application_name: aws-v5-elasticbeanstalk
+          environment_name: Aws-v5-elasticbeanstalk-env
           version_label: aws-v5-${{steps.current-time.outputs.formattedTime}}
-          region: us-east-2
+          region: ap-northeast-2
           deployment_package: deploy/deploy.zip
           wait_for_environment_recovery: 300
