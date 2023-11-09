@@ -1,0 +1,37 @@
+
+server:
+  port: 5000
+  servlet:
+    encoding:
+      charset: utf-8
+
+spring:
+  datasource:
+    url: jdbc:mariadb://${rds.hostname}:${rds.port}/${rds.db.name}?allowPublicKeyRetrieval=true&useSSL=false
+    username: ${rds.username}
+    password: ${rds.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 100
+  cache:
+    type: redis
+  data:
+    redis:
+      host: ${redis.host}
+      port: ${redis.port}
+
+logging:
+  level:
+    '[org.springframework.boot.web]': INFO
+jwt:
+  issuer: ${jwt.issuer}
+  secret_key: ${jwt.secret.key}
