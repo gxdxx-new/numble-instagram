@@ -1,6 +1,6 @@
 name: Java CI with Gradle & Deploy to EC2
 
-# main 브런치에 push가 되면 아래의 flow가 실행 
+# main 브런치에 push가 되면 아래의 flow가 실행
 on:
   push:
     branches:
