@@ -7,4 +7,4 @@
 
 ## ERD
 
-<img src="https://user-images.githubusercontent.com/35963403/235620136-fbf8b0e0-4c34-47c8-8722-6286bc58cebf.PNG" width="500">
+<img src="https://github.com/gxdxx-new/numble-instagram/assets/35963403/0c29ebd5-9449-46fb-9848-796fc1030524" width="500">
