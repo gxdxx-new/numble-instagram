@@ -13,10 +13,6 @@
 
 <img src="https://github.com/gxdxx-new/numble-instagram/assets/35963403/0c29ebd5-9449-46fb-9848-796fc1030524" width="500">
 
-## 배포 과정
-
-<img src="https://github.com/gxdxx-new/numble-instagram/assets/35963403/dd2e6402-69ed-48dc-991a-ad5e5c39c5a6" width="700">
-
 ## 구현 기능
 
 - 글 생성, 수정, 삭제 (이미지 포함)
@@ -30,6 +26,10 @@
 - JWT와 Spring Security를 적용한 보안 및 인증
 - AWS EC2를 이용한 배포
 - Github Action을 이용한 배포 자동화 (CI/CD 파이프라인 구축)
+
+## 배포 과정
+
+<img src="https://github.com/gxdxx-new/numble-instagram/assets/35963403/dd2e6402-69ed-48dc-991a-ad5e5c39c5a6" width="700">
 
 ## 개발 순서
 
