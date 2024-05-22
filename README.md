@@ -27,6 +27,21 @@
 - AWS EC2를 이용한 배포
 - Github Action을 이용한 배포 자동화 (CI/CD 파이프라인 구축)
 
+## 토큰 재발급 주요 코드
+
+<img src="https://github.com/gxdxx-new/numble-instagram/assets/35963403/cbe3c351-cd49-45ed-babe-f0456e200dfe" width="700">
+
+## 비즈니스 로직
+
+각 메소드가 하나의 책임만을 수행하도록 분리해 단일 책임 원칙을 준수
+
+<img src="https://github.com/gxdxx-new/numble-instagram/assets/35963403/8bc811be-2ad7-4a51-a7f1-cf3f2fccda46" width="700">
+
+## 단위 테스트 코드
+
+<img src="https://github.com/gxdxx-new/numble-instagram/assets/35963403/308553d7-0eb7-470e-a907-f54aa0c7f4fe" width="700">
+<img src="https://github.com/gxdxx-new/numble-instagram/assets/35963403/f5eb9287-2edd-41ba-b6cc-6db585175297" width="700">
+
 ## 배포 과정
 
 <img src="https://github.com/gxdxx-new/numble-instagram/assets/35963403/dd2e6402-69ed-48dc-991a-ad5e5c39c5a6" width="700">
